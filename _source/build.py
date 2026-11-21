@@ -71,7 +71,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=15">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=16">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -182,7 +182,7 @@ home = f'''
   <a class="scroll-cue" href="#after-hero"><span>Scroll</span><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </section>
 <span id="after-hero"></span>
-<script src="{{r}}assets/js/word.js?v=9" defer></script>
+<script src="{{r}}assets/js/word.js?v=12" defer></script>
 {marquee()}
 
 <section class="sec white on-light"><div class="wrap split">

@@ -7,7 +7,7 @@
   var INK = '#170e22', GOLD = '#F5B321', LG = 150, N = 12, FW = 960, FH = 540, P = {}, img = new Image();
   var W = 0, H = 0, dpr = 1, k = 1, SX = 0, SY = 0, wordW = 0, wordH = 511, items = [], t0 = 0, raf = 0, done = false, started = false;
   Object.keys(D.paths).forEach(function (n) { P[n] = new Path2D(D.paths[n]); });
-  var TA = 2.64, TB = 2.5, TM = 0.9, STEP = 0.24, TD = 0.9, TG = 1.5;       // card flips, card becomes G R Y, reframe, per letter, settle, glint
+  var TG = 1.1;
   var layer = document.createElement('canvas'), tmp = document.createElement('canvas'), lx = layer.getContext('2d'), tx = tmp.getContext('2d');
   function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
   function out(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
@@ -53,47 +53,51 @@
     tx.globalCompositeOperation = 'source-atop'; tx.fillStyle = gr; tx.setTransform(1, 0, -.42, 1, .42 * (dpr * SY + hh / 2), 0); tx.fillRect(xc - bw * 3, dpr * SY - 20, bw * 6, hh + 40);
     ctx.drawImage(tmp, 0, 0);
   }
+  var TA = 0.95, TB = 0.45, STEP = 0.1, TP = 0.6, TD = 0.4, cue = false;
   function draw(t) {
-    var a = (t - TA) / TB, b = ease(a), m = ease((t - TA - TB) / TM), tl = t - TA - TB - TM * .7, tEnd = TA + TB + TM * .7 + 9 * STEP + .4, d = ease((t - tEnd) / TD), g = (t - tEnd - TD * .7) / TG;
+    var a = (t - TA) / TB, b = ease(a), u = t - TA - TB, uEnd = 9 * STEP + .3, p = ease((u - .1) / (uEnd + TP - .35)), d = ease((u - uEnd - TP * .3) / TD), g = (u - uEnd - TP * .3 - TD * .6) / TG, phone = W < 700;
+    cue = p > .92;
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height);
     if (d >= 1) { settled(g); return g >= 1; }
-    // the card of brand shots
-    var cin = out(t / .5), cw = Math.min(W * (W < 700 ? .88 : .6), 1000) * (.9 + .1 * cin) * (1 + .5 * Math.max(0, Math.min(1, a / .2))), ch = cw * 9 / 16, ca = cin * (1 - Math.min(1, Math.max(0, a) / .2));
-    if (ca > 0) { ctx.save(); ctx.globalAlpha = ca; rrect(ctx, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch, dpr * 14); ctx.clip(); cover(ctx, Math.floor(t / .22) % N, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch); ctx.restore();
-      // say whose brand is on screen
-      ctx.globalAlpha = ca; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; var fs = Math.round((W < 700 ? 15 : 18) * dpr);
-      ctx.font = '600 ' + Math.round(fs * .78) + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = GOLD; ctx.fillText('Brands we have activated', dpr * W / 2, dpr * (H * .47 - ch / 2) - fs * 1.5);
-      ctx.font = '700 ' + fs + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = '#fff'; ctx.fillText(NAMES[Math.floor(t / .22) % N], dpr * W / 2, dpr * (H * .47 + ch / 2) + fs * 1.7);
-      ctx.globalAlpha = 1; }
+    // the screen is never empty: a brand shot sits faintly behind everything
+    ctx.globalAlpha = .17 * (1 - d) * Math.min(1, t / .4); cover(ctx, Math.floor(t / .55 + 3) % N, 0, 0, cv.width, cv.height); ctx.globalAlpha = 1;
+    // the card of brand shots, large
+    var cin = out(t / .45), cw = Math.min(W * (phone ? .92 : .62), 1040) * (.92 + .08 * cin) * (1 + .35 * Math.max(0, Math.min(1, a / .3))), ch = phone ? cw * .82 : cw * 9 / 16, ca = cin * (1 - Math.min(1, Math.max(0, a) / .3)), cyy = H * .47;
+    if (ca > 0) {
+      ctx.save(); ctx.globalAlpha = ca; rrect(ctx, dpr * (W - cw) / 2, dpr * (cyy - ch / 2), dpr * cw, dpr * ch, dpr * 16); ctx.clip(); cover(ctx, Math.floor(t / .22) % N, dpr * (W - cw) / 2, dpr * (cyy - ch / 2), dpr * cw, dpr * ch); ctx.restore();
+      ctx.globalAlpha = ca; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; var fs = Math.round((phone ? 17 : 20) * dpr);
+      ctx.font = '600 ' + Math.round(fs * .78) + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = GOLD; ctx.fillText('Brands we have activated', dpr * W / 2, dpr * (cyy - ch / 2) - fs * 1.5);
+      ctx.font = '700 ' + fs + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = '#fff'; ctx.fillText(NAMES[Math.floor(t / .22) % N], dpr * W / 2, dpr * (cyy + ch / 2) + fs * 1.7); ctx.globalAlpha = 1;
+    }
     if (a <= 0) return false;
-    // camera: G R Y large in the middle, then the whole name in its place
-    var sG = Math.min(.62 * W / (D.wg * k), .42 * H / (511 * k)), gl = ease(Math.min(1, a / .62)), pb = ease((a - .62) / .38), near = sG * (W < 700 ? 2.6 : 3.4);
-    var s = m > 0 ? sG + (1 - sG) * m : near + (sG - near) * pb;
-    var gx0 = D.gry[0][1] + 200, gx1 = D.gry[2][1] + 170, glx = gx0 + (gx1 - gx0) * gl;      // glide from the G across to the Y
-    var cx = m > 0 ? D.wg / 2 + (wordW / 2 - D.wg / 2) * m : glx + (D.wg / 2 - glx) * pb, cy = 255 + (wordH / 2 - 255) * m;
-    var ax = W / 2 + (SX + wordW * k / 2 - W / 2) * m, ay = H * .47 + (SY + wordH * k / 2 - H * .47) * m, z = dpr * s * k, dot = null, la = Math.min(1, a / .22);
-    ctx.lineWidth = 70; ctx.lineJoin = 'miter'; ctx.miterLimit = 6;
-    for (var i = 0; i < items.length; i++) {
+    // camera. First G R Y fills the screen. Then it stays close and follows each new letter. One pull-back at the end.
+    var sG = Math.min((phone ? .9 : .62) * W / (D.wg * k), .42 * H / (511 * k)), sC = Math.max(sG * .8, (phone ? .2 : .34) * H / (511 * k));
+    var m = ease(u / .7), fx = D.wg / 2, fy = 255, s = sG * (1.45 - .45 * b), q = u / STEP, j = Math.floor(q), fr = ease(q - j), arr = [], lastT;
+    for (var i = 0; i < items.length; i++) if (!items[i].logo) arr[items[i].ord] = items[i];
+    var ax = W / 2, ay = cyy;
+    if (p > 0) { fx += (wordW / 2 - fx) * p; fy += (wordH / 2 - fy) * p; s += (1 - s) * p; ax += (SX + wordW * k / 2 - ax) * p; ay += (SY + wordH * k / 2 - ay) * p; }
+    var z = dpr * s * k, dot = null, la = Math.min(1, a / .3);
+    for (i = 0; i < items.length; i++) {
       var it = items[i], x = it.x, y = it.y, al = la, pop = 1;
       if (it.logo) { x = it.logo[0] + (it.x - it.logo[0]) * m; y = it.logo[1] + (it.y - it.logo[1]) * m; }
-      else { var q = (tl - it.ord * STEP) / .36; if (q <= 0) continue; al = Math.min(1, q * 1.5); pop = .7 + .3 * out(q); }
-      var ox = dpr * ax + z * (x - cx), oy = dpr * ay + z * (y - cy), zz = z * pop, px = ox + z * it.w / 2 * (1 - pop), py = oy + z * 255 * (1 - pop);
-      // each letter is cut from its own brand shot: stamp the shape, then pour the picture into it
+      else { var qq = (u - it.ord * STEP) / .32; if (qq <= 0) continue; al = Math.min(1, qq * 1.6); pop = .7 + .3 * out(qq); }
+      var ox = dpr * ax + z * (x - fx), oy = dpr * ay + z * (y - fy), zz = z * pop, px = ox + z * it.w / 2 * (1 - pop), py = oy + z * 255 * (1 - pop);
+      if (px > cv.width + 80 * zz || px + (it.w + 80) * zz < 0 || py > cv.height || py + 520 * zz < 0) { if (i === 1) dot = null; continue; }
       tx.setTransform(1, 0, 0, 1, 0, 0); tx.globalCompositeOperation = 'source-over'; var bx = Math.floor(px - 60 * zz), by = Math.floor(py - 4), bw2 = Math.ceil((it.w + 120) * zz), bh2 = Math.ceil(519 * zz);
       tx.clearRect(bx - 2, by - 2, bw2 + 4, bh2 + 4); tx.save(); tx.beginPath(); tx.rect(bx, py, bw2, 511 * zz); tx.clip();
       tx.setTransform(zz, 0, 0, zz, px, py); tx.lineWidth = 70; tx.lineJoin = 'miter'; tx.miterLimit = 6; tx.strokeStyle = '#fff'; tx.stroke(P[it.n]);
-      tx.globalCompositeOperation = 'source-in'; cover(tx, (Math.floor((t + i * .09) / .26) + i * 5) % N, -45, -8, it.w + 90, 527); tx.restore();
+      tx.globalCompositeOperation = 'source-in'; cover(tx, (Math.floor((t + i * .09) / .3) + i * 5) % N, -45, -8, it.w + 90, 527); tx.restore();
       var vx = (dpr * W / 2 - (px + zz * it.w / 2)) * .012, vy = Math.max(2, zz * 9), dn = zz * 511 > 220 * dpr ? 7 : 4;
       ctx.globalAlpha = al * (1 - d); ctx.lineWidth = 70; ctx.lineJoin = 'miter'; ctx.miterLimit = 6;
       for (var e = dn; e >= 1; e--) { ctx.setTransform(zz, 0, 0, zz, px + vx * e, py + vy * e / dn * 1.6); ctx.strokeStyle = e > dn * .5 ? '#22132f' : '#3b2559'; ctx.stroke(P[it.n]); }
       ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(tmp, bx, by, bw2, bh2, bx, by, bw2, bh2);
       if (i === 1) dot = [px, py + zz * 150, zz * 36];
     }
-    ctx.globalAlpha = la * (1 - d); if (dot) { ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(dot[0], dot[1], dot[2], 0, 6.2832); ctx.fill(); }
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = la * (1 - d); if (dot) { ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(dot[0], dot[1], dot[2], 0, 6.2832); ctx.fill(); }
     if (d > 0) { ctx.globalAlpha = d; ctx.drawImage(layer, 0, 0); } ctx.globalAlpha = 1; return false;
   }
   function finish() { done = true; cancelAnimationFrame(raf); draw(1e3); hero.classList.add('settled'); try { sessionStorage.setItem('gry-word', '1'); } catch (e) {} }
-  function tick(now) { if (done) return; if (!t0) t0 = now; var t = (now - t0) / 1000; if (!hero.classList.contains('settled') && t > TA + TB + TM * .7 + 9 * STEP + .4 + TD * .6) hero.classList.add('settled'); if (draw(t)) return finish(); raf = requestAnimationFrame(tick); }
+  function tick(now) { if (done) return; if (!t0) t0 = now; var fin = draw((now - t0) / 1000); if (cue && !hero.classList.contains('settled')) hero.classList.add('settled'); if (fin) return finish(); raf = requestAnimationFrame(tick); }
   // a second glint when the pointer comes to the name
   var gl0 = 0; function glint(now) { if (!gl0) gl0 = now; var g = (now - gl0) / (TG * 1000); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height); settled(g); if (g < 1) requestAnimationFrame(glint); else gl0 = 0; }
   hero.querySelector('.word-slot').addEventListener('pointerenter', function () { if (done && !gl0 && !reduce) requestAnimationFrame(glint); });
@@ -114,4 +118,5 @@
   img.src = cv.getAttribute('data-src');
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (!img.complete) return; layout(); if (done) draw(1e3); }, 120); });
   hero.addEventListener('click', function (e) { if (started && !done && !e.target.closest('a,button')) finish(); });
+  window.addEventListener('scroll', function () { if (started && !done && window.scrollY > 40) finish(); }, { passive: true });
 })();
