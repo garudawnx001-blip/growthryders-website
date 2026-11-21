@@ -28,12 +28,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css?v=8">
-<script>document.documentElement.classList.add("js");try{if(true&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}catch(e){}</script>
+<link rel="stylesheet" href="assets/css/site.css?v=12">
+<script>document.documentElement.classList.add("js");try{if(false&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}catch(e){}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": ["Organization", "ProfessionalService"], "@id": "https://growthryders.in/#org", "name": "Growthryders", "alternateName": ["GRY", "Growth Ryders"], "url": "https://growthryders.in", "logo": "https://growthryders.in/assets/img/gry-logo.svg", "image": "https://growthryders.in/assets/img/og.jpg", "email": "surender@growthryders.in", "telephone": "+919900565911", "contactPoint": [{"@type": "ContactPoint", "telephone": "+919900565911", "contactType": "sales", "areaServed": "IN", "availableLanguage": ["en", "hi", "kn"]}, {"@type": "ContactPoint", "telephone": "+918197330612", "contactType": "customer service", "areaServed": "IN"}], "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN"}, "areaServed": [{"@type": "City", "name": "Bengaluru"}, {"@type": "Country", "name": "India"}], "knowsAbout": ["Brand activation", "Experiential marketing", "Through-the-line marketing", "Corporate park activations", "Event management", "Digital marketing", "Media planning and buying"], "description": "Integrated brand activation and through-the-line marketing company in Bengaluru."}, {"@type": "WebSite", "@id": "https://growthryders.in/#site", "url": "https://growthryders.in", "name": "Growthryders", "publisher": {"@id": "https://growthryders.in/#org"}, "inLanguage": "en-IN"}, {"@type": "WebPage", "@id": "https://growthryders.in/", "url": "https://growthryders.in/", "name": "Growthryders | Brand activations and integrated marketing, Bengaluru", "description": "Growthryders is a Bengaluru brand activation and through-the-line marketing company. Activations, digital, experiential, media and corporate events.", "isPartOf": {"@id": "https://growthryders.in/#site"}, "about": {"@id": "https://growthryders.in/#org"}}]}</script>
 </head>
 <body>
-<div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><svg class="intro-logo" xmlns="http://www.w3.org/2000/svg" viewBox="10 0 1590 516" aria-hidden="true"><g class="rays" fill="none" stroke="#F5B321" stroke-width="5" stroke-linecap="round"><path pathLength="1" d="M-1400 150H729"/><path pathLength="1" d="M3000 150H729"/><path pathLength="1" d="M729 -1300V150"/><path pathLength="1" d="M729 1700V150"/></g><circle class="ring" cx="729" cy="150" r="36" fill="none" stroke="#F5B321" stroke-width="4"/><g fill="none" stroke="#fff" stroke-width="70" stroke-linejoin="miter"><path class="d1" pathLength="1" d="M732 511V260H1125A110 110 0 0 0 1125 40H112Q57 40 57 95V420Q57 475 112 475H575V260H345"/><path class="d2" pathLength="1" d="M1005 262L1238 511"/><path class="d3" pathLength="1" d="M1228 118L1405 268V511"/><path class="d4" pathLength="1" d="M1405 268L1522 158Q1555 128 1555 88V38" stroke-linecap="round"/></g><circle class="rider" cx="729" cy="150" r="36" fill="#F5B321"/></svg><p class="intro-word"><span>Growthryders</span></p><p class="intro-tag"><span>Brand activations at the core</span></p></div><button class="intro-skip" type="button">Skip intro</button></div><a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
 <header class="site-head dark">
   <div class="wrap">
     <a class="brand" href="index.html" aria-label="Growthryders home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="10 0 1590 516" role="img" aria-label="GRY — Growthryders"><defs><clipPath id="lc"><rect x="0" y="0" width="1610" height="511"/></clipPath></defs><g class="ink" clip-path="url(#lc)" fill="none" stroke="#4B2C73" stroke-width="70" stroke-linejoin="miter"><path d="M345 260H575V475H112Q57 475 57 420V95Q57 40 112 40H1125A110 110 0 0 1 1125 260H732V520"/><path d="M1005 262L1245 530"/><path d="M1228 118L1405 268V520"/><path d="M1555 38V88Q1555 128 1522 158L1405 268" stroke-linecap="round"/></g><circle cx="729" cy="150" r="36" fill="#F5B321"/></svg></a>
@@ -43,17 +43,28 @@
 </header>
 <main id="main">
 
-<section class="hero on-dark">
-  <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg" aria-label="Highlights from Growthryders activations: the Tu Race Laga flag-off, TVS Apache and Royal Enfield displays, partner stalls and the finish line">
+<section class="hero hero-word on-dark">
+  <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg" aria-hidden="true">
     <source src="assets/video/hero.mp4?v=3" type="video/mp4">
   </video>
+  <canvas class="word-veil" aria-hidden="true"></canvas>
   <div class="wrap">
-    <h1><span><i>We activate brands.</i></span><span><i>We create experiences.</i></span><span><i>We drive growth.</i></span></h1>
-    <p class="lede">Integrated brand activation, marketing and experiential services that connect brands with people.</p>
-    <div class="btn-row"><a class="btn" href="services.html">Our services</a><a class="btn ghost" href="work.html">Explore our work</a></div>
+    <h1 class="word-slot"><span>Growthryders</span></h1>
+    <div class="word-copy">
+      <div>
+        <p class="hero-kicker">Brand activation and marketing company, Bengaluru</p>
+        <p class="hero-line">We take brands to where people are.</p>
+      </div>
+      <div>
+        <p class="lede">Activations, events, media and digital, planned and run by one team, so your brand is seen, tried and remembered.</p>
+        <div class="btn-row"><a class="btn" href="services.html">Our services</a><a class="btn ghost" href="work.html">Explore our work</a></div>
+      </div>
+    </div>
+    <ul class="hero-services"><li><a href="services.html#activations">Brand activations</a></li><li><a href="services.html#digital">Digital marketing</a></li><li><a href="services.html#experiential">Experiential marketing</a></li><li><a href="services.html#media">Media solutions</a></li><li><a href="services.html#events">Corporate events</a></li><li><a href="services.html#experiential">Technology-led experiences</a></li></ul>
   </div>
   <button class="hero-pause" type="button">Pause video</button>
 </section>
+<script src="assets/js/word.js?v=3" defer></script>
 <section class="marquee" aria-label="Brands on the ground with us"><div class="track"><div class="row"><span>TVS Apache</span><span>Royal Enfield</span><span>Bagmane REIT</span><span>Axis Bank</span><span>Milky Mist</span><span>Kauvery Hospital</span><span>Protein Chef</span><span>iRaces</span></div><div class="row" aria-hidden="true"><span>TVS Apache</span><span>Royal Enfield</span><span>Bagmane REIT</span><span>Axis Bank</span><span>Milky Mist</span><span>Kauvery Hospital</span><span>Protein Chef</span><span>iRaces</span></div></div></section>
 
 <section class="sec white on-light"><div class="wrap split">
@@ -170,6 +181,6 @@
     <div class="legal"><span>© 2026 Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="assets/js/site.js?v=8" defer></script>
+<script src="assets/js/site.js?v=11" defer></script>
 </body>
 </html>

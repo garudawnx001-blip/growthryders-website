@@ -391,3 +391,94 @@ p{margin:0 0 1em;max-width:62ch}
 .nav a.btn{padding:11px 20px}
 .frame,.film,.ip,.bib{border-radius:12px}
 .ip,.bib{box-shadow:0 14px 40px -28px rgba(23,14,34,.5)}
+
+/* ============ v9: the opening scene — where we place a brand, people gather ============ */
+.hero .scene{position:relative;grid-column:2;grid-row:1;min-height:0;overflow:hidden;background:var(--ink)}
+.hero-scene{display:block;width:100%;height:100%;cursor:pointer;touch-action:manipulation}
+.hero .scene::before{content:"";position:absolute;inset:0 auto 0 0;width:90px;background:linear-gradient(90deg,var(--ink),rgba(23,14,34,0));pointer-events:none;z-index:1}
+.hero::after{display:none}
+.scene-hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);margin:0;z-index:2;font-size:.9rem;color:rgba(255,255,255,.78);background:rgba(23,14,34,.55);border:1px solid var(--line-dark);border-radius:999px;padding:6px 14px;pointer-events:none;white-space:nowrap;transition:opacity .5s}
+.scene-hint.used{opacity:0}
+.hero .scene .hero-pause{position:absolute;right:16px;bottom:16px;top:auto;z-index:2}
+@media (max-width:860px){
+  .hero .scene{grid-column:1;grid-row:1;margin-top:62px;aspect-ratio:1/1;max-height:62svh}
+  .hero .scene::before{display:none}
+  .scene-hint{bottom:12px;font-size:.84rem}
+  .hero .scene .hero-pause{right:10px;bottom:auto;top:10px;font-size:.78rem;padding:5px 10px}
+}
+@media (prefers-reduced-motion:reduce){.scene-hint{display:none}}
+@media (max-width:860px){
+  .hero .scene .hero-pause{top:auto;bottom:10px;right:10px}
+  .scene-hint{left:10px;transform:none;bottom:10px}
+}
+
+/* ============ v10: the simple opening — the name, one line, one glow ============ */
+.hero.hero-simple{display:block;position:relative;min-height:min(100svh,860px);overflow:hidden;background:var(--ink)}
+.hero-simple .wrap{position:relative;z-index:2;width:min(var(--wrap),100% - 2*var(--gut));margin-inline:auto;padding:clamp(120px,19vh,190px) 0 clamp(36px,6vh,64px);display:flex;flex-direction:column;min-height:inherit}
+.hero-simple .glow{position:absolute;inset:0;z-index:1;pointer-events:none;transform:translate3d(calc(var(--mx,0)*18px),calc(var(--my,0)*14px),0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.hero-simple .glow i{position:absolute;border-radius:50%;filter:blur(70px);will-change:transform}
+.hero-simple .glow i:first-child{width:62vmax;height:62vmax;right:-22vmax;top:-26vmax;background:radial-gradient(circle,rgba(110,62,170,.6),rgba(75,44,115,0) 62%);animation:glowA 16s ease-in-out infinite alternate}
+.hero-simple .glow i:last-child{width:44vmax;height:44vmax;left:-16vmax;bottom:-24vmax;background:radial-gradient(circle,rgba(245,179,33,.2),rgba(245,179,33,0) 62%);animation:glowB 20s ease-in-out infinite alternate}
+@keyframes glowA{to{transform:translate3d(-7vmax,6vmax,0) scale(1.1)}}
+@keyframes glowB{to{transform:translate3d(8vmax,-5vmax,0) scale(1.15)}}
+.hero-kicker{margin:0 0 clamp(10px,1.6vw,18px);color:var(--gold);font-weight:600;font-size:clamp(.95rem,1.15vw,1.1rem)}
+.hero-simple h1.hero-name{font-size:clamp(3rem,11.6vw,10.5rem);line-height:.92;letter-spacing:-.035em;font-stretch:100%;margin:0 0 0 -.04em;color:#fff}
+.hero-simple h1.hero-name span{display:block;overflow:hidden;padding:.06em 0 .12em}
+.hero-line{margin:clamp(10px,1.6vw,22px) 0 0;font-family:var(--display);font-stretch:112%;font-weight:700;font-size:clamp(1.35rem,2.7vw,2.5rem);line-height:1.15;color:#fff;max-width:22ch}
+.hero-simple .lede{margin-top:clamp(10px,1.2vw,16px);max-width:52ch;color:rgba(255,255,255,.78);font-size:clamp(1rem,1.2vw,1.15rem)}
+.hero-simple .btn-row{margin-top:clamp(18px,2.2vw,30px)}
+.hero-services{list-style:none;margin:auto 0 0;padding:clamp(22px,3vw,36px) 0 0;display:grid;grid-template-columns:repeat(6,auto);justify-content:space-between;gap:10px 18px;border-top:1px solid var(--line-dark)}
+.hero-simple .btn-row + .hero-services{margin-top:auto}
+.hero-services li{margin-top:clamp(28px,5vh,56px)}
+.hero-services{border-top:0;padding-top:0}
+.hero-services li{margin:0}
+.hero-services{margin-top:clamp(34px,7vh,72px);padding-top:18px;border-top:1px solid var(--line-dark)}
+.hero-services a{color:rgba(255,255,255,.72);text-decoration:none;font-weight:600;font-size:clamp(.9rem,1.05vw,1rem);display:inline-flex;align-items:center;gap:9px;padding:6px 0;transition:color .2s}
+.hero-services a::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);flex:none}
+.hero-services a:hover{color:#fff}
+.js .hero-simple .hero-kicker,.js .hero-simple .hero-line,.js .hero-simple .hero-services{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.js body.ready .hero-simple .hero-kicker{opacity:1;transform:none;transition-delay:.05s}
+.js body.ready .hero-simple .hero-line{opacity:1;transform:none;transition-delay:.5s}
+.js body.ready .hero-simple .hero-services{opacity:1;transform:none;transition-delay:.95s}
+.js .hero-simple .lede{transition-delay:.65s}.js .hero-simple .btn-row{transition-delay:.8s}
+@media (max-width:860px){
+  .hero.hero-simple{min-height:0}
+  .hero-simple .wrap{padding:112px 0 30px;min-height:0}
+  .hero-simple h1.hero-name{font-size:clamp(2.6rem,14.6vw,5rem);letter-spacing:-.04em}
+  .hero-services{grid-template-columns:1fr 1fr;justify-content:start;gap:4px 14px;margin-top:30px}
+  .hero-simple .glow i{filter:blur(48px)}
+}
+@media (prefers-reduced-motion:reduce){.hero-simple .glow i{animation:none}.hero-simple .glow{transition:none}}
+@media (max-width:860px){
+  .hero-simple h1.hero-name{font-size:clamp(2.3rem,12.2vw,4.6rem)}
+  .hero-simple .glow{-webkit-mask-image:linear-gradient(180deg,transparent 40px,#000 190px);mask-image:linear-gradient(180deg,transparent 40px,#000 190px)}
+  .hero-services{margin-top:34px}
+}
+
+/* ============ v11: the film inside the name — G R Y pulls back and becomes GROWTHRYDERS ============ */
+.hero.hero-word{display:block;position:relative;min-height:0;overflow:hidden;background:var(--ink)}
+.hero-word video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;margin:0;aspect-ratio:auto;transform:none;grid-column:auto;grid-row:auto}
+.hero-word .word-veil{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.hero-word::after{display:none}
+.hero-word .wrap{position:relative;z-index:2;width:min(var(--wrap),100% - 2*var(--gut));margin-inline:auto;padding:clamp(108px,15vh,150px) 0 clamp(26px,4vh,44px);display:block;grid-column:auto;grid-row:auto}
+.hero-word .word-slot{margin:0;width:100%;height:var(--word-h,calc((100vw - 2*var(--gut))*.295));max-width:100%;font-size:0;line-height:0;color:transparent}
+.no-js .hero-word .word-slot,html:not(.js) .hero-word .word-slot{font-size:clamp(2.6rem,11vw,9rem);line-height:1;color:#fff;height:auto}
+.hero-word .word-copy{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(20px,4vw,64px);align-items:end;margin-top:clamp(24px,4.4vh,48px)}
+.hero-word .hero-kicker{margin:0 0 10px}
+.hero-word .hero-line{margin:0;max-width:16ch;font-size:clamp(1.5rem,2.9vw,2.7rem)}
+.hero-word .lede{margin:0;max-width:50ch;color:rgba(255,255,255,.8);font-size:clamp(1rem,1.2vw,1.15rem)}
+.hero-word .btn-row{margin-top:clamp(16px,2vw,24px)}
+.hero-word .hero-services{margin-top:clamp(26px,5vh,52px)}
+.hero-word .hero-pause{position:absolute;right:var(--gut);top:86px;bottom:auto;z-index:3;opacity:.0;pointer-events:none;transition:opacity .4s}
+.hero-word.settled .hero-pause{opacity:.85;pointer-events:auto}
+.js .hero-word .word-copy,.js .hero-word .hero-services{opacity:0;transform:translateY(16px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.js .hero-word .hero-kicker,.js .hero-word .hero-line,.js .hero-word .lede,.js .hero-word .btn-row{opacity:1;transform:none;transition:none}
+.js .hero-word.settled .word-copy{opacity:1;transform:none}
+.js .hero-word.settled .hero-services{opacity:1;transform:none;transition-delay:.25s}
+@media (max-width:860px){
+  .hero-word .wrap{padding:104px 0 28px}
+  .hero-word .word-copy{grid-template-columns:1fr;gap:16px;margin-top:22px}
+  .hero-word .hero-pause{top:auto;bottom:10px;right:10px;display:none}
+  .site-head{background:transparent}.site-head.scrolled{background:rgba(23,14,34,.96)}
+}
+.hero-word video{filter:brightness(1.12) saturate(1.08)}

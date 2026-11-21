@@ -71,7 +71,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=8">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=12">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -98,7 +98,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js?v=8" defer></script>
+<script src="{r}assets/js/site.js?v=11" defer></script>
 </body>
 </html>
 '''
@@ -163,17 +163,28 @@ def marquee():
 
 # ---------------------------------------------------------------- HOME
 home = f'''
-<section class="hero on-dark">
-  <video autoplay muted loop playsinline preload="auto" poster="{{r}}assets/img/hero-poster.jpg" aria-label="Highlights from Growthryders activations: the Tu Race Laga flag-off, TVS Apache and Royal Enfield displays, partner stalls and the finish line">
+<section class="hero hero-word on-dark">
+  <video autoplay muted loop playsinline preload="auto" poster="{{r}}assets/img/hero-poster.jpg" aria-hidden="true">
     <source src="{{r}}assets/video/hero.mp4?v=3" type="video/mp4">
   </video>
+  <canvas class="word-veil" aria-hidden="true"></canvas>
   <div class="wrap">
-    <h1><span><i>We activate brands.</i></span><span><i>We create experiences.</i></span><span><i>We drive growth.</i></span></h1>
-    <p class="lede">Integrated brand activation, marketing and experiential services that connect brands with people.</p>
-    <div class="btn-row"><a class="btn" href="{{r}}services.html">Our services</a><a class="btn ghost" href="{{r}}work.html">Explore our work</a></div>
+    <h1 class="word-slot"><span>Growthryders</span></h1>
+    <div class="word-copy">
+      <div>
+        <p class="hero-kicker">Brand activation and marketing company, Bengaluru</p>
+        <p class="hero-line">We take brands to where people are.</p>
+      </div>
+      <div>
+        <p class="lede">Activations, events, media and digital, planned and run by one team, so your brand is seen, tried and remembered.</p>
+        <div class="btn-row"><a class="btn" href="{{r}}services.html">Our services</a><a class="btn ghost" href="{{r}}work.html">Explore our work</a></div>
+      </div>
+    </div>
+    <ul class="hero-services">{''.join(f'<li><a href="{{r}}services.html#{k}">{t.split(" and ")[0]}</a></li>' for k, t, d, cs in SERVICES)}</ul>
   </div>
   <button class="hero-pause" type="button">Pause video</button>
 </section>
+<script src="{{r}}assets/js/word.js?v=3" defer></script>
 {marquee()}
 
 <section class="sec white on-light"><div class="wrap split">
@@ -253,7 +264,7 @@ home = f'''
 import re
 if not FILMS_LIVE: home = re.sub(r'<section class="sec white on-light films-sec">.*?</dialog>\n', '', home, flags=re.S)
 page('index.html', 'Growthryders | Brand activations and integrated marketing, Bengaluru',
-     'Growthryders is a Bengaluru brand activation and through-the-line marketing company. Activations, digital, experiential, media and corporate events.', home, 'dark', intro=True)
+     'Growthryders is a Bengaluru brand activation and through-the-line marketing company. Activations, digital, experiential, media and corporate events.', home, 'dark', intro=False)
 
 # ---------------------------------------------------------------- ABOUT
 about = f'''

@@ -96,6 +96,13 @@
     document.addEventListener('visibilitychange', function () { if (!document.hidden && video.paused && pause && pause.textContent === 'Pause video') kick(); });
   }
 
+  // ---- simple opening: the glow leans gently towards the pointer
+  var hs = document.querySelector('.hero-simple');
+  if (hs && !reduce && window.matchMedia('(hover:hover)').matches) {
+    var gl = hs.querySelector('.glow'), tick = false;
+    hs.addEventListener('pointermove', function (e) { if (tick) return; tick = true; requestAnimationFrame(function () { var r = hs.getBoundingClientRect(); gl.style.setProperty('--mx', ((e.clientX - r.left) / r.width - .5).toFixed(3)); gl.style.setProperty('--my', ((e.clientY - r.top) / r.height - .5).toFixed(3)); tick = false; }); }, { passive: true });
+  }
+
   // ---- film strip: glides on its own and loops; your swipe or drag always wins, and it carries on once you let go
   var strip = document.querySelector('.strip');
   if (strip && !reduce) {
