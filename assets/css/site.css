@@ -289,7 +289,11 @@ p{margin:0 0 1em;max-width:62ch}
 }
 
 /* ============ v2: solid header block, tighter rhythm, always-visible pictures ============ */
-.site-head,.site-head.scrolled{background:var(--ink);padding:14px 0;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 1px 0 var(--line-dark)}
+/* header as before: clear over the hero, dark glass once you scroll */
+.site-head{padding:20px 0}.site-head.scrolled{padding:12px 0}
+.brand svg{height:36px;filter:drop-shadow(0 1px 10px rgba(0,0,0,.45))}
+.brand svg .ink{stroke-width:78}
+.brand svg circle{filter:drop-shadow(0 0 6px rgba(245,179,33,.65))}
 .site-head .brand svg .ink,.site-head.light .brand svg .ink{stroke:#fff}
 .site-head .nav,.site-head.light .nav{color:#fff}
 .site-head .nav-toggle,.site-head.light .nav-toggle{color:#fff}
@@ -303,7 +307,7 @@ p{margin:0 0 1em;max-width:62ch}
 .js .frame[data-rv] img{transform:scale(1.07);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
 .js .frame[data-rv].in img{transform:none}
 @media (max-width:860px){
-  .brand svg{height:26px}
+  .brand svg{height:30px}
   .hero{min-height:min(88svh,760px)}
   .nav{padding-top:76px}
 }
