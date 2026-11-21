@@ -69,7 +69,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=6">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=8">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -96,7 +96,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js?v=6" defer></script>
+<script src="{r}assets/js/site.js?v=8" defer></script>
 </body>
 </html>
 '''
@@ -163,12 +163,12 @@ def marquee():
 home = f'''
 <section class="hero on-dark">
   <video autoplay muted loop playsinline preload="auto" poster="{{r}}assets/img/hero-poster.jpg" aria-label="Highlights from Growthryders activations: the Tu Race Laga flag-off, TVS Apache and Royal Enfield displays, partner stalls and the finish line">
-    <source src="{{r}}assets/video/hero.mp4?v=2" type="video/mp4">
+    <source src="{{r}}assets/video/hero.mp4?v=3" type="video/mp4">
   </video>
   <div class="wrap">
     <h1><span><i>We activate brands.</i></span><span><i>We create experiences.</i></span><span><i>We drive growth.</i></span></h1>
-    <p class="lede">Integrated brand activations, marketing solutions and experiential platforms that connect brands with people.</p>
-    <div class="btn-row"><a class="btn" href="{{r}}work.html">Explore our work</a><a class="btn ghost" href="{{r}}contact.html">Let's talk</a></div>
+    <p class="lede">Integrated brand activation, marketing and experiential services that connect brands with people.</p>
+    <div class="btn-row"><a class="btn" href="{{r}}services.html">Our services</a><a class="btn ghost" href="{{r}}work.html">Explore our work</a></div>
   </div>
   <button class="hero-pause" type="button">Pause video</button>
 </section>
@@ -185,7 +185,7 @@ home = f'''
 </div></section>
 
 <section class="sec on-light"><div class="wrap">
-  <div class="sec-head"><h2>One partner. Multiple marketing capabilities.</h2><p class="lede">Six practices under one roof, so a campaign is planned, built, promoted and run by the same team.</p></div>
+  <div class="sec-head"><p class="kicker">Our services</p><h2>One partner. Multiple marketing capabilities.</h2><p class="lede">Six services under one roof, so a campaign is planned, built, promoted and run by the same team.</p></div>
   <ul class="svc">
     {''.join(f'<li><a href="{{r}}services.html#{k}"><h3>{t}</h3><div><p>{d}</p><ul class="chips">{"".join(f"<li>{c}</li>" for c in cs)}</ul></div><span class="go" aria-hidden="true">View</span></a></li>' for k, t, d, cs in SERVICES)}
   </ul>
@@ -221,7 +221,11 @@ home = f'''
 <section class="sec white on-light films-sec"><div class="wrap">
   <div class="sec-head row"><div><h2>Films from the ground.</h2><p class="lede">Every campaign leaves with its own film. Play one.</p></div><a class="btn ghost" href="{{r}}films.html">All films</a></div>
 </div>
-  <div class="strip" tabindex="0" aria-label="Campaign films">{''.join(film(f) for f in FILMS)}</div>
+  <div class="strip-wrap">
+    <button class="strip-btn prev" type="button" aria-label="Previous films"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="strip" tabindex="0" aria-label="Campaign films">{''.join(film(f) for f in FILMS)}</div>
+    <button class="strip-btn next" type="button" aria-label="Next films"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
 </section>
 {PLAYER}
 <section class="sec on-light"><div class="wrap">

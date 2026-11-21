@@ -96,25 +96,45 @@
     document.addEventListener('visibilitychange', function () { if (!document.hidden && video.paused && pause && pause.textContent === 'Pause video') kick(); });
   }
 
-  // ---- film strip: glides on its own, loops, and waits while you touch, hover or watch a film
+  // ---- film strip: glides on its own and loops; your swipe or drag always wins, and it carries on once you let go
   var strip = document.querySelector('.strip');
   if (strip && !reduce) {
-    var kids = [].slice.call(strip.children), held = false, seen = false, x = 0, last = 0;
-    kids.forEach(function (k) { var c = k.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; strip.appendChild(c); });
-    var half = function () { return strip.children[kids.length].offsetLeft - strip.children[0].offsetLeft; };
-    var hold = function (v) { return function () { held = v; if (!v) x = strip.scrollLeft; }; };
-    strip.addEventListener('pointerenter', hold(true)); strip.addEventListener('pointerleave', hold(false));
-    strip.addEventListener('touchstart', hold(true), { passive: true });
-    strip.addEventListener('touchend', function () { setTimeout(hold(false), 2500); }, { passive: true });
-    strip.addEventListener('focusin', hold(true)); strip.addEventListener('focusout', hold(false));
+    var kids = [].slice.call(strip.children), seen = false, x = 0, last = 0, mine = -1, busyUntil = 0, down = false, hover = false;
+    for (var rep = 0; rep < 2; rep++) kids.forEach(function (k) { var c = k.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.removeAttribute('data-rv'); c.classList.add('in'); var ci = c.querySelector('img'); if (ci) ci.loading = 'eager'; c.tabIndex = -1; strip.appendChild(c); });
+    var span = function () { return strip.children[kids.length].offsetLeft - strip.children[0].offsetLeft; };
+    var settle = function () { var h = span(); if (h <= 0) return; var v = strip.scrollLeft; while (v < h * 0.5) v += h; while (v >= h * 1.5) v -= h; if (v !== strip.scrollLeft) strip.scrollLeft = v; x = v; mine = Math.round(v); };
+    var busy = function (ms) { busyUntil = performance.now() + ms; };
+    requestAnimationFrame(function () { strip.scrollLeft = span(); settle(); });
+    // any scroll we did not cause is the visitor's: step back and let it run, momentum included
+    strip.addEventListener('scroll', function () { if (Math.abs(strip.scrollLeft - mine) > 2) busy(1600); }, { passive: true });
+    strip.addEventListener('touchstart', function () { down = true; busy(1e7); }, { passive: true });
+    var up = function () { down = false; busy(1800); };
+    strip.addEventListener('touchend', up, { passive: true }); strip.addEventListener('touchcancel', up, { passive: true });
+    strip.addEventListener('wheel', function () { busy(1600); }, { passive: true });
+    strip.addEventListener('mouseenter', function () { hover = true; }); strip.addEventListener('mouseleave', function () { hover = false; drag = null; });
+    strip.addEventListener('focusin', function () { hover = true; }); strip.addEventListener('focusout', function () { hover = false; });
+    // mouse drag on desktop
+    var drag = null, moved = false;
+    strip.addEventListener('mousedown', function (e) { drag = { x: e.clientX, s: strip.scrollLeft }; moved = false; });
+    window.addEventListener('mousemove', function (e) { if (!drag) return; var d = e.clientX - drag.x; if (Math.abs(d) > 4) moved = true; strip.scrollLeft = drag.s - d; busy(1600); });
+    window.addEventListener('mouseup', function () { drag = null; });
+    strip.addEventListener('click', function (e) { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+    strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    // arrows: one film at a time
+    var step = function (dir) { var c = strip.children[0], w = c.getBoundingClientRect().width + 16; settle(); busy(2600); strip.scrollTo({ left: strip.scrollLeft + dir * w, behavior: 'smooth' }); };
+    var wrapEl = strip.parentElement, pb = wrapEl.querySelector('.strip-btn.prev'), nb = wrapEl.querySelector('.strip-btn.next');
+    if (pb) pb.addEventListener('click', function () { step(-1); }); if (nb) nb.addEventListener('click', function () { step(1); });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { seen = e[0].isIntersecting; }, { threshold: 0.15 }).observe(strip); else seen = true;
+    var was = true;
     (function glide(t) {
       var dt = Math.min(48, t - last || 16); last = t;
-      var open = document.getElementById('player'); open = open && open.open;
-      if (seen && !held && !open && !document.hidden) {
-        x += dt * 0.045; var h = half(); if (h > 0 && x >= h) x -= h;
-        strip.scrollLeft = x;
-      } else if (held) { var h2 = half(); if (h2 > 0 && strip.scrollLeft >= h2) strip.scrollLeft -= h2; }
+      var dlg = document.getElementById('player'), idle = !down && !drag && !hover && t > busyUntil && !(dlg && dlg.open) && !document.hidden;
+      if (idle && !was) settle();           // pick up from wherever the visitor left it
+      was = idle;
+      if (idle && seen) {
+        x += dt * 0.045; var h = span(); if (h > 0 && x >= h * 1.5) x -= h;
+        strip.scrollLeft = x; mine = Math.round(strip.scrollLeft);
+      }
       requestAnimationFrame(glide);
     })(0);
   }
