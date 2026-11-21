@@ -8,8 +8,9 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'site')
 DOMAIN = 'https://growthryders.in'
 PHONE_DISPLAY = '+91 81973 30612'      # WhatsApp Business number, also takes calls
 PHONE_E164 = '918197330612'
-PHONE2_DISPLAY = '+91 99005 65911'     # calls only
-PHONE2_E164 = '919900565911'
+LINKEDIN = 'https://in.linkedin.com/in/surender-loganathan-65463a15'
+IC_CALL = '<svg class="ic" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.12.37 2.33.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>'
+IC_CHAT = '<svg class="ic" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3.2a8.8 8.8 0 0 0-7.6 13.3L3.2 20.8l4.4-1.2A8.8 8.8 0 1 0 12 3.2z"/><circle cx="8.4" cy="12" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="15.6" cy="12" r="1.1" fill="currentColor"/></svg>'
 EMAIL = 'surender@growthryders.in'
 YEAR = datetime.date.today().year
 FILMS_LIVE = os.environ.get('FILMS_LIVE', '1') == '1'   # set FILMS_LIVE=0 to publish without the film files
@@ -29,9 +30,9 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     canonical = DOMAIN + '/' + ('' if path == 'index.html' else path)
     org = {"@type": ["Organization", "ProfessionalService"], "@id": DOMAIN + "/#org", "name": "Growthryders", "alternateName": ["GRY", "Growth Ryders"], "url": DOMAIN,
            "logo": DOMAIN + "/assets/img/gry-logo.svg", "image": DOMAIN + "/assets/img/og.jpg", "email": EMAIL,
-           "telephone": "+" + PHONE2_E164,
-           "contactPoint": [{"@type": "ContactPoint", "telephone": "+" + PHONE2_E164, "contactType": "sales", "areaServed": "IN", "availableLanguage": ["en", "hi", "kn"]},
-                            {"@type": "ContactPoint", "telephone": "+" + PHONE_E164, "contactType": "customer service", "areaServed": "IN"}],
+           "telephone": "+" + PHONE_E164,
+           "contactPoint": [{"@type": "ContactPoint", "telephone": "+" + PHONE_E164, "contactType": "sales", "areaServed": "IN", "availableLanguage": ["en", "hi", "kn"]}],
+           "founder": {"@type": "Person", "@id": DOMAIN + "/about.html#founder", "name": "Surender Loganathan", "jobTitle": "Founder", "worksFor": {"@id": DOMAIN + "/#org"}, "sameAs": [LINKEDIN], "image": DOMAIN + "/assets/img/founder.jpg"},
            "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN"},
            "areaServed": [{"@type": "City", "name": "Bengaluru"}, {"@type": "Country", "name": "India"}],
            "knowsAbout": ["Brand activation", "BTL activation", "Experiential marketing", "Through-the-line marketing", "Corporate park activations", "Tech park activations", "Mall activations", "Roadshows", "Product sampling", "Event management", "Corporate events", "Digital marketing", "Media planning and buying", "Outdoor advertising", "Event film production", "Video production"],
@@ -82,7 +83,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=27">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=28">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -104,7 +105,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
       <div>{LOGO}<p style="margin-top:16px;max-width:34ch">Brand activations at the core. Integrated marketing for growth.</p></div>
       <div><h2>Company</h2><ul><li><a href="{r}about.html">About</a></li><li><a href="{r}services.html">Services</a></li><li><a href="{r}work.html">Work</a></li>{"<li><a href=" + chr(34) + r + "films.html" + chr(34) + ">Films</a></li>" if FILMS_LIVE else ""}<li><a href="{r}ips.html">Our IPs</a></li></ul></div>
       <div><h2>Work</h2><ul><li><a href="{r}work/tu-race-laga.html">TVS Apache: Tu Race Laga</a></li><li><a href="{r}work/tvs-apache-bagmane.html">TVS Apache at Bagmane</a></li><li><a href="{r}work/royal-enfield-bikers-bay.html">Royal Enfield: Bikers Bay</a></li></ul></div>
-      <div><h2>Contact</h2><ul><li><a href="tel:+{PHONE2_E164}">{PHONE2_DISPLAY}</a></li><li><a href="tel:+{PHONE_E164}">{PHONE_DISPLAY}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li><a href="https://wa.me/{PHONE_E164}">WhatsApp us</a></li><li>Bengaluru, India</li></ul></div>
+      <div><h2>Contact</h2><ul><li><a class="wi" href="tel:+{PHONE_E164}">{IC_CALL}{PHONE_DISPLAY}</a></li><li><a class="wi" href="https://wa.me/{PHONE_E164}">{IC_CHAT}WhatsApp us</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Bengaluru, India</li></ul></div>
     </div>
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
@@ -127,7 +128,7 @@ def bibs(items, light=False):
 CTA = '''<section class="cta"><div class="wrap">
 <h2>Let's create something that moves your brand forward.</h2>
 <p class="lede" style="margin-top:18px">Have a marketing challenge, a new product or an ambitious brand idea? Tell us about it and we will turn it into an experience.</p>
-<div class="btn-row"><a class="btn" href="{r}contact.html">Start a conversation</a><a class="btn ghost" href="https://wa.me/''' + PHONE_E164 + '''">WhatsApp us</a></div>
+<div class="btn-row"><a class="btn" href="{r}contact.html">Start a conversation</a><a class="btn ghost wi" href="https://wa.me/''' + PHONE_E164 + '''">''' + IC_CHAT + '''WhatsApp us</a><a class="btn ghost wi" href="tel:+''' + PHONE_E164 + '''">''' + IC_CALL + '''Call us</a></div>
 </div></section>'''
 
 SVC_SLUG = {'activations': 'brand-activations', 'digital': 'digital-marketing', 'experiential': 'experiential-marketing', 'media': 'media-solutions', 'events': 'corporate-events', 'technology': 'technology-experiences', 'films': 'film-production'}
@@ -189,7 +190,7 @@ FAQS = [
  ("Which services does Growthryders offer?", "; ".join(t for k, t, d, cs in SERVICES) + "."),
  ("Which brands has Growthryders been on the ground with?", ", ".join(MARQUEE[:-1]) + " and " + MARQUEE[-1] + "."),
  ("What are Runcle and Bikers Bay?", "They are platforms Growthryders owns. Runcle is a fitness and wellness platform where running meets cycling, for runners, cyclists and corporate teams. Bikers Bay is a motorcycle community with rides, meets and brand collaborations."),
- ("How do I start a project with Growthryders?", f"Call {PHONE2_DISPLAY}, message on WhatsApp at {PHONE_DISPLAY}, or email {EMAIL}."),
+ ("How do I start a project with Growthryders?", f"Call or WhatsApp {PHONE_DISPLAY}, or email {EMAIL}."),
 ]
 def faq_html():
     items = ''.join(f'<details class="qa"><summary><h3>{html.escape(q)}</h3><span class="qa-x" aria-hidden="true"></span></summary><p>{html.escape(a)}</p></details>' for q, a in FAQS)
@@ -315,6 +316,15 @@ about = f'''
     <p>From a product launch experience to a large consumer campaign or a platform of our own, we bring ideas to life.</p>
   </div>
   {img('group', 'Participants and organisers under the finish arch at Tu Race Laga')}
+</div></section>
+<section class="sec on-light founder-sec" id="founder"><div class="wrap founder">
+  <div class="frame founder-photo"><img src="{{r}}assets/img/founder.jpg" alt="Surender Loganathan, founder of Growthryders" width="856" height="1067" loading="lazy"></div>
+  <div>
+    <p class="kicker">Founder</p>
+    <h2>Surender Loganathan</h2>
+    <p class="lede" style="margin-top:18px">Surender founded Growthryders and leads its work with brands, from the first conversation to the day of the activation.</p>
+    <div class="btn-row"><a class="btn wi" href="{LINKEDIN}" target="_blank" rel="noopener me">View LinkedIn profile</a><a class="btn ghost wi" href="tel:+{PHONE_E164}">{IC_CALL}{PHONE_DISPLAY}</a><a class="btn ghost wi" href="https://wa.me/{PHONE_E164}">{IC_CHAT}WhatsApp</a></div>
+  </div>
 </div></section>
 <section class="sec on-light"><div class="wrap split top">
   <div><h2>Our vision</h2><p class="lede" style="margin-top:18px">To become a trusted growth partner for brands through innovative marketing ecosystems, impactful experiences and sustainable consumer engagement.</p></div>
@@ -616,7 +626,7 @@ def service_page(sp):
   <p class="kicker"><a href="{{r}}services.html" style="text-decoration:none">Our services</a></p>
   <h1>{sp["h1"]}</h1>
   <p class="lede">{sp["lede"]}</p>
-  <div class="btn-row"><a class="btn" href="{{r}}contact.html">Start a conversation</a><a class="btn ghost" href="https://wa.me/{PHONE_E164}">WhatsApp us</a></div>
+  <div class="btn-row"><a class="btn" href="{{r}}contact.html">Start a conversation</a><a class="btn ghost wi" href="https://wa.me/{PHONE_E164}">{IC_CHAT}WhatsApp us</a><a class="btn ghost wi" href="tel:+{PHONE_E164}">{IC_CALL}Call us</a></div>
 </div></section>
 <section class="sec white on-light"><div class="wrap split top">
   <div><h2>{sp["h2"]}</h2><p class="lede" style="margin-top:20px">{sp["intro"]}</p></div>
@@ -673,14 +683,14 @@ contact = f'''
       <select name="need"><option>Brand activation</option><option>Integrated TTL campaign</option><option>Digital marketing</option><option>Experiential marketing</option><option>Media solutions</option><option>Corporate event</option><option>Partnering on Runcle or Bikers Bay</option><option>Something else</option></select></label>
     <label>Tell us about it<textarea name="note" required></textarea></label>
     <p class="err" role="alert"></p>
-    <div class="btn-row" style="margin-top:0"><button class="btn" type="button" data-send="whatsapp">Send on WhatsApp</button><button class="btn ghost" type="button" data-send="email">Send by email</button></div>
+    <div class="btn-row" style="margin-top:0"><button class="btn wi" type="button" data-send="whatsapp">{IC_CHAT}Send on WhatsApp</button><button class="btn ghost" type="button" data-send="email">Send by email</button></div>
     <p class="note">Your message opens in WhatsApp or your email app, ready to send. Your enquiry is also sent to the Growthryders team so they can follow up.</p>
   </form>
   <div>
     <h2>Reach us directly</h2>
     <ul class="contact-list" style="margin-top:24px">
-      <li>Phone<br><a href="tel:+{PHONE2_E164}">{PHONE2_DISPLAY}</a><br><a href="tel:+{PHONE_E164}">{PHONE_DISPLAY}</a></li>
-      <li>WhatsApp<br><a href="https://wa.me/{PHONE_E164}">Message {PHONE_DISPLAY}</a></li>
+      <li>Phone<br><a class="wi" href="tel:+{PHONE_E164}">{IC_CALL}{PHONE_DISPLAY}</a></li>
+      <li>WhatsApp<br><a class="wi" href="https://wa.me/{PHONE_E164}">{IC_CHAT}Message {PHONE_DISPLAY}</a></li>
       <li>Email<br><a href="mailto:{EMAIL}">{EMAIL}</a></li>
       <li>Location<br><strong>Bengaluru, India</strong></li>
     </ul>
@@ -725,8 +735,7 @@ open(os.path.join(OUT, 'llms.txt'), 'w').write(f'''# Growthryders
 ## Questions and answers
 ''' + ''.join(f'- {q} {a}\n' for q, a in FAQS) + f'''
 ## Contact
-- Phone: {PHONE2_DISPLAY}
-- WhatsApp: {PHONE_DISPLAY}
+- Phone and WhatsApp: {PHONE_DISPLAY}
 - Email: {EMAIL}
 - Location: Bengaluru, Karnataka, India
 ''')
