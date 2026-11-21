@@ -21,10 +21,11 @@ INTRO = f'''<div class="intro" id="intro" aria-hidden="true"><div class="intro-i
 
 NAV = [('about.html', 'About'), ('services.html', 'Services'), ('work.html', 'Work')] + ([('films.html', 'Films')] if FILMS_LIVE else []) + [('ips.html', 'Our IPs')]
 
+EXTRA_LD = {}
 def page(path, title, desc, body, head='light', depth=0, intro=False):
     r = '../' * depth
     cur = path.split('/')[0]
-    links = ''.join(f'<a href="{r}{h}"{" aria-current=\"page\"" if h == cur or (cur == "work" and h == "work.html") else ""}>{t}</a>' for h, t in NAV)
+    links = ''.join(f'<a href="{r}{h}"{" aria-current=\"page\"" if h == cur or (cur == "work" and h == "work.html") or (cur == "services" and h == "services.html") else ""}>{t}</a>' for h, t in NAV)
     canonical = DOMAIN + '/' + ('' if path == 'index.html' else path)
     org = {"@type": ["Organization", "ProfessionalService"], "@id": DOMAIN + "/#org", "name": "Growthryders", "alternateName": ["GRY", "Growth Ryders"], "url": DOMAIN,
            "logo": DOMAIN + "/assets/img/gry-logo.svg", "image": DOMAIN + "/assets/img/og.jpg", "email": EMAIL,
@@ -38,9 +39,10 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     site = {"@type": "WebSite", "@id": DOMAIN + "/#site", "url": DOMAIN, "name": "Growthryders", "publisher": {"@id": DOMAIN + "/#org"}, "inLanguage": "en-IN"}
     graph = [org, site, {"@type": "WebPage", "@id": canonical, "url": canonical, "name": title, "description": desc, "isPartOf": {"@id": DOMAIN + "/#site"}, "about": {"@id": DOMAIN + "/#org"}}]
     if path != 'index.html':
-        crumbs = [("Home", DOMAIN + "/")] + ([("Work", DOMAIN + "/work.html")] if depth else []) + [(title.split(' | ')[0], canonical)]
+        crumbs = [("Home", DOMAIN + "/")] + ([("Services", DOMAIN + "/services.html")] if path.startswith("services/") else [("Work", DOMAIN + "/work.html")] if depth else []) + [(title.split(' | ')[0], canonical)]
         graph.append({"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": u} for i, (n, u) in enumerate(crumbs)]})
-    org["hasOfferCatalog"] = {"@type": "OfferCatalog", "name": "Marketing services", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": t, "description": d, "url": DOMAIN + "/services.html#" + k, "provider": {"@id": DOMAIN + "/#org"}, "areaServed": "IN"}} for k, t, d, cs in SERVICES]}
+    org["hasOfferCatalog"] = {"@type": "OfferCatalog", "name": "Marketing services", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": t, "description": d, "url": DOMAIN + "/services/" + SVC_SLUG[k] + ".html", "provider": {"@id": DOMAIN + "/#org"}, "areaServed": "IN"}} for k, t, d, cs in SERVICES]}
+    graph += EXTRA_LD.get(path, [])
     if path == 'films.html':
         def iso(d): m, sec = d.split(':'); return f'PT{int(m)}M{int(sec)}S'
         for k, t, b, d, o in FILMS:
@@ -78,7 +80,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=26">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=27">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -126,6 +128,7 @@ CTA = '''<section class="cta"><div class="wrap">
 <div class="btn-row"><a class="btn" href="{r}contact.html">Start a conversation</a><a class="btn ghost" href="https://wa.me/''' + PHONE_E164 + '''">WhatsApp us</a></div>
 </div></section>'''
 
+SVC_SLUG = {'activations': 'brand-activations', 'digital': 'digital-marketing', 'experiential': 'experiential-marketing', 'media': 'media-solutions', 'events': 'corporate-events', 'technology': 'technology-experiences', 'films': 'film-production'}
 SERVICES = [
  ('activations', 'Brand activations and TTL marketing', 'Consumer engagement on the ground, amplified across every channel that reaches the same people.',
   ['Corporate park activations', 'Mall and public space promotions', 'Product sampling', 'Roadshows', 'Campus and residential activations', 'Retail and trade marketing', 'Dealer and channel partner engagement', 'Guerrilla marketing', 'Brand launches']),
@@ -193,7 +196,7 @@ def faq_html():
 home = f'''
 <section class="hero h3 on-dark">
 <div class="h3-wrap">
-  <div class="h3-side h3-left"><a class="h3-ico h3-ico0" style="--n:0" href="{{r}}services.html#activations"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic0" d="M300 555L128 322A205 205 0 1 1 472 322Z"/><use href="#h3-ic0" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic0" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="215" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Brand activations</span><span class="h3-short" aria-hidden="true">Activations</span></span></a><a class="h3-ico h3-ico1" style="--n:1" href="{{r}}services.html#experiential"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic1" d="M300 40L362 238L560 300L362 362L300 560L238 362L40 300L238 238Z"/><use href="#h3-ic1" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic1" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic1" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic1" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic1" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Experiential marketing</span><span class="h3-short" aria-hidden="true">Experiential</span></span></a><a class="h3-ico h3-ico2" style="--n:2" href="{{r}}services.html#events"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic2" d="M55 125H545V545H55Z M55 250H545 M180 45V125 M420 45V125"/><use href="#h3-ic2" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic2" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="398" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Corporate events</span><span class="h3-short" aria-hidden="true">Events</span></span></a><a class="h3-ico h3-ico3" style="--n:3" href="{{r}}services.html#films"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic3" d="M50 160H390V440H50Z M390 262L550 175V425L390 338"/><use href="#h3-ic3" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic3" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic3" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic3" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic3" stroke="url(#h3-i)" stroke-width="42"/><circle cx="220" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Film and content production</span><span class="h3-short" aria-hidden="true">Films</span></span></a></div>
+  <div class="h3-side h3-left"><a class="h3-ico h3-ico0" style="--n:0" href="{{r}}services/brand-activations.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic0" d="M300 555L128 322A205 205 0 1 1 472 322Z"/><use href="#h3-ic0" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic0" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="215" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Brand activations</span><span class="h3-short" aria-hidden="true">Activations</span></span></a><a class="h3-ico h3-ico1" style="--n:1" href="{{r}}services/experiential-marketing.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic1" d="M300 40L362 238L560 300L362 362L300 560L238 362L40 300L238 238Z"/><use href="#h3-ic1" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic1" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic1" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic1" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic1" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic1" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Experiential marketing</span><span class="h3-short" aria-hidden="true">Experiential</span></span></a><a class="h3-ico h3-ico2" style="--n:2" href="{{r}}services/corporate-events.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic2" d="M55 125H545V545H55Z M55 250H545 M180 45V125 M420 45V125"/><use href="#h3-ic2" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic2" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="398" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Corporate events</span><span class="h3-short" aria-hidden="true">Events</span></span></a><a class="h3-ico h3-ico3" style="--n:3" href="{{r}}services/film-production.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic3" d="M50 160H390V440H50Z M390 262L550 175V425L390 338"/><use href="#h3-ic3" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic3" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic3" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic3" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic3" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic3" stroke="url(#h3-i)" stroke-width="42"/><circle cx="220" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Film and content production</span><span class="h3-short" aria-hidden="true">Films</span></span></a></div>
   <div class="h3-mid">
     <h1 class="h3-title"><span class="vh">Growthryders, brand activation and marketing company in Bengaluru</span><svg class="h3-name" viewBox="-45 -5 4075 1245" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6">
 <defs><path id="h3-G" d="M288 260H518V475H55Q0 475 0 420V95Q0 40 55 40H518"/><path id="h3-R" d="M0 475V260H393A110 110 0 0 0 393 40H0 M273 262L506 511"/><path id="h3-R2" d="M0 475V40H393A110 110 0 0 1 393 260H0 M273 262L506 511"/><path id="h3-O" d="M55 40H463Q518 40 518 95V420Q518 475 463 475H55Q0 475 0 420V95Q0 40 55 40Z"/><path id="h3-W" d="M0 40V420Q0 475 55 475H545Q600 475 600 420V40 M300 475V150"/><path id="h3-T" d="M0 40H470 M235 40V475"/><path id="h3-H" d="M0 40V475 M500 40V475 M0 258H500"/><path id="h3-Y" d="M0 118L177 268V475 M327 38V88Q327 128 294 158L177 268"/><path id="h3-D" d="M0 40H282A217.5 217.5 0 0 1 282 475H0Z"/><path id="h3-E" d="M480 40H55Q0 40 0 95V420Q0 475 55 475H480 M0 258H400"/><path id="h3-S" d="M500 40H55Q0 40 0 95V203Q0 258 55 258H445Q500 258 500 313V420Q500 475 445 475H0"/>
@@ -209,7 +212,7 @@ home = f'''
     <div class="btn-row"><a class="btn" href="{{r}}services.html">Our services</a><a class="btn ghost" href="{{r}}work.html">Explore our work</a></div>
     </div>
   </div>
-  <div class="h3-side h3-right"><a class="h3-ico h3-ico4" style="--n:4" href="{{r}}services.html#media"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic4" d="M55 60H545V345H55Z M190 345V555 M410 345V555"/><use href="#h3-ic4" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic4" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="203" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Media solutions</span><span class="h3-short" aria-hidden="true">Media</span></span></a><a class="h3-ico h3-ico5" style="--n:5" href="{{r}}services.html#digital"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic5" d="M222 45H378Q433 45 433 100V500Q433 555 378 555H222Q167 555 167 500V100Q167 45 222 45Z"/><use href="#h3-ic5" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic5" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic5" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic5" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic5" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="455" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Digital marketing</span><span class="h3-short" aria-hidden="true">Digital</span></span></a><a class="h3-ico h3-ico6" style="--n:6" href="{{r}}services.html#technology"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic6" d="M95 180H505Q560 180 560 235V385Q560 440 505 440H395L300 345L205 440H95Q40 440 40 385V235Q40 180 95 180Z"/><use href="#h3-ic6" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic6" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic6" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic6" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic6" stroke="url(#h3-i)" stroke-width="42"/><circle cx="165" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Technology-led experiences</span><span class="h3-short" aria-hidden="true">Technology</span></span></a><a class="h3-ico h3-ico7" style="--n:7" href="{{r}}ips.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic7" d="M60 300A140 140 0 1 0 340 300A140 140 0 1 0 60 300Z M260 300A140 140 0 1 0 540 300A140 140 0 1 0 260 300Z"/><use href="#h3-ic7" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic7" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic7" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic7" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic7" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Community platforms</span><span class="h3-short" aria-hidden="true">Communities</span></span></a></div>
+  <div class="h3-side h3-right"><a class="h3-ico h3-ico4" style="--n:4" href="{{r}}services/media-solutions.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic4" d="M55 60H545V345H55Z M190 345V555 M410 345V555"/><use href="#h3-ic4" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic4" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="203" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Media solutions</span><span class="h3-short" aria-hidden="true">Media</span></span></a><a class="h3-ico h3-ico5" style="--n:5" href="{{r}}services/digital-marketing.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic5" d="M222 45H378Q433 45 433 100V500Q433 555 378 555H222Q167 555 167 500V100Q167 45 222 45Z"/><use href="#h3-ic5" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic5" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic5" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic5" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic5" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic5" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="455" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Digital marketing</span><span class="h3-short" aria-hidden="true">Digital</span></span></a><a class="h3-ico h3-ico6" style="--n:6" href="{{r}}services/technology-experiences.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic6" d="M95 180H505Q560 180 560 235V385Q560 440 505 440H395L300 345L205 440H95Q40 440 40 385V235Q40 180 95 180Z"/><use href="#h3-ic6" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic6" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic6" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic6" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic6" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic6" stroke="url(#h3-i)" stroke-width="42"/><circle cx="165" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Technology-led experiences</span><span class="h3-short" aria-hidden="true">Technology</span></span></a><a class="h3-ico h3-ico7" style="--n:7" href="{{r}}ips.html"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic7" d="M60 300A140 140 0 1 0 340 300A140 140 0 1 0 60 300Z M260 300A140 140 0 1 0 540 300A140 140 0 1 0 260 300Z"/><use href="#h3-ic7" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic7" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic7" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic7" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic7" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic7" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab"><span class="h3-full">Community platforms</span><span class="h3-short" aria-hidden="true">Communities</span></span></a></div>
 </div>
 </section>
 <script src="{{r}}assets/js/hero3d.js?v=1" defer></script>
@@ -228,7 +231,7 @@ home = f'''
 <section class="sec on-light"><div class="wrap">
   <div class="sec-head"><p class="kicker">Our services</p><h2>One partner. Multiple marketing capabilities.</h2><p class="lede">Seven services under one roof, so a campaign is planned, built, promoted and run by the same team.</p></div>
   <ul class="svc">
-    {''.join(f'<li><a href="{{r}}services.html#{k}"><h3>{t}</h3><div><p>{d}</p><ul class="chips">{"".join(f"<li>{c}</li>" for c in cs)}</ul></div><span class="go" aria-hidden="true">View</span></a></li>' for k, t, d, cs in SERVICES)}
+    {''.join(f'<li><a href="{{r}}services/{SVC_SLUG[k]}.html"><h3>{t}</h3><div><p>{d}</p><ul class="chips">{"".join(f"<li>{c}</li>" for c in cs)}</ul></div><span class="go" aria-hidden="true">View</span></a></li>' for k, t, d, cs in SERVICES)}
   </ul>
 </div></section>
 
@@ -340,7 +343,7 @@ services = f'''
 </div></section>
 <section class="sec white on-light" style="padding-top:0"><div class="wrap">
   <div class="service-block" id="activations" style="border-top:0">
-    <div><h2>Brand activations and TTL marketing</h2></div>
+    <div><h2>Brand activations and TTL marketing</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/brand-activations.html">More on this service</a></p><p style="margin-top:8px"><a class="more" href="{{r}}services/tech-park-activations.html">Tech park and corporate park activations</a></p></div>
     <div><p class="lede">We conceptualise and run consumer engagement programmes that bring a brand face to face with its audience.</p>
       {ul(['Consumer and product sampling', 'Retail and trade marketing', 'Corporate park activations', 'Mall and public space promotions', 'Roadshows and mobile campaigns', 'Campus and youth engagement', 'Residential community activations', 'Dealer and channel partner engagement', 'Guerrilla marketing', 'Brand launches and promotional campaigns'])}
       <h3 style="margin-top:32px">Integrated around the activation</h3>
@@ -348,32 +351,32 @@ services = f'''
       {ul(['Outdoor advertising, OOH and DOOH', 'Digital and social media campaigns', 'Print and radio advertising', 'Transit and airport media', 'Retail and point-of-sale branding', 'Innovative and ambient media'])}</div>
   </div>
   <div class="service-block" id="digital">
-    <div><h2>Digital marketing</h2></div>
+    <div><h2>Digital marketing</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/digital-marketing.html">More on this service</a></p></div>
     <div><p class="lede">We help brands strengthen their digital presence and reach the right audience.</p>
       {ul(['Search engine optimisation (SEO)', 'Generative engine optimisation (GEO)', 'Performance marketing', 'Social media management', 'Content strategy and creation', 'Website design and development', 'Lead generation', 'Digital campaign management', 'Marketing analytics and automation'])}</div>
   </div>
   <div class="service-block" id="experiential">
-    <div><h2>Experiential marketing</h2></div>
+    <div><h2>Experiential marketing</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/experiential-marketing.html">More on this service</a></p></div>
     <div><p class="lede">Immersive experiences that turn brand communication into something people remember.</p>
       {ul(['Product launches', 'Corporate events and conferences', 'Trade shows and exhibitions', 'Technology-led installations', 'Augmented and virtual reality', 'Interactive digital experiences', 'Gamification', 'Immersive brand storytelling', 'Employee and partner engagement'])}</div>
   </div>
   <div class="service-block" id="media">
-    <div><h2>Media solutions</h2></div>
+    <div><h2>Media solutions</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/media-solutions.html">More on this service</a></p></div>
     <div><p class="lede">Media planning and execution across the formats that surround an activation.</p>
       {ul(['Outdoor and digital outdoor media', 'Transit and airport media', 'Print and radio', 'Corporate park media', 'Mall and retail media', 'Innovative and ambient media platforms'])}</div>
   </div>
   <div class="service-block" id="events">
-    <div><h2>Corporate events and engagement</h2></div>
+    <div><h2>Corporate events and engagement</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/corporate-events.html">More on this service</a></p></div>
     <div><p class="lede">Business and corporate engagement platforms, conceptualised and executed end to end.</p>
       {ul(['Conferences and annual meets', 'Dealer meets', 'Leadership summits', 'Awards', 'Employee engagement programmes', 'Product launches'])}</div>
   </div>
   <div class="service-block" id="technology">
-    <div><h2>Technology-led experiences</h2></div>
+    <div><h2>Technology-led experiences</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/technology-experiences.html">More on this service</a></p></div>
     <div><p class="lede">Installations and interactive formats built into the activation.</p>
       {ul(['Technology-led installations', 'Augmented and virtual reality', 'Interactive digital experiences', 'Gamification'])}</div>
   </div>
   <div class="service-block" id="films">
-    <div><h2>Film and content production</h2></div>
+    <div><h2>Film and content production</h2><p style="margin-top:14px"><a class="more" href="{{r}}services/film-production.html">More on this service</a></p></div>
     <div><p class="lede">We shoot and edit the films of the activations and events we run.</p>
       {ul(['Event films', 'Brand and partner films', 'Reels and vertical cuts for social media', 'On-ground shooting', 'Editing'])}
       <div class="btn-row" style="margin-top:22px"><a class="btn ghost" href="{{r}}films.html">Watch our films</a></div></div>
@@ -509,6 +512,127 @@ if FILMS_LIVE: page('films.html', 'Brand activation films | TVS Apache, Royal En
      'Watch brand activation films by Growthryders, Bengaluru: TVS Apache Tu Race Laga, Royal Enfield at Bagmane Tech Park and Bagmane Capital, Axis Bank and Milky Mist.', films, 'dark')
 
 # ---------------------------------------------------------------- IPS
+# ---------------------------------------------------------------- SERVICE PAGES (one page per thing people search for)
+WORK_CARDS = {
+ 'trl': ('work/tu-race-laga.html', 'flagoff', 'The flag-off at Tu Race Laga, runners leaving the start arch', 'TVS Apache presents Tu Race Laga', 'A 40-day campaign across five Bagmane business parks, ending in a corporate run with about 1,600 participants and guests.'),
+ 'tvs': ('work/tvs-apache-bagmane.html', 'apache1', 'TVS Apache motorcycles on display at Bagmane Tech Park', 'TVS Apache activations at Bagmane', 'Motorcycle display and engagement zones for TVS Apache inside Bagmane business parks.'),
+ 're':  ('work/royal-enfield-bikers-bay.html', 're1', 'Royal Enfield motorcycle with a painted tank at a Bagmane park', 'Royal Enfield with Bikers Bay', 'A Royal Enfield engagement space at Bagmane Constellation Business Park through the Bikers Bay rider community.'),
+}
+def work_cards(keys):
+    out = ''
+    for k in keys:
+        href, im, alt, t, d = WORK_CARDS[k]
+        out += f'<article class="ip">{img(im, alt, "ratio-169", 1280, 720)}<div class="body"><h3>{t}</h3><p style="margin-top:10px">{d}</p><a class="more" style="margin-top:16px;display:inline-block" href="{{r}}{href}">Read the case study</a></div></article>'
+    return f'<div class="ips svc-cards n{len(keys)}">{out}</div>'
+SVC_PAGES = [
+ dict(slug='brand-activations', sid='activations', title='Brand activation agency in Bengaluru (Bangalore) | Growthryders',
+      desc='Growthryders is a brand activation agency in Bengaluru: corporate park and mall activations, product sampling, roadshows, campus and residential activations and brand launches.',
+      h1='Brand activation agency in Bengaluru.', lede='We plan and run on-ground brand activations that put a brand face to face with the people it wants to reach.',
+      h2='What a brand activation with us includes', intro='Brand activations are the centre of our work. We conceptualise the idea, plan the locations, build the set-up and run it on the ground, then carry it further through media and digital.',
+      items=['Consumer and product sampling', 'Retail and trade marketing', 'Corporate park activations', 'Mall and public space promotions', 'Roadshows and mobile campaigns', 'Campus and youth engagement', 'Residential community activations', 'Dealer and channel partner engagement', 'Guerrilla marketing', 'Brand launches and promotional campaigns'],
+      h2b='Integrated around the activation', itemsb=['Outdoor advertising, OOH and DOOH', 'Digital and social media campaigns', 'Print and radio advertising', 'Transit and airport media', 'Retail and point-of-sale branding', 'Innovative and ambient media'],
+      work=['trl', 'tvs', 're'], films=[],
+      faq=[('What is a brand activation?', 'A brand activation is an on-ground campaign where people meet a brand directly: they see the product, try it, take part in an activity or talk to the team, instead of only seeing an advertisement.'),
+           ('Where does Growthryders run brand activations in Bengaluru?', 'In corporate and tech parks such as the Bagmane business parks, in malls and public spaces, on campuses, in residential communities and at dealer and retail locations.'),
+           ('Which brands has Growthryders run activations for?', 'TVS Apache across five Bagmane business parks and at the Tu Race Laga corporate run, and Royal Enfield at Bagmane Constellation Business Park through the Bikers Bay community.')]),
+ dict(slug='tech-park-activations', sid='activations', title='Tech park and corporate park activations in Bengaluru | Growthryders',
+      desc='Tech park and corporate park brand activations in Bengaluru by Growthryders: product display zones, employee engagement and campaigns inside business parks such as Bagmane.',
+      h1='Tech park and corporate park activations in Bengaluru.', lede='We take brands inside business parks, to the people who work there, with display zones, engagement spaces and campaigns that run across several parks.',
+      h2='What we set up inside a business park', intro='A corporate park puts a large working audience in one place every day. We handle the coordination with the park, the display and engagement spaces, the on-ground team and the communication around them.',
+      items=['Product display zones inside the park', 'Promotional spaces near high-footfall areas', 'Standees and campaign communication', 'Themed photo and video experiences', 'QR-based campaign engagement', 'On-ground registration and participant acquisition', 'Product discovery and direct consumer interaction', 'Multi-park campaigns'],
+      h2b='', itemsb=[], work=['trl', 'tvs', 're'], films=['royal-enfield-bagmane-film', 'royal-enfield-tech-park', 'royal-enfield-capital'],
+      faq=[('Which tech parks has Growthryders worked in?', 'Growthryders has run campaigns across five Bagmane business parks in Bengaluru, including Bagmane Tech Park, Bagmane Capital and Bagmane Constellation Business Park.'),
+           ('What can a brand do inside a tech park?', 'Product displays, engagement and sampling zones, photo and video experiences, registrations for an event, and standee and digital communication, in the high-footfall areas of the park.'),
+           ('How long does a tech park campaign run?', 'It depends on the plan. Tu Race Laga for TVS Apache ran as a 40-day campaign across five Bagmane business parks and ended in a corporate run.')]),
+ dict(slug='experiential-marketing', sid='experiential', title='Experiential marketing agency in Bengaluru (Bangalore) | Growthryders',
+      desc='Experiential marketing in Bengaluru by Growthryders: product launches, trade shows and exhibitions, immersive brand storytelling and employee and partner engagement.',
+      h1='Experiential marketing agency in Bengaluru.', lede='Immersive experiences that turn brand communication into something people take part in and remember.',
+      h2='What we create', intro='We design the experience around what the brand wants people to feel and do, then build and run it.',
+      items=['Product launches', 'Corporate events and conferences', 'Trade shows and exhibitions', 'Technology-led installations', 'Augmented and virtual reality', 'Interactive digital experiences', 'Gamification', 'Immersive brand storytelling', 'Employee and partner engagement'],
+      h2b='', itemsb=[], work=['trl', 're'], films=[],
+      faq=[('What is experiential marketing?', 'Experiential marketing lets people take part in a brand experience, such as a launch, an installation, a game or an event, so they remember the brand through what they did.'),
+           ('What experiential work has Growthryders done?', 'At Tu Race Laga for TVS Apache, Growthryders built Apache-themed photo and video experiences and brand engagement zones around a corporate run at Bagmane Tech Park.'),
+           ('Does Growthryders handle the whole experience?', 'Yes. Concept, planning, production and on-ground execution are handled by the same team.')]),
+ dict(slug='corporate-events', sid='events', title='Corporate event management in Bengaluru (Bangalore) | Growthryders',
+      desc='Corporate events in Bengaluru by Growthryders: conferences and annual meets, dealer meets, leadership summits, awards, employee engagement programmes and product launches.',
+      h1='Corporate event management in Bengaluru.', lede='Business and corporate engagement platforms, conceptualised and run end to end.',
+      h2='Events we run', intro='We take a corporate event from the idea to the last guest leaving: the concept, the venue, the production, the brand integration and the people on the ground.',
+      items=['Conferences and annual meets', 'Dealer meets', 'Leadership summits', 'Awards', 'Employee engagement programmes', 'Product launches'],
+      h2b='', itemsb=[], work=['trl'], films=['tu-race-laga-event-film'],
+      faq=[('What corporate events does Growthryders manage?', 'Conferences, annual meets, dealer meets, leadership summits, awards, employee engagement programmes and product launches.'),
+           ('Has Growthryders run a large corporate event?', 'Yes. Tu Race Laga at Bagmane Tech Park, Bengaluru, on 31 October 2026 was a corporate run with 3K, 5K and 10K categories and about 1,600 participants and guests.'),
+           ('Does Growthryders run employee engagement programmes?', 'Yes. Employee engagement programmes are part of the corporate events and engagement service, including fitness-led formats through the Runcle platform.')]),
+ dict(slug='media-solutions', sid='media', title='Outdoor, transit and tech park media in Bengaluru | Growthryders',
+      desc='Media planning and buying in Bengaluru by Growthryders: outdoor and digital outdoor, transit and airport media, print and radio, corporate park media and mall and retail media.',
+      h1='Media planning and buying in Bengaluru.', lede='Media planning and execution across the formats that surround an activation, so the same people see the brand before and after they meet it.',
+      h2='Media we plan and execute', intro='We plan media around the activation and the audience it is meant for, and execute it across the formats below.',
+      items=['Outdoor and digital outdoor media', 'Transit and airport media', 'Print and radio', 'Corporate park media', 'Mall and retail media', 'Retail and point-of-sale branding', 'Innovative and ambient media platforms'],
+      h2b='', itemsb=[], work=['tvs'], films=[],
+      faq=[('Which media does Growthryders plan and buy?', 'Outdoor and digital outdoor, transit and airport media, print and radio, corporate park media, mall and retail media, and innovative and ambient media.'),
+           ('Can media be combined with an activation?', 'Yes. Growthryders builds the media plan around the activation so the brand reaches the same people across physical and digital touchpoints.'),
+           ('Does Growthryders offer media inside corporate parks?', 'Yes. Corporate park media is one of the formats Growthryders plans and executes.')]),
+ dict(slug='digital-marketing', sid='digital', title='Digital marketing services in Bengaluru (Bangalore) | Growthryders',
+      desc='Digital marketing in Bengaluru by Growthryders: SEO and GEO, performance marketing, social media management, content, website design and development and lead generation.',
+      h1='Digital marketing services in Bengaluru.', lede='Search, social, content, websites and performance campaigns that keep the conversation going after the activation.',
+      h2='What we do online', intro='We help brands strengthen their digital presence and reach the right audience, on their own or alongside an on-ground campaign.',
+      items=['Search engine optimisation (SEO)', 'Generative engine optimisation (GEO)', 'Performance marketing', 'Social media management', 'Content strategy and creation', 'Website design and development', 'Lead generation', 'Digital campaign management', 'Marketing analytics and automation'],
+      h2b='', itemsb=[], work=[], films=[],
+      faq=[('Which digital marketing services does Growthryders offer?', 'SEO, generative engine optimisation (GEO), performance marketing, social media management, content strategy and creation, website design and development, lead generation, digital campaign management and marketing analytics and automation.'),
+           ('What is generative engine optimisation (GEO)?', 'GEO is preparing a brand\'s content so that AI assistants and answer engines can find it, understand it and quote it when people ask questions.'),
+           ('Can digital marketing run together with an activation?', 'Yes. Growthryders plans digital and social media campaigns around the activation so the message stays consistent on the ground and online.')]),
+ dict(slug='technology-experiences', sid='technology', title='AR, VR and technology-led brand experiences in Bengaluru | Growthryders',
+      desc='Technology-led brand experiences by Growthryders, Bengaluru: installations, augmented and virtual reality, gamification and interactive digital formats built into the activation.',
+      h1='Technology-led brand experiences.', lede='Installations, AR and VR, gamification and interactive digital formats built into the activation.',
+      h2='Formats we build', intro='Technology gives people something to do with a brand, not just something to look at. We build it into the activation so it works on the ground.',
+      items=['Technology-led installations', 'Augmented and virtual reality', 'Interactive digital experiences', 'Gamification', 'QR-based campaign engagement', 'Digital registration touchpoints'],
+      h2b='', itemsb=[], work=['tvs', 'trl'], films=[],
+      faq=[('What are technology-led brand experiences?', 'They are activations that use technology such as installations, augmented and virtual reality, games and interactive screens so that people take part in the brand experience.'),
+           ('Has Growthryders used technology in its campaigns?', 'Yes. The TVS Apache campaigns at Bagmane business parks used QR-based campaign engagement and digital registration touchpoints.'),
+           ('Does Growthryders offer AR and VR experiences?', 'Yes. Augmented and virtual reality experiences are part of the technology-led experiences service.')]),
+ dict(slug='film-production', sid='films', title='Event film and brand video production in Bengaluru | Growthryders',
+      desc='Event films, brand and partner films and vertical reels, shot and edited by Growthryders at its activations and events in Bengaluru.',
+      h1='Event film and brand video production in Bengaluru.', lede='We shoot and edit the films of the activations and events we run, so the campaign keeps working after the day is over.',
+      h2='What we produce', intro='The crew is on the ground with the activation team, so the film shows the brand, the people and the moments that mattered.',
+      items=['Event films', 'Brand and partner films', 'Reels and vertical cuts for social media', 'On-ground shooting', 'Editing'],
+      h2b='', itemsb=[], work=[], films=['tu-race-laga-event-film', 'tvs-apache-tu-race-laga', 'axis-bank-tu-race-laga'],
+      faq=[('Does Growthryders make event films?', 'Yes. Growthryders shoots and edits event films, brand and partner films and vertical cuts for social media at the activations and events it runs.'),
+           ('Which films has Growthryders made?', 'The Tu Race Laga event film at Bagmane Tech Park, brand films for TVS Apache, Axis Bank and Milky Mist, and Royal Enfield films at the Bagmane parks.'),
+           ('Where can I watch the films?', 'On the Films page of growthryders.in, filed by brand.')]),
+]
+SVC_BY_SID = {}
+for _p in SVC_PAGES: SVC_BY_SID.setdefault(_p['sid'], _p)
+def service_page(sp):
+    path = f"services/{sp['slug']}.html"
+    qa = ''.join(f'<details class="qa"><summary><h3>{html.escape(q)}</h3><span class="qa-x" aria-hidden="true"></span></summary><p>{html.escape(a)}</p></details>' for q, a in sp['faq'])
+    fk = [k for k in sp['films'] if FILMS_LIVE]
+    mix = len({_FB[k][4] for k in fk}) > 1 if fk else False
+    films_sec = (f'<section class="sec dark on-dark films-page"><div class="wrap"><div class="sec-head"><h2>Watch the films</h2></div><div class="fold"><div class="grid-mix">{"".join(film(_FB[k]) for k in fk)}</div></div><p style="margin-top:22px"><a class="more" href="{{r}}films.html">All films, filed by brand</a></p></div></section>' + PLAYER) if fk else ''
+    work_sec = f'<section class="sec on-light"><div class="wrap"><div class="sec-head"><h2>Work that shows it</h2></div>{work_cards(sp["work"])}</div></section>' if sp['work'] else ''
+    others = ''.join(f'<a href="{{r}}services/{o["slug"]}.html">{o["h1"].rstrip(".")}</a>' for o in SVC_PAGES if o is not sp)
+    body = f'''
+<section class="page-head on-dark"><div class="wrap">
+  <p class="kicker"><a href="{{r}}services.html" style="text-decoration:none">Our services</a></p>
+  <h1>{sp["h1"]}</h1>
+  <p class="lede">{sp["lede"]}</p>
+  <div class="btn-row"><a class="btn" href="{{r}}contact.html">Start a conversation</a><a class="btn ghost" href="https://wa.me/{PHONE_E164}">WhatsApp us</a></div>
+</div></section>
+<section class="sec white on-light"><div class="wrap split top">
+  <div><h2>{sp["h2"]}</h2><p class="lede" style="margin-top:20px">{sp["intro"]}</p></div>
+  <div>{ul(sp["items"])}{(f'<h3 style="margin-top:32px">{sp["h2b"]}</h3>' + ul(sp["itemsb"])) if sp["itemsb"] else ""}</div>
+</div></section>
+{work_sec}
+{films_sec}
+<section class="sec white on-light faq-sec"><div class="wrap faq"><div class="sec-head"><h2>Questions people ask</h2></div><div class="qa-list">{qa}</div></div></section>
+<section class="sec on-light svc-more"><div class="wrap"><h2 class="films-h" style="margin-top:0">More from Growthryders</h2><nav class="svc-links" aria-label="Other services">{others}</nav></div></section>
+{CTA}'''
+    canon = DOMAIN + '/' + path
+    EXTRA_LD[path] = [{"@type": "Service", "@id": canon + "#service", "name": sp['h1'].rstrip('.'), "serviceType": sp['h1'].rstrip('.'), "description": sp['desc'], "url": canon, "provider": {"@id": DOMAIN + "/#org"},
+                       "areaServed": [{"@type": "City", "name": "Bengaluru"}, {"@type": "Country", "name": "India"}],
+                       "hasOfferCatalog": {"@type": "OfferCatalog", "name": sp['h2'], "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": i}} for i in sp['items'] + sp['itemsb']]}},
+                      {"@type": "FAQPage", "@id": canon + "#faq", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in sp['faq']]}]
+    page(path, sp['title'], sp['desc'], body, 'dark', 1)
+for _sp in SVC_PAGES: service_page(_sp)
+
 ips = f'''
 <section class="page-head on-dark"><div class="wrap">
   <h1>Building communities. Creating long-term brand platforms.</h1>
@@ -567,7 +691,7 @@ page('404.html', 'Page not found | Growthryders', 'This page does not exist.',
      '<section class="page-head on-dark"><div class="wrap"><h1>This page is not here.</h1><p class="lede">The link may be old or mistyped.</p><div class="btn-row"><a class="btn" href="/">Go to the home page</a><a class="btn ghost" href="/work.html">See our work</a></div></div></section>', 'dark')
 
 # ---------------------------------------------------------------- static files
-pages = ['', 'about.html', 'services.html', 'work.html'] + (['films.html'] if FILMS_LIVE else []) + [ 'work/tu-race-laga.html', 'work/tvs-apache-bagmane.html', 'work/royal-enfield-bikers-bay.html', 'ips.html', 'contact.html']
+pages = ['', 'about.html', 'services.html'] + [f'services/{x["slug"]}.html' for x in SVC_PAGES] + ['work.html'] + (['films.html'] if FILMS_LIVE else []) + [ 'work/tu-race-laga.html', 'work/tvs-apache-bagmane.html', 'work/royal-enfield-bikers-bay.html', 'ips.html', 'contact.html']
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{DOMAIN}/{p}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n' for p in pages) + '</urlset>\n')
 INDEXNOW = '78d348323012cbff111fa228a2ef64b3'
 open(os.path.join(OUT, INDEXNOW + '.txt'), 'w').write(INDEXNOW)
@@ -579,7 +703,7 @@ open(os.path.join(OUT, 'llms.txt'), 'w').write(f'''# Growthryders
 > Growthryders (GRY) is a brand activation and through-the-line marketing company based in Bengaluru, Karnataka, India. One team plans and runs activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences.
 
 ## Services
-''' + ''.join(f'- [{t}]({DOMAIN}/services.html#{k}): {d} Includes: {", ".join(cs)}.\n' for k, t, d, cs in SERVICES) + f'''
+''' + ''.join(f'- [{t}]({DOMAIN}/services/{SVC_BY_SID[k]["slug"]}.html): {d} Includes: {", ".join(cs)}.\n' for k, t, d, cs in SERVICES) + f'- [Tech park and corporate park activations]({DOMAIN}/services/tech-park-activations.html): brand activations inside business parks in Bengaluru, such as the Bagmane parks.\n' + f'''
 ## Pages
 - [Home]({DOMAIN}/): overview, services, work, films and platforms
 - [About]({DOMAIN}/about.html): the company

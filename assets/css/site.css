@@ -625,3 +625,13 @@ p{margin:0 0 1em;max-width:62ch}
   .h3-left .h3-ico:nth-child(n),.h3-right .h3-ico:nth-child(n){margin:0}
   .h3-ico svg{width:46px}.h3-full{display:none}.h3-short{display:inline}.h3-lab{font-size:.74rem}
 }
+
+/* v27: service pages */
+.svc-cards{display:grid;gap:clamp(16px,2.4vw,28px);grid-template-columns:repeat(3,1fr)}
+.svc-cards.n2{grid-template-columns:repeat(2,1fr)}
+.svc-cards.n1{grid-template-columns:minmax(0,1fr);max-width:720px}
+@media (max-width:860px){.svc-cards,.svc-cards.n2{grid-template-columns:1fr}}
+.svc-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.svc-links a{color:var(--text);text-decoration:none;font-weight:600;font-size:.95rem;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:#fff;transition:border-color .2s,color .2s}
+.svc-links a:hover{border-color:var(--plum);color:var(--plum)}
+.page-head .btn-row{margin-top:clamp(18px,2.6vw,28px)}
