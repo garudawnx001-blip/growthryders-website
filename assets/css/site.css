@@ -613,3 +613,15 @@ p{margin:0 0 1em;max-width:62ch}
   .fold.side .grid-mix .film{height:min(96vw,400px)}
   .grid-mix .film.port .cap{left:12px;right:12px}.grid-mix .film.port .cap strong{font-size:.92rem}.grid-mix .film.port .cap span{font-size:.8rem}
 }
+
+/* v26: eight icons around the name */
+.h3-short{display:none}
+.h3-side{gap:clamp(12px,2.2vh,26px)}
+.h3-ico svg{width:clamp(54px,5.2vw,78px)}
+.h3-left .h3-ico:nth-child(2),.h3-left .h3-ico:nth-child(3){margin-right:clamp(30px,5vw,84px)}
+.h3-right .h3-ico:nth-child(2),.h3-right .h3-ico:nth-child(3){margin-left:clamp(30px,5vw,84px)}
+@media (max-width:860px){
+  .h3-wrap{grid-template-columns:repeat(4,1fr);column-gap:4px;row-gap:14px}
+  .h3-left .h3-ico:nth-child(n),.h3-right .h3-ico:nth-child(n){margin:0}
+  .h3-ico svg{width:46px}.h3-full{display:none}.h3-short{display:inline}.h3-lab{font-size:.74rem}
+}
