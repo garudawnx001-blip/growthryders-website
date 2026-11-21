@@ -31,14 +31,25 @@
   }
 
   // ---- header: solid after the first screen, hides going down, returns going up
-  var head = document.querySelector('.site-head'), lastY = 0;
+  var head = document.querySelector('.site-head'), lastY = window.scrollY, upRun = 0;
   window.addEventListener('scroll', function () {
-    var y = window.scrollY;
+    var y = window.scrollY, d = y - lastY; lastY = y;
     head.classList.toggle('scrolled', y > 40);
-    head.classList.toggle('hide', y > 400 && y > lastY + 4);
-    if (y < lastY - 4) head.classList.remove('hide');
-    lastY = y;
+    if (head.classList.contains('menu-open') || y < 120) { head.classList.remove('hide'); upRun = 0; return; }
+    if (d > 0) { upRun = 0; if (d > 2) head.classList.add('hide'); }          // going down: out of the way
+    else if (d < 0) { upRun -= d; if (upRun > 12) head.classList.remove('hide'); }  // a small scroll up brings it back
   }, { passive: true });
+  head.addEventListener('focusin', function () { head.classList.remove('hide'); });
+
+  // ---- brand shots that change (home, "fulcrum" block): only while on screen
+  [].forEach.call(document.querySelectorAll('[data-rotor]'), function (el) {
+    var s = el.querySelectorAll('.rot-s'), i = 0, tm = 0, vis = false; if (s.length < 2) return;
+    [].forEach.call(s, function (f) { var im = f.querySelector('img'); if (im) im.loading = 'eager'; });
+    function step() { s[i].classList.remove('on'); i = (i + 1) % s.length; s[i].classList.add('on'); }
+    function run() { clearInterval(tm); if (vis && !document.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches) tm = setInterval(step, 2800); }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { vis = e[0].isIntersecting; run(); }, { threshold: .25 }).observe(el); else { vis = true; run(); }
+    document.addEventListener('visibilitychange', run);
+  });
 
   // ---- mobile menu
   var toggle = document.querySelector('.nav-toggle'), nav = document.getElementById('nav');

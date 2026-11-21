@@ -33,14 +33,18 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
                             {"@type": "ContactPoint", "telephone": "+" + PHONE_E164, "contactType": "customer service", "areaServed": "IN"}],
            "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN"},
            "areaServed": [{"@type": "City", "name": "Bengaluru"}, {"@type": "Country", "name": "India"}],
-           "knowsAbout": ["Brand activation", "Experiential marketing", "Through-the-line marketing", "Corporate park activations", "Event management", "Digital marketing", "Media planning and buying"],
-           "description": "Integrated brand activation and through-the-line marketing company in Bengaluru."}
+           "knowsAbout": ["Brand activation", "BTL activation", "Experiential marketing", "Through-the-line marketing", "Corporate park activations", "Tech park activations", "Mall activations", "Roadshows", "Product sampling", "Event management", "Corporate events", "Digital marketing", "Media planning and buying", "Outdoor advertising"],
+           "description": "Brand activation agency and through-the-line marketing company in Bengaluru (Bangalore), India."}
     site = {"@type": "WebSite", "@id": DOMAIN + "/#site", "url": DOMAIN, "name": "Growthryders", "publisher": {"@id": DOMAIN + "/#org"}, "inLanguage": "en-IN"}
     graph = [org, site, {"@type": "WebPage", "@id": canonical, "url": canonical, "name": title, "description": desc, "isPartOf": {"@id": DOMAIN + "/#site"}, "about": {"@id": DOMAIN + "/#org"}}]
     if path != 'index.html':
         crumbs = [("Home", DOMAIN + "/")] + ([("Work", DOMAIN + "/work.html")] if depth else []) + [(title.split(' | ')[0], canonical)]
         graph.append({"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": u} for i, (n, u) in enumerate(crumbs)]})
     org["hasOfferCatalog"] = {"@type": "OfferCatalog", "name": "Marketing services", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": t, "description": d, "url": DOMAIN + "/services.html#" + k, "provider": {"@id": DOMAIN + "/#org"}, "areaServed": "IN"}} for k, t, d, cs in SERVICES]}
+    if path == 'films.html':
+        def iso(d): m, sec = d.split(':'); return f'PT{int(m)}M{int(sec)}S'
+        for k, t, b, d, o in FILMS:
+            graph.append({"@type": "VideoObject", "name": t + " | Growthryders", "description": f"{t}. Brand activation film by Growthryders, Bengaluru. Brands: {b}.", "thumbnailUrl": f"{DOMAIN}/assets/films/{k}.jpg", "contentUrl": f"{DOMAIN}/assets/films/{k}.mp4", "uploadDate": "2026-11-21T00:00:00+05:30", "duration": iso(d), "publisher": {"@id": DOMAIN + "/#org"}})
     if path == 'index.html':
         graph.append({"@type": "FAQPage", "@id": canonical + "#faq", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQS]})
     ld = {"@context": "https://schema.org", "@graph": graph}
@@ -74,7 +78,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=22">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=25">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -101,7 +105,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js?v=11" defer></script>
+<script src="{r}assets/js/site.js?v=12" defer></script>
 </body>
 </html>
 '''
@@ -165,9 +169,15 @@ def marquee():
     return f'<section class="marquee" aria-label="Brands on the ground with us"><div class="track"><div class="row">{row}</div><div class="row" aria-hidden="true">{row}</div></div></section>'
 
 # ---------------------------------------------------------------- HOME
+ROTOR = [('apache1', 'TVS Apache', 'TVS Apache motorcycles on display at Bagmane Tech Park, Bengaluru'), ('re1', 'Royal Enfield', 'Royal Enfield motorcycle with a painted tank at a Bagmane business park activation'),
+         ('axis-wall', 'Axis Bank', 'Axis Bank banking partner stall at the Tu Race Laga corporate run'), ('sign', 'Bagmane Tech Park', 'Bagmane Tech Park entrance sign, Bengaluru'), ('partners', 'Bagmane REIT and Milky Mist', 'Partner pillar showing Bagmane REIT, Milky Mist and GRY branding')]
+def rotor():
+    slides = ''.join(f'<figure class="rot-s{" on" if i == 0 else ""}"><img src="{{r}}assets/img/{n}.jpg" alt="{html.escape(a)}" width="1280" height="720" loading="lazy"><figcaption>{b}</figcaption></figure>' for i, (n, b, a) in enumerate(ROTOR))
+    return f'<div class="frame ratio-43 rotor" data-rotor>{slides}</div>'
+
 FAQS = [
- ("What does Growthryders do?", "Growthryders is a brand activation and through-the-line marketing company based in Bengaluru. One team plans and runs brand activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences."),
- ("Where is Growthryders based?", "Growthryders is based in Bengaluru, Karnataka, India."),
+ ("What does Growthryders do?", "Growthryders is a brand activation agency and through-the-line marketing company based in Bengaluru (Bangalore). One team plans and runs brand activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences."),
+ ("Where is Growthryders based?", "Growthryders is based in Bengaluru (Bangalore), Karnataka, India."),
  ("What kinds of brand activations does Growthryders run?", "Corporate park activations, mall and public space promotions, product sampling, roadshows, campus and residential activations, and brand launches."),
  ("Which services does Growthryders offer?", "; ".join(t for k, t, d, cs in SERVICES) + "."),
  ("Which brands has Growthryders been on the ground with?", ", ".join(MARQUEE[:-1]) + " and " + MARQUEE[-1] + "."),
@@ -210,7 +220,7 @@ home = f'''
     <p>We put the activation at the centre of the plan and build everything else around it: traditional media, digital platforms, outdoor advertising and experiential engagement, working as one through-the-line campaign.</p>
     <div class="btn-row"><a class="btn ghost" href="{{r}}about.html">About Growthryders</a></div>
   </div>
-  {img('apache1', 'TVS Apache motorcycles on display at the Tu Race Laga venue')}
+  {rotor()}
 </div></section>
 
 <section class="sec on-light"><div class="wrap">
@@ -280,8 +290,8 @@ home = f'''
 '''
 import re
 if not FILMS_LIVE: home = re.sub(r'<section class="sec white on-light films-sec">.*?</dialog>\n', '', home, flags=re.S)
-page('index.html', 'Growthryders | Brand activations and integrated marketing, Bengaluru',
-     'Growthryders is a Bengaluru brand activation and through-the-line marketing company. Activations, digital, experiential, media and corporate events.', home, 'dark', intro=True)
+page('index.html', 'Growthryders | Brand activation agency in Bengaluru (Bangalore)',
+     'Growthryders is a brand activation agency in Bengaluru (Bangalore): tech park and mall activations, experiential marketing, media, corporate events and digital.', home, 'dark', intro=True)
 
 # ---------------------------------------------------------------- ABOUT
 about = f'''
@@ -316,7 +326,7 @@ about = f'''
 </div></section>
 {CTA}
 '''
-page('about.html', 'About Growthryders | Brand activation company in Bengaluru',
+page('about.html', 'About Growthryders | Brand activation company in Bengaluru (Bangalore)',
      'Growthryders builds through-the-line marketing around brand activations: consumer engagement, media, digital, experiential work and community platforms.', about, 'dark')
 
 # ---------------------------------------------------------------- SERVICES
@@ -358,8 +368,8 @@ services = f'''
 </div></section>
 {CTA}
 '''
-page('services.html', 'Services | Brand activations, digital, experiential, media and events | Growthryders',
-     'Brand activations and TTL marketing, digital marketing, experiential marketing, media solutions and corporate events from Growthryders, Bengaluru.', services, 'dark')
+page('services.html', 'Services | Brand activations, experiential marketing, media and events in Bengaluru | Growthryders',
+     'Brand activations and BTL/TTL marketing, tech park and mall activations, experiential marketing, media solutions, corporate events and digital marketing in Bengaluru (Bangalore).', services, 'dark')
 
 # ---------------------------------------------------------------- WORK INDEX
 work = f'''
@@ -461,24 +471,29 @@ case('work/royal-enfield-bikers-bay.html', 'Royal Enfield with Bikers Bay | Case
 
 
 # ---------------------------------------------------------------- FILMS
-land = [f for f in FILMS if f[4] == 'land']; port = [f for f in FILMS if f[4] == 'port']
+FOLDERS = [
+ ('bagmane', 'Bagmane Tech Park', 'Tu Race Laga at Bagmane Tech Park, Bengaluru: the event film, with TVS Apache, Bagmane REIT and partners.', ['tu-race-laga-event-film']),
+ ('tvs-apache', 'TVS Apache', 'TVS Apache at Tu Race Laga: motorcycle displays, engagement zones and the corporate run.', ['tvs-apache-tu-race-laga', 'tvs-apache-reel']),
+ ('royal-enfield', 'Royal Enfield at Bagmane parks', 'Royal Enfield motorcycle displays across the Bagmane business parks, at Bagmane Tech Park and at Bagmane Capital.', ['royal-enfield-bagmane-film', 'royal-enfield-tech-park', 'royal-enfield-capital']),
+ ('partners', 'Axis Bank and Milky Mist', 'Partner brand films from Tu Race Laga: Axis Bank and Milky Mist on the ground with runners.', ['axis-bank-tu-race-laga', 'milky-mist-tu-race-laga']),
+]
+_FB = {f[0]: f for f in FILMS}
+def folder(k, t, d, keys):
+    return f'''<section class="fold{" side" if k == "royal-enfield" else ""}{" one" if len(keys) == 1 else ""}" id="{k}"><div class="fold-head"><h2 class="films-h">{t}</h2><p>{d}</p></div><div class="grid-mix">{"".join(film(_FB[x], k == "bagmane") for x in keys)}</div></section>'''
 films = f'''
 <section class="page-head on-dark"><div class="wrap">
-  <h1>Films from the ground.</h1>
-  <p class="lede">Eight films from our activations at Bagmane business parks: the run, the partners and the motorcycles.</p>
+  <h1>Brand activation films from the ground.</h1>
+  <p class="lede">Eight films from our brand activations in Bengaluru, filed by brand: TVS Apache, Royal Enfield, Axis Bank and Milky Mist, at Bagmane business parks.</p>
+  <nav class="fold-nav" aria-label="Film folders">{"".join(f'<a href="#{k}">{t}</a>' for k, t, d, ks in FOLDERS)}</nav>
 </div></section>
 <section class="sec dark on-dark films-page" style="padding-top:0"><div class="wrap">
-  <div class="feature">{film(land[0], True)}</div>
-  <h2 class="films-h">Event and partner films</h2>
-  <div class="grid-land">{''.join(film(f) for f in land[1:])}</div>
-  <h2 class="films-h">Vertical films</h2>
-  <div class="grid-port">{''.join(film(f) for f in port)}</div>
+  {"".join(folder(*f) for f in FOLDERS)}
 </div></section>
 {PLAYER}
 {CTA}
 '''
-if FILMS_LIVE: page('films.html', 'Films | Campaign and event films | Growthryders',
-     'Watch films from Growthryders activations: Tu Race Laga with TVS Apache and Bagmane REIT, partner films for Axis Bank and Milky Mist, and Royal Enfield at Bagmane parks.', films, 'dark')
+if FILMS_LIVE: page('films.html', 'Brand activation films | TVS Apache, Royal Enfield, Bagmane Tech Park | Growthryders',
+     'Watch brand activation films by Growthryders, Bengaluru: TVS Apache Tu Race Laga, Royal Enfield at Bagmane Tech Park and Bagmane Capital, Axis Bank and Milky Mist.', films, 'dark')
 
 # ---------------------------------------------------------------- IPS
 ips = f'''
@@ -532,7 +547,7 @@ contact = f'''
   </div>
 </div></section>
 '''
-page('contact.html', 'Contact Growthryders | Bengaluru',
+page('contact.html', 'Contact Growthryders | Brand activation agency, Bengaluru (Bangalore)',
      'Talk to Growthryders about a brand activation, an integrated campaign or a corporate event. Phone, WhatsApp and email.', contact, 'dark')
 
 page('404.html', 'Page not found | Growthryders', 'This page does not exist.',
