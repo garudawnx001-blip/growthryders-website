@@ -700,7 +700,7 @@ INDEXNOW = '78d348323012cbff111fa228a2ef64b3'
 open(os.path.join(OUT, INDEXNOW + '.txt'), 'w').write(INDEXNOW)
 open(os.path.join(OUT, 'google3cea24fe400a22ae.html'), 'w').write('google-site-verification: google3cea24fe400a22ae.html')   # Search Console ownership file: keep
 os.makedirs(os.path.join(OUT, 'admin'), exist_ok=True)
-SHEET_URL = 'https://docs.google.com/spreadsheets/d/1eUrwam9PI1eJyy_vO7axUy5-FXNHhSiZd6oVzFnqqLA/edit'
+SHEET_URL = 'https://docs.google.com/spreadsheets/d/1eUrwam9PI1eJyy_vO7axUy5-FXNHhSiZd6oVzFnqqLA/edit#gid=1799777081'
 open(os.path.join(OUT, 'admin', 'index.html'), 'w').write(f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Growthryders admin</title><meta http-equiv="refresh" content="0; url={SHEET_URL}"><style>body{{margin:0;min-height:100vh;display:grid;place-items:center;background:#170e22;color:#fff;font:600 16px/1.5 system-ui,sans-serif;text-align:center;padding:24px}}a{{color:#f5b321}}</style></head><body><p>Opening the Growthryders enquiries sheet. Sign in with your Google account.<br><a href="{SHEET_URL}">Continue</a></p><script>location.replace("{SHEET_URL}")</script></body></html>''')
 BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot']
 open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nDisallow: /admin/\n\n' + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in BOTS) + f'Sitemap: {DOMAIN}/sitemap.xml\n')
