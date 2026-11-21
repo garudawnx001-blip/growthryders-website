@@ -40,6 +40,9 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     if path != 'index.html':
         crumbs = [("Home", DOMAIN + "/")] + ([("Work", DOMAIN + "/work.html")] if depth else []) + [(title.split(' | ')[0], canonical)]
         graph.append({"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": u} for i, (n, u) in enumerate(crumbs)]})
+    org["hasOfferCatalog"] = {"@type": "OfferCatalog", "name": "Marketing services", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": t, "description": d, "url": DOMAIN + "/services.html#" + k, "provider": {"@id": DOMAIN + "/#org"}, "areaServed": "IN"}} for k, t, d, cs in SERVICES]}
+    if path == 'index.html':
+        graph.append({"@type": "FAQPage", "@id": canonical + "#faq", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQS]})
     ld = {"@context": "https://schema.org", "@graph": graph}
     doc = f'''<!doctype html>
 <html lang="en-IN">
@@ -71,7 +74,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=21">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=22">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -162,12 +165,25 @@ def marquee():
     return f'<section class="marquee" aria-label="Brands on the ground with us"><div class="track"><div class="row">{row}</div><div class="row" aria-hidden="true">{row}</div></div></section>'
 
 # ---------------------------------------------------------------- HOME
+FAQS = [
+ ("What does Growthryders do?", "Growthryders is a brand activation and through-the-line marketing company based in Bengaluru. One team plans and runs brand activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences."),
+ ("Where is Growthryders based?", "Growthryders is based in Bengaluru, Karnataka, India."),
+ ("What kinds of brand activations does Growthryders run?", "Corporate park activations, mall and public space promotions, product sampling, roadshows, campus and residential activations, and brand launches."),
+ ("Which services does Growthryders offer?", "; ".join(t for k, t, d, cs in SERVICES) + "."),
+ ("Which brands has Growthryders been on the ground with?", ", ".join(MARQUEE[:-1]) + " and " + MARQUEE[-1] + "."),
+ ("What are Runcle and Bikers Bay?", "They are platforms Growthryders owns. Runcle is a fitness and wellness platform where running meets cycling, for runners, cyclists and corporate teams. Bikers Bay is a motorcycle community with rides, meets and brand collaborations."),
+ ("How do I start a project with Growthryders?", f"Call {PHONE2_DISPLAY}, message on WhatsApp at {PHONE_DISPLAY}, or email {EMAIL}."),
+]
+def faq_html():
+    items = ''.join(f'<details class="qa"><summary><h3>{html.escape(q)}</h3><span class="qa-x" aria-hidden="true"></span></summary><p>{html.escape(a)}</p></details>' for q, a in FAQS)
+    return f'<section class="sec white on-light faq-sec" id="faq"><div class="wrap faq"><div class="sec-head"><h2>Questions people ask us</h2></div><div class="qa-list">{items}</div></div></section>'
+
 home = f'''
 <section class="hero h3 on-dark">
 <div class="h3-wrap">
   <div class="h3-side h3-left"><a class="h3-ico h3-ico0" style="--n:0" href="{{r}}services.html#activations"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic0" d="M300 555L128 322A205 205 0 1 1 472 322Z"/><use href="#h3-ic0" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic0" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic0" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic0" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="215" r="34" fill="#f5b321"/></svg></span><span class="h3-lab">Brand activations</span></a><a class="h3-ico h3-ico2" style="--n:2" href="{{r}}services.html#experiential"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic2" d="M300 40L362 238L560 300L362 362L300 560L238 362L40 300L238 238Z"/><use href="#h3-ic2" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic2" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic2" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic2" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="300" r="34" fill="#f5b321"/></svg></span><span class="h3-lab">Experiential marketing</span></a><a class="h3-ico h3-ico4" style="--n:4" href="{{r}}services.html#events"><span class="h3-bob"><svg viewBox="-10 -5 640 640" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6"><path id="h3-ic4" d="M55 125H545V545H55Z M55 250H545 M180 45V125 M420 45V125"/><use href="#h3-ic4" transform="translate(18.2 32.2)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(15.6 27.6)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(13.0 23.0)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(10.4 18.4)" stroke="#241536" stroke-width="58"/><use href="#h3-ic4" transform="translate(7.8 13.8)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" transform="translate(5.2 9.2)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" transform="translate(2.6 4.6)" stroke="#3a2459" stroke-width="58"/><use href="#h3-ic4" stroke="url(#h3-f)" stroke-width="58"/><use href="#h3-ic4" stroke="url(#h3-i)" stroke-width="42"/><circle cx="300" cy="398" r="34" fill="#f5b321"/></svg></span><span class="h3-lab">Corporate events</span></a></div>
   <div class="h3-mid">
-    <h1 class="h3-title"><svg class="h3-name" viewBox="-45 -5 4075 1245" role="img" aria-label="Growthryders" fill="none" stroke-linejoin="miter" stroke-miterlimit="6">
+    <h1 class="h3-title"><span class="vh">Growthryders, brand activation and marketing company in Bengaluru</span><svg class="h3-name" viewBox="-45 -5 4075 1245" aria-hidden="true" fill="none" stroke-linejoin="miter" stroke-miterlimit="6">
 <defs><path id="h3-G" d="M288 260H518V475H55Q0 475 0 420V95Q0 40 55 40H518"/><path id="h3-R" d="M0 475V260H393A110 110 0 0 0 393 40H0 M273 262L506 511"/><path id="h3-R2" d="M0 475V40H393A110 110 0 0 1 393 260H0 M273 262L506 511"/><path id="h3-O" d="M55 40H463Q518 40 518 95V420Q518 475 463 475H55Q0 475 0 420V95Q0 40 55 40Z"/><path id="h3-W" d="M0 40V420Q0 475 55 475H545Q600 475 600 420V40 M300 475V150"/><path id="h3-T" d="M0 40H470 M235 40V475"/><path id="h3-H" d="M0 40V475 M500 40V475 M0 258H500"/><path id="h3-Y" d="M0 118L177 268V475 M327 38V88Q327 128 294 158L177 268"/><path id="h3-D" d="M0 40H282A217.5 217.5 0 0 1 282 475H0Z"/><path id="h3-E" d="M480 40H55Q0 40 0 95V420Q0 475 55 475H480 M0 258H400"/><path id="h3-S" d="M500 40H55Q0 40 0 95V203Q0 258 55 258H445Q500 258 500 313V420Q500 475 445 475H0"/>
 <linearGradient id="h3-f" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="520" y2="511"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#b9adcf"/><stop offset="1" stop-color="#7f7399"/></linearGradient>
 <linearGradient id="h3-i" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="511"><stop offset="0" stop-color="#fff"/><stop offset=".42" stop-color="#f7f4fb"/><stop offset=".58" stop-color="#e6dff1"/><stop offset="1" stop-color="#d2c8e4"/></linearGradient>
@@ -249,6 +265,7 @@ home = f'''
   </div>
 </div></section>
 
+{faq_html()}
 <section class="sec plum on-dark"><div class="wrap">
   <div class="sec-head"><h2>Beyond conventional marketing.</h2></div>
   <dl class="why">
@@ -524,7 +541,34 @@ page('404.html', 'Page not found | Growthryders', 'This page does not exist.',
 # ---------------------------------------------------------------- static files
 pages = ['', 'about.html', 'services.html', 'work.html'] + (['films.html'] if FILMS_LIVE else []) + [ 'work/tu-race-laga.html', 'work/tvs-apache-bagmane.html', 'work/royal-enfield-bikers-bay.html', 'ips.html', 'contact.html']
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{DOMAIN}/{p}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n' for p in pages) + '</urlset>\n')
-open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
+BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot']
+open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\n' + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in BOTS) + f'Sitemap: {DOMAIN}/sitemap.xml\n')
+open(os.path.join(OUT, 'llms.txt'), 'w').write(f'''# Growthryders
+
+> Growthryders (GRY) is a brand activation and through-the-line marketing company based in Bengaluru, Karnataka, India. One team plans and runs activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences.
+
+## Services
+''' + ''.join(f'- [{t}]({DOMAIN}/services.html#{k}): {d} Includes: {", ".join(cs)}.\n' for k, t, d, cs in SERVICES) + f'''
+## Pages
+- [Home]({DOMAIN}/): overview, services, work, films and platforms
+- [About]({DOMAIN}/about.html): the company
+- [Services]({DOMAIN}/services.html): every service in detail
+- [Work]({DOMAIN}/work.html): campaign case studies
+- [Films]({DOMAIN}/films.html): campaign and event films
+- [Our IPs]({DOMAIN}/ips.html): Runcle and Bikers Bay, platforms Growthryders owns
+- [Contact]({DOMAIN}/contact.html): start a conversation
+
+## Brands on the ground with Growthryders
+{", ".join(MARQUEE)}
+
+## Questions and answers
+''' + ''.join(f'- {q} {a}\n' for q, a in FAQS) + f'''
+## Contact
+- Phone: {PHONE2_DISPLAY}
+- WhatsApp: {PHONE_DISPLAY}
+- Email: {EMAIL}
+- Location: Bengaluru, Karnataka, India
+''')
 open(os.path.join(OUT, 'CNAME'), 'w').write('growthryders.in\n')
 open(os.path.join(OUT, '.nojekyll'), 'w').write('')
 open(os.path.join(OUT, 'assets/img/gry-logo.svg'), 'w').write(LOGO.replace(' class="ink"', ''))
