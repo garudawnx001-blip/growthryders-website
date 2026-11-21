@@ -71,7 +71,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=16">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=17">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -164,6 +164,7 @@ def marquee():
 # ---------------------------------------------------------------- HOME
 home = f'''
 <section class="hero hero-word on-dark">
+  <div class="word-stage">
   <canvas class="word-veil" data-src="{{r}}assets/img/flip.jpg?v=2" aria-hidden="true"></canvas>
   <div class="wrap">
     <h1 class="word-slot"><span>Growthryders</span></h1>
@@ -180,9 +181,10 @@ home = f'''
     <ul class="hero-services">{''.join(f'<li><a href="{{r}}services.html#{k}">{t.split(" and ")[0]}</a></li>' for k, t, d, cs in SERVICES)}</ul>
   </div>
   <a class="scroll-cue" href="#after-hero"><span>Scroll</span><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="word-run" id="after-hero" aria-hidden="true"></div>
 </section>
-<span id="after-hero"></span>
-<script src="{{r}}assets/js/word.js?v=12" defer></script>
+<script src="{{r}}assets/js/word.js?v=13" defer></script>
 {marquee()}
 
 <section class="sec white on-light"><div class="wrap split">

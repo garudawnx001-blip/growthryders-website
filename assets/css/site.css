@@ -510,3 +510,16 @@ p{margin:0 0 1em;max-width:62ch}
 
 /* v16: scrolled header is a solid bar, nothing shows through */
 .site-head.scrolled{background:#170e22!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:0 1px 0 rgba(255,255,255,.06)}
+
+/* v17: the name holds the full screen; scrolling brings it to its place and opens the copy beneath it */
+.hero.hero-word{display:block;min-height:0;overflow:visible}
+.hero-word .word-stage{position:relative;overflow:hidden;background:var(--ink);min-height:100svh;display:flex;align-items:center}
+.js .hero-word .word-stage{position:sticky;top:0}
+.hero-word .word-run{height:0}
+.js .hero-word .word-run{height:62svh}
+.js .hero-word.flat .word-run{height:0}
+.js .hero-word.settled .word-copy,.js .hero-word.settled .hero-services{opacity:var(--q,0);transform:translateY(calc((1 - var(--q,0))*18px));transition:none}
+.js .hero-word:not(.open) .word-copy,.js .hero-word:not(.open) .hero-services{pointer-events:none}
+.hero-word.settled .scroll-cue{opacity:calc(1 - var(--q,0)*4);transition-delay:0s}
+.hero-word.open .scroll-cue{pointer-events:none}
+@media (max-width:860px){.js .hero-word .word-run{height:48svh}.scroll-cue{display:inline-flex;bottom:22px}}
