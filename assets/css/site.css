@@ -518,3 +518,48 @@ p{margin:0 0 1em;max-width:62ch}
 .hero-word .hero-services{margin-top:clamp(22px,3.4vh,40px)}
 .hero-word .scroll-cue{display:none}
 @media (max-width:860px){.hero.hero-word{min-height:0}.hero-word .wrap{padding:88px 0 24px}.hero-word .word-copy{margin-top:20px}.hero-word .hero-services{margin-top:22px}}
+
+/* h3: 3D name with the six services floating around it */
+.hero.h3{display:block;min-height:0;height:auto;position:relative;overflow:hidden;background:radial-gradient(60% 70% at 50% 42%,#3a2459 0%,#22162f 46%,var(--ink) 78%)}
+.h3-wrap{width:min(1320px,100% - 2*var(--gut));margin-inline:auto;padding:clamp(104px,12vh,128px) 0 clamp(34px,5vh,56px);display:grid;grid-template-columns:minmax(120px,1fr) minmax(0,720px) minmax(120px,1fr);gap:clamp(16px,3vw,48px);align-items:center}
+.h3-mid{text-align:center;display:flex;flex-direction:column;align-items:center}
+.h3-title{margin:0;width:100%;line-height:0;perspective:900px}
+.h3-name{width:100%;height:auto;overflow:visible;display:block;filter:drop-shadow(0 18px 26px rgba(8,3,16,.55));transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out;will-change:transform}
+.h3 .hero-kicker{margin:clamp(22px,3.4vh,34px) 0 8px}
+.h3 .hero-line{margin:0;font-size:clamp(1.5rem,2.6vw,2.4rem);max-width:none}
+.h3 .lede{margin:12px 0 0;max-width:46ch;color:rgba(255,255,255,.8);font-size:clamp(1rem,1.15vw,1.12rem)}
+.h3 .btn-row{margin-top:clamp(18px,2.6vh,26px);justify-content:center}
+.h3-side{display:flex;flex-direction:column;gap:clamp(18px,3.4vh,38px)}
+.h3-left{align-items:flex-end}.h3-right{align-items:flex-start}
+.h3-left .h3-ico:nth-child(2){margin-right:clamp(30px,5vw,84px)}.h3-right .h3-ico:nth-child(2){margin-left:clamp(30px,5vw,84px)}
+.h3-ico{display:flex;flex-direction:column;align-items:center;gap:8px;width:clamp(104px,10vw,138px);text-decoration:none;color:rgba(255,255,255,.82);text-align:center}
+.h3-ico svg{width:clamp(62px,6.2vw,92px);height:auto;overflow:visible;display:block;transition:transform .25s ease}
+.h3-bob{display:block;animation:h3bob calc(5.5s + var(--n)*.7s) ease-in-out calc(var(--n)*-1.3s) infinite alternate;will-change:transform}
+.h3-lab{font-weight:600;font-size:clamp(.8rem,.95vw,.95rem);line-height:1.25}
+.h3-ico:hover{color:#fff}.h3-ico:hover svg{transform:scale(1.08) rotate(-3deg)}
+@keyframes h3bob{from{transform:translate3d(0,-7px,0) rotate(-2.2deg)}to{transform:translate3d(0,7px,0) rotate(2.2deg)}}
+.h3-glint{transform:translateX(0) skewX(-22deg)}
+.js .h3.go .h3-glint{animation:h3glint 1.5s cubic-bezier(.5,0,.2,1) 1.25s 1 both}
+.h3-title:hover .h3-glint{animation:h3glint2 1.3s cubic-bezier(.5,0,.2,1) 1 both}
+@keyframes h3glint{from{transform:translateX(0) skewX(-22deg)}to{transform:translateX(5600px) skewX(-22deg)}}
+@keyframes h3glint2{from{transform:translateX(0) skewX(-22deg)}to{transform:translateX(5600px) skewX(-22deg)}}
+/* entrance: G R Y first, then the missing letters one by one, then the icons and the copy */
+.js .h3 .h3-lt{opacity:0;transform:translateY(60px) scale(.9);transform-box:fill-box;transform-origin:50% 100%}
+.js .h3.go .h3-lt{animation:h3in .5s cubic-bezier(.2,.8,.2,1) calc(var(--i)*70ms + (1 - min(1,max(0,3 - var(--i))))*260ms) both}
+@keyframes h3in{to{opacity:1;transform:none}}
+.js .h3 .h3-ico,.js .h3 .h3-copy{opacity:0;transform:translateY(14px)}
+.h3-copy{display:flex;flex-direction:column;align-items:center}
+.js .h3.go .h3-ico{animation:h3in .6s ease calc(1.15s + var(--n)*80ms) both}
+.js .h3.go .h3-copy{animation:h3in .6s ease 1.05s both}
+@media (max-width:860px){
+  .h3-wrap{grid-template-columns:1fr;gap:0;padding:92px 0 26px}
+  .h3-mid{order:1}.h3-side{display:contents}
+  .h3-wrap::after{content:"";order:2;height:22px}
+  .h3-ico{order:3;width:auto;flex:none}
+  .h3-wrap{display:grid;grid-template-columns:repeat(3,1fr);column-gap:8px;row-gap:16px}
+  .h3-mid{grid-column:1/-1}.h3-wrap::after{grid-column:1/-1}
+  .h3-left .h3-ico:nth-child(2),.h3-right .h3-ico:nth-child(2){margin:0}
+  .h3-ico svg{width:54px}.h3-lab{font-size:.78rem}
+  .h3 .hero-line{font-size:1.45rem}
+}
+@media (prefers-reduced-motion:reduce){.h3-bob{animation:none}.js .h3 .h3-lt,.js .h3 .h3-ico,.js .h3 .h3-copy{opacity:1;transform:none;animation:none!important}.h3-glint{animation:none!important}}
