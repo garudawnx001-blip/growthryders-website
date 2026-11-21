@@ -16,7 +16,7 @@ FILMS_LIVE = os.environ.get('FILMS_LIVE', '1') == '1'   # set FILMS_LIVE=0 to pu
 
 LOGO = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 0 1590 516" role="img" aria-label="GRY — Growthryders"><defs><clipPath id="lc"><rect x="0" y="0" width="1610" height="511"/></clipPath></defs><g class="ink" clip-path="url(#lc)" fill="none" stroke="#4B2C73" stroke-width="70" stroke-linejoin="miter"><path d="M345 260H575V475H112Q57 475 57 420V95Q57 40 112 40H1125A110 110 0 0 1 1125 260H732V520"/><path d="M1005 262L1245 530"/><path d="M1228 118L1405 268V520"/><path d="M1555 38V88Q1555 128 1522 158L1405 268" stroke-linecap="round"/></g><circle cx="729" cy="150" r="36" fill="#F5B321"/></svg>'''
 
-LOGO_INTRO = '''<svg class="intro-logo" xmlns="http://www.w3.org/2000/svg" viewBox="10 0 1590 516" aria-hidden="true"><defs><clipPath id="ic"><rect x="0" y="0" width="1610" height="511"/></clipPath></defs><g clip-path="url(#ic)" fill="none" stroke="#fff" stroke-width="70" stroke-linejoin="miter"><path class="d1" pathLength="1" d="M345 260H575V475H112Q57 475 57 420V95Q57 40 112 40H1125A110 110 0 0 1 1125 260H732V520"/><path class="d2" pathLength="1" d="M1005 262L1245 530"/><path class="d3" pathLength="1" d="M1228 118L1405 268V520"/><path class="d4" pathLength="1" d="M1555 38V88Q1555 128 1522 158L1405 268" stroke-linecap="round"/></g><circle class="rider" r="36" fill="#F5B321"/></svg>'''
+LOGO_INTRO = '''<svg class="intro-logo" xmlns="http://www.w3.org/2000/svg" viewBox="10 0 1590 516" aria-hidden="true"><g class="rays" fill="none" stroke="#F5B321" stroke-width="5" stroke-linecap="round"><path pathLength="1" d="M-1400 150H729"/><path pathLength="1" d="M3000 150H729"/><path pathLength="1" d="M729 -1300V150"/><path pathLength="1" d="M729 1700V150"/></g><circle class="ring" cx="729" cy="150" r="36" fill="none" stroke="#F5B321" stroke-width="4"/><g fill="none" stroke="#fff" stroke-width="70" stroke-linejoin="miter"><path class="d1" pathLength="1" d="M732 511V260H1125A110 110 0 0 0 1125 40H112Q57 40 57 95V420Q57 475 112 475H575V260H345"/><path class="d2" pathLength="1" d="M1005 262L1238 511"/><path class="d3" pathLength="1" d="M1228 118L1405 268V511"/><path class="d4" pathLength="1" d="M1405 268L1522 158Q1555 128 1555 88V38" stroke-linecap="round"/></g><circle class="rider" cx="729" cy="150" r="36" fill="#F5B321"/></svg>'''
 INTRO = f'''<div class="intro" id="intro" aria-hidden="true"><div class="intro-in">{LOGO_INTRO}<p class="intro-word"><span>Growthryders</span></p><p class="intro-tag"><span>Brand activations at the core</span></p></div><button class="intro-skip" type="button">Skip intro</button></div>'''
 
 NAV = [('about.html', 'About'), ('services.html', 'Services'), ('work.html', 'Work')] + ([('films.html', 'Films')] if FILMS_LIVE else []) + [('ips.html', 'Our IPs')]
@@ -26,10 +26,21 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     cur = path.split('/')[0]
     links = ''.join(f'<a href="{r}{h}"{" aria-current=\"page\"" if h == cur or (cur == "work" and h == "work.html") else ""}>{t}</a>' for h, t in NAV)
     canonical = DOMAIN + '/' + ('' if path == 'index.html' else path)
-    ld = {"@context": "https://schema.org", "@type": "Organization", "name": "Growthryders", "url": DOMAIN,
-          "logo": DOMAIN + "/assets/img/gry-logo.svg", "email": EMAIL, "telephone": "+" + PHONE2_E164,
-          "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN"},
-          "description": "Integrated brand activation and through-the-line marketing company in Bengaluru."}
+    org = {"@type": ["Organization", "ProfessionalService"], "@id": DOMAIN + "/#org", "name": "Growthryders", "alternateName": ["GRY", "Growth Ryders"], "url": DOMAIN,
+           "logo": DOMAIN + "/assets/img/gry-logo.svg", "image": DOMAIN + "/assets/img/og.jpg", "email": EMAIL,
+           "telephone": "+" + PHONE2_E164,
+           "contactPoint": [{"@type": "ContactPoint", "telephone": "+" + PHONE2_E164, "contactType": "sales", "areaServed": "IN", "availableLanguage": ["en", "hi", "kn"]},
+                            {"@type": "ContactPoint", "telephone": "+" + PHONE_E164, "contactType": "customer service", "areaServed": "IN"}],
+           "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN"},
+           "areaServed": [{"@type": "City", "name": "Bengaluru"}, {"@type": "Country", "name": "India"}],
+           "knowsAbout": ["Brand activation", "Experiential marketing", "Through-the-line marketing", "Corporate park activations", "Event management", "Digital marketing", "Media planning and buying"],
+           "description": "Integrated brand activation and through-the-line marketing company in Bengaluru."}
+    site = {"@type": "WebSite", "@id": DOMAIN + "/#site", "url": DOMAIN, "name": "Growthryders", "publisher": {"@id": DOMAIN + "/#org"}, "inLanguage": "en-IN"}
+    graph = [org, site, {"@type": "WebPage", "@id": canonical, "url": canonical, "name": title, "description": desc, "isPartOf": {"@id": DOMAIN + "/#site"}, "about": {"@id": DOMAIN + "/#org"}}]
+    if path != 'index.html':
+        crumbs = [("Home", DOMAIN + "/")] + ([("Work", DOMAIN + "/work.html")] if depth else []) + [(title.split(' | ')[0], canonical)]
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": u} for i, (n, u) in enumerate(crumbs)]})
+    ld = {"@context": "https://schema.org", "@graph": graph}
     doc = f'''<!doctype html>
 <html lang="en-IN">
 <head>
@@ -43,12 +54,22 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{DOMAIN}/assets/img/og.jpg">
+<meta property="og:site_name" content="Growthryders">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{html.escape(title)}">
+<meta name="twitter:description" content="{html.escape(desc)}">
+<meta name="twitter:image" content="{DOMAIN}/assets/img/og.jpg">
+<meta name="robots" content="index,follow,max-image-preview:large,max-video-preview:-1">
+<meta name="geo.region" content="IN-KA">
+<meta name="geo.placename" content="Bengaluru">
 <meta name="theme-color" content="#170e22">
 <link rel="icon" href="{r}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{r}assets/img/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=3">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -75,7 +96,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js" defer></script>
+<script src="{r}assets/js/site.js?v=3" defer></script>
 </body>
 </html>
 '''
@@ -479,7 +500,7 @@ page('404.html', 'Page not found | Growthryders', 'This page does not exist.',
 
 # ---------------------------------------------------------------- static files
 pages = ['', 'about.html', 'services.html', 'work.html'] + (['films.html'] if FILMS_LIVE else []) + [ 'work/tu-race-laga.html', 'work/tvs-apache-bagmane.html', 'work/royal-enfield-bikers-bay.html', 'ips.html', 'contact.html']
-open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{DOMAIN}/{p}</loc></url>\n' for p in pages) + '</urlset>\n')
+open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{DOMAIN}/{p}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n' for p in pages) + '</urlset>\n')
 open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 open(os.path.join(OUT, 'CNAME'), 'w').write('growthryders.in\n')
 open(os.path.join(OUT, '.nojekyll'), 'w').write('')

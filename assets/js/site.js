@@ -15,11 +15,14 @@
     var finish = function (fast) {
       if (done) return; done = true;
       try { sessionStorage.setItem('gry-intro', '1'); } catch (e) {}
-      if (fast) { intro.style.animation = 'introOut .45s cubic-bezier(.7,0,.2,1) forwards'; }
+      if (fast) { intro.style.animation = 'introReveal .6s cubic-bezier(.65,0,.2,1) forwards'; }
       ready();
-      setTimeout(function () { doc.classList.remove('intro-on'); intro.remove(); }, fast ? 500 : 800);
+      setTimeout(function () { doc.classList.remove('intro-on'); intro.remove(); }, fast ? 650 : 1000);
     };
-    setTimeout(function () { finish(false); }, 3500);
+    var dot = intro.querySelector('.rider');
+    var aim = function () { if (!dot) return; var b = dot.getBoundingClientRect(); intro.style.setProperty('--cx', (b.left + b.width / 2) + 'px'); intro.style.setProperty('--cy', (b.top + b.height / 2) + 'px'); };
+    aim(); window.addEventListener('resize', aim); setTimeout(aim, 1200); setTimeout(aim, 3100);
+    setTimeout(function () { finish(false); }, 3350);
     intro.querySelector('.intro-skip').addEventListener('click', function () { finish(true); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') finish(true); });
   } else {
@@ -54,12 +57,12 @@
   if ('IntersectionObserver' in window && !reduce) {
     items.forEach(function (el) {
       var sibs = el.parentElement ? [].slice.call(el.parentElement.children) : [el];
-      el.style.setProperty('--i', Math.min(sibs.indexOf(el), 6));
+      el.style.setProperty('--i', Math.min(sibs.indexOf(el), 4));
       el.setAttribute('data-rv', '');
     });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); count(en.target); } });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }, { rootMargin: '0px 0px 6% 0px', threshold: 0 });
     items.forEach(function (el) { io.observe(el); });
   }
 

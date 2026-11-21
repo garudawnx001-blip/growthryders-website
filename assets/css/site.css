@@ -287,3 +287,43 @@ p{margin:0 0 1em;max-width:62ch}
   .marquee .track{animation:none}
   ::view-transition-old(root),::view-transition-new(root){animation:none}
 }
+
+/* ============ v2: solid header block, tighter rhythm, always-visible pictures ============ */
+.site-head,.site-head.scrolled{background:var(--ink);padding:14px 0;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 1px 0 var(--line-dark)}
+.site-head .brand svg .ink,.site-head.light .brand svg .ink{stroke:#fff}
+.site-head .nav,.site-head.light .nav{color:#fff}
+.site-head .nav-toggle,.site-head.light .nav-toggle{color:#fff}
+.hero .wrap{padding-top:110px}
+.page-head{padding:clamp(104px,12vw,140px) 0 clamp(36px,6vw,72px)}
+.sec{padding:clamp(40px,6vw,88px) 0}
+.sec-head{margin-bottom:clamp(22px,4vw,48px)}
+.work-row{padding:clamp(22px,3.4vw,48px) 0}
+.js [data-rv]{transform:translateY(14px);transition-duration:.5s;transition-delay:calc(var(--i,0)*45ms)}
+.js .frame[data-rv],.js .frame[data-rv].in{opacity:1;transform:none;clip-path:none;transition:none}
+.js .frame[data-rv] img{transform:scale(1.07);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.js .frame[data-rv].in img{transform:none}
+@media (max-width:860px){
+  .brand svg{height:26px}
+  .hero{min-height:min(88svh,760px)}
+  .nav{padding-top:76px}
+}
+
+/* ============ intro v2: the activation is the centre. Every channel runs into it, and the mark grows out of it ============ */
+@property --hole{syntax:"<length>";inherits:false;initial-value:0px}
+.intro-on .intro{animation:introReveal 1s cubic-bezier(.65,0,.2,1) 3.25s forwards;
+  -webkit-mask:radial-gradient(circle at var(--cx,50%) var(--cy,45%),transparent var(--hole),#000 calc(var(--hole) + 1.5px));
+  mask:radial-gradient(circle at var(--cx,50%) var(--cy,45%),transparent var(--hole),#000 calc(var(--hole) + 1.5px))}
+@keyframes introReveal{0%{--hole:0px;opacity:1}70%{opacity:1}100%{--hole:160vmax;opacity:0;visibility:hidden}}
+.intro-logo{overflow:visible}
+.intro-logo .rider{offset-path:none;transform-box:fill-box;transform-origin:center;transform:scale(0);animation:dotIn .7s cubic-bezier(.2,1.4,.3,1) .15s forwards}
+.intro-logo .ring{transform-box:fill-box;transform-origin:center;opacity:0;animation:ringOut 1.3s cubic-bezier(.2,.7,.2,1) .95s 2}
+.intro-logo .rays path{stroke-width:8;stroke-dasharray:.3 1;stroke-dashoffset:.3;opacity:.9;animation:rayIn .85s cubic-bezier(.5,0,.2,1) .3s forwards}
+.intro-logo .rays path:nth-child(2){animation-delay:.38s}.intro-logo .rays path:nth-child(3){animation-delay:.46s}.intro-logo .rays path:nth-child(4){animation-delay:.54s}
+.intro-logo .d1{animation:draw 1.25s cubic-bezier(.6,0,.2,1) 1.15s forwards}
+.intro-logo .d2{animation:draw .4s ease-out 1.75s forwards}
+.intro-logo .d3{animation:draw .45s ease-out 1.9s forwards}
+.intro-logo .d4{animation:draw .4s ease-out 2.2s forwards}
+.intro-word span,.intro-tag span{animation-delay:2.25s}.intro-tag span{animation-delay:2.42s}
+@keyframes dotIn{to{transform:scale(1)}}
+@keyframes ringOut{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(4.2)}}
+@keyframes rayIn{0%{stroke-dashoffset:.3}85%{opacity:.9}100%{stroke-dashoffset:-1;opacity:0}}
