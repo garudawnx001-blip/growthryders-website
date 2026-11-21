@@ -64,8 +64,10 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <meta name="geo.region" content="IN-KA">
 <meta name="geo.placename" content="Bengaluru">
 <meta name="theme-color" content="#170e22">
-<link rel="icon" href="{r}assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="{r}assets/img/icon-180.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="{r}assets/img/favicon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{r}assets/img/icon-180.png?v=2">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
@@ -516,5 +518,5 @@ open(os.path.join(OUT, 'CNAME'), 'w').write('growthryders.in\n')
 open(os.path.join(OUT, '.nojekyll'), 'w').write('')
 open(os.path.join(OUT, 'assets/img/gry-logo.svg'), 'w').write(LOGO.replace(' class="ink"', ''))
 open(os.path.join(OUT, 'assets/img/gry-logo-white.svg'), 'w').write(LOGO.replace(' class="ink"', '').replace('#4B2C73', '#FFFFFF'))
-open(os.path.join(OUT, 'assets/img/favicon.svg'), 'w').write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#4B2C73"/><path d="M40 33H46V46H22Q16 46 16 40V24Q16 18 22 18H48" fill="none" stroke="#fff" stroke-width="7"/><circle cx="33" cy="30" r="4.5" fill="#F5B321"/></svg>')
+open(os.path.join(OUT, 'assets/img/favicon.svg'), 'w').write('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#4B2C73"/><g transform="translate(66 118) scale(.5)"><path d="M345 260H575V475H112Q57 475 57 420V95Q57 40 112 40H610" fill="none" stroke="#fff" stroke-width="84" stroke-linejoin="miter"/><circle cx="716" cy="150" r="50" fill="#F5B321"/></g></svg>''')
 print('built', len(pages) + 1, 'pages into', OUT)
