@@ -571,6 +571,7 @@ pages = ['', 'about.html', 'services.html', 'work.html'] + (['films.html'] if FI
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{DOMAIN}/{p}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n' for p in pages) + '</urlset>\n')
 INDEXNOW = '78d348323012cbff111fa228a2ef64b3'
 open(os.path.join(OUT, INDEXNOW + '.txt'), 'w').write(INDEXNOW)
+open(os.path.join(OUT, 'google3cea24fe400a22ae.html'), 'w').write('google-site-verification: google3cea24fe400a22ae.html')   # Search Console ownership file: keep
 BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot']
 open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\n' + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in BOTS) + f'Sitemap: {DOMAIN}/sitemap.xml\n')
 open(os.path.join(OUT, 'llms.txt'), 'w').write(f'''# Growthryders
