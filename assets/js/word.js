@@ -2,7 +2,6 @@
 // the missing letters arrive one by one, and the name settles in white. One canvas, one image; static once settled.
 (function () {
   var hero = document.querySelector('.hero-word'), cv = hero && hero.querySelector('.word-veil'); if (!cv) return;
-  var stage = hero.querySelector('.word-stage') || hero, s0 = 1, kB = 1, BX = 0, BY = 0, Q = 0, VH = 0, bgA = 2, bgB = 2, bgT = 0, TAG = 'Brand activation and marketing company, Bengaluru';
   var D = {"paths":{"G":"M288 260H518V475H55Q0 475 0 420V95Q0 40 55 40H518","R":"M0 475V260H393A110 110 0 0 0 393 40H0 M273 262L506 511","R2":"M0 475V40H393A110 110 0 0 1 393 260H0 M273 262L506 511","O":"M55 40H463Q518 40 518 95V420Q518 475 463 475H55Q0 475 0 420V95Q0 40 55 40Z","W":"M0 40V420Q0 475 55 475H545Q600 475 600 420V40 M300 475V150","T":"M0 40H470 M235 40V475","H":"M0 40V475 M500 40V475 M0 258H500","Y":"M0 118L177 268V475 M327 38V88Q327 128 294 158L177 268","D":"M0 40H282A217.5 217.5 0 0 1 282 475H0Z","E":"M480 40H55Q0 40 0 95V420Q0 475 55 475H480 M0 258H400","S":"M500 40H55Q0 40 0 95V203Q0 258 55 258H445Q500 258 500 313V420Q500 475 445 475H0"},"full":[["G",35.0,518],["R",710.0,513],["O",1380.0,518],["W",2055.0,600],["T",2812.0,470],["H",3439.0,500],["R2",4096.0,513],["Y",4766.0,327],["D",5250.0,500],["E",5907.0,480],["R2",6544.0,513],["S",7214.0,500]],"wf":7749,"l1":[["G",35.0,518],["R",710.0,513],["O",1380.0,518],["W",2055.0,600],["T",2812.0,470],["H",3439.0,500]],"l2":[["R2",35.0,513],["Y",705.0,327],["D",1189.0,500],["E",1846.0,480],["R2",2483.0,513],["S",3153.0,500]],"w1":3974,"w2":3688,"gry":[["G",35.0,518],["R",710.0,513],["Y",1380.0,327]],"wg":1742}, ctx = cv.getContext('2d'), reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var NAMES = ["TVS Apache", "Royal Enfield", "TVS Apache", "Royal Enfield Guerrilla 450", "Bagmane Tech Park", "TVS Apache", "Royal Enfield", "Axis Bank", "Royal Enfield Continental GT", "Royal Enfield", "Bagmane REIT, Milky Mist, GRY", "Royal Enfield Classic 350"];
   var INK = '#170e22', GOLD = '#F5B321', LG = 150, N = 12, FW = 960, FH = 540, P = {}, img = new Image();
@@ -13,21 +12,20 @@
   function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
   function out(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
   function layout() {
-    var r = stage.getBoundingClientRect(), box = hero.querySelector('.word-slot').getBoundingClientRect(), two = true, order = 0;
+    var r = hero.getBoundingClientRect(), box = hero.querySelector('.word-slot').getBoundingClientRect(), two = true, order = 0;
     dpr = Math.min(window.devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = layer.width = tmp.width = Math.round(W * dpr); cv.height = layer.height = tmp.height = Math.round(H * dpr);
     items = [];
     if (two) { D.l1.forEach(function (l) { items.push({ n: l[0], x: l[1], y: 0, w: l[2] }); }); D.l2.forEach(function (l) { items.push({ n: l[0], x: l[1], y: 511 + LG, w: l[2] }); }); wordW = D.w1; wordH = 511 * 2 + LG; }
     else { D.full.forEach(function (l) { items.push({ n: l[0], x: l[1], y: 0, w: l[2] }); }); wordW = D.wf; wordH = 511; }
     items[0].logo = [D.gry[0][1], 0]; items[1].logo = [D.gry[1][1], 0]; items[7].logo = [D.gry[2][1], 0];
     items.forEach(function (it, i) { it.i = i; if (!it.logo) it.ord = order++; });
-    k = box.width / wordW; SX = box.left - r.left; SY = box.top - r.top; VH = Math.min(H, window.innerHeight || H);
-    s0 = Math.max(1, Math.min(.9 * W / (wordW * k), (W < 700 ? .34 : .5) * VH / (wordH * k))); kB = k * s0; BX = (W - wordW * kB) / 2; BY = VH * (W < 700 ? .45 : .49) - wordH * kB / 2;
+    k = box.width / wordW; SX = box.left - r.left; SY = box.top - r.top;
     hero.style.setProperty('--word-h', (wordH * k) + 'px');
     // the settled name: solid letters with a soft pearl-to-lilac sheen, drawn once and kept
-    var z = dpr * kB; lx.setTransform(1, 0, 0, 1, 0, 0); lx.clearRect(0, 0, layer.width, layer.height); lx.lineWidth = 70; lx.lineJoin = 'miter'; lx.miterLimit = 6;
-    var depth = Math.max(3, Math.round(wordH * kB * dpr * .028));
+    var z = dpr * k; lx.setTransform(1, 0, 0, 1, 0, 0); lx.clearRect(0, 0, layer.width, layer.height); lx.lineWidth = 70; lx.lineJoin = 'miter'; lx.miterLimit = 6;
+    var depth = Math.max(3, Math.round(wordH * k * dpr * .028));
     for (var pass = 0; pass < 3; pass++) items.forEach(function (it) {
-      var bx0 = dpr * BX + z * it.x, by0 = dpr * BY + z * it.y, g;
+      var bx0 = dpr * SX + z * it.x, by0 = dpr * SY + z * it.y, g;
       if (pass === 0) { // the block behind the face: a short extrusion down and to the right
         for (var e = depth; e >= 1; e--) { lx.setTransform(z, 0, 0, z, bx0 + e * .55, by0 + e); lx.strokeStyle = e > depth * .6 ? '#241536' : '#3a2459'; lx.stroke(P[it.n]); }
         return;
@@ -39,44 +37,32 @@
     });
     lx.lineWidth = 70;
     lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalCompositeOperation = 'source-over'; var it1 = items[1];
-    lx.fillStyle = GOLD; lx.beginPath(); lx.arc(dpr * BX + z * it1.x, dpr * BY + z * (it1.y + 150), z * 36, 0, 6.2832); lx.fill();
+    lx.fillStyle = GOLD; lx.beginPath(); lx.arc(dpr * SX + z * it1.x, dpr * SY + z * (it1.y + 150), z * 36, 0, 6.2832); lx.fill();
   }
   function cover(c, ix, dx, dy, dw, dh) { // draw still number ix to fill a box
     var sw = FW, sh = FH, ar = dw / dh; if (ar > FW / FH) sh = FW / ar; else sw = FH * ar;
     c.drawImage(img, (ix % 4) * FW + (FW - sw) / 2, Math.floor(ix / 4) * FH + (FH - sh) / 2, sw, sh, dx, dy, dw, dh);
   }
   function rrect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
-  function backdrop(al) { // a brand shot, faint, so the screen is never empty; it changes now and then
-    var mix = Math.min(1, (performance.now() - bgT) / 600);
-    if (mix < 1) { ctx.globalAlpha = al * (1 - mix); cover(ctx, bgB, 0, 0, cv.width, cv.height); }
-    ctx.globalAlpha = al * mix; cover(ctx, bgA, 0, 0, cv.width, cv.height); ctx.globalAlpha = 1;
-  }
-  function tagline(al) {
-    if (al <= 0) return; var fs = Math.round((W < 700 ? 13 : 18) * dpr); ctx.globalAlpha = al; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.font = '600 ' + fs + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = GOLD; ctx.fillText(TAG, dpr * W / 2, dpr * (BY + wordH * kB) + fs * 2.6); ctx.globalAlpha = 1;
-  }
-  function settled(g) { // the finished name. Full screen at the top of the page; scrolling brings it to its place. g between 0 and 1 sweeps the glint.
-    var e = ease(Q), sc = 1 + (1 / s0 - 1) * e, cxB = BX + wordW * kB / 2, cyB = BY + wordH * kB / 2, cx = cxB + (SX + wordW * k / 2 - cxB) * e, cy = cyB + (SY + wordH * k / 2 - cyB) * e, src = layer;
+  function settled(g) { // the finished name, with the glint sweeping across when g is between 0 and 1
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
-    if (e < 1) { backdrop(.2 * (1 - e)); tagline(1 - e * 3); }
-    if (g > 0 && g < 1) {
-      tx.setTransform(1, 0, 0, 1, 0, 0); tx.globalCompositeOperation = 'source-over'; tx.clearRect(0, 0, tmp.width, tmp.height); tx.drawImage(layer, 0, 0);
-      var x0 = dpr * BX, ww = dpr * wordW * kB, hh = dpr * wordH * kB, bw = Math.max(90 * dpr, ww * .09), xc = x0 - bw * 2 + (ww + bw * 4) * ease(g);
-      var gr = tx.createLinearGradient(xc - bw, 0, xc + bw, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.42, 'rgba(255,240,205,.55)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(.58, 'rgba(255,240,205,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
-      tx.globalCompositeOperation = 'source-atop'; tx.fillStyle = gr; tx.setTransform(1, 0, -.42, 1, .42 * (dpr * BY + hh / 2), 0); tx.fillRect(xc - bw * 3, dpr * BY - 20, bw * 6, hh + 40); src = tmp;
-    }
-    ctx.imageSmoothingQuality = 'high'; ctx.setTransform(sc, 0, 0, sc, dpr * (cx - sc * cxB), dpr * (cy - sc * cyB)); ctx.drawImage(src, 0, 0); ctx.setTransform(1, 0, 0, 1, 0, 0);
+    if (g <= 0 || g >= 1) { ctx.drawImage(layer, 0, 0); return; }
+    tx.setTransform(1, 0, 0, 1, 0, 0); tx.globalCompositeOperation = 'source-over'; tx.clearRect(0, 0, tmp.width, tmp.height); tx.drawImage(layer, 0, 0);
+    var x0 = dpr * SX, ww = dpr * wordW * k, hh = dpr * wordH * k, bw = Math.max(90 * dpr, ww * .09), xc = x0 - bw * 2 + (ww + bw * 4) * ease(g);
+    var gr = tx.createLinearGradient(xc - bw, 0, xc + bw, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.42, 'rgba(255,240,205,.55)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(.58, 'rgba(255,240,205,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    tx.globalCompositeOperation = 'source-atop'; tx.fillStyle = gr; tx.setTransform(1, 0, -.42, 1, .42 * (dpr * SY + hh / 2), 0); tx.fillRect(xc - bw * 3, dpr * SY - 20, bw * 6, hh + 40);
+    ctx.drawImage(tmp, 0, 0);
   }
   var TA = 0.95, TB = 0.45, STEP = 0.1, TP = 0.6, TD = 0.4, cue = false;
   function draw(t) {
     var a = (t - TA) / TB, b = ease(a), u = t - TA - TB, uEnd = 9 * STEP + .3, p = ease((u - .1) / (uEnd + TP - .35)), d = ease((u - uEnd - TP * .3) / TD), g = (u - uEnd - TP * .3 - TD * .6) / TG, phone = W < 700;
-    cue = d > .9;
+    cue = p > .92;
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height);
     if (d >= 1) { settled(g); return g >= 1; }
     // the screen is never empty: a brand shot sits faintly behind everything
-    ctx.globalAlpha = .17 * (1 - d) * Math.min(1, t / .4); cover(ctx, Math.floor(t / .55 + 3) % N, 0, 0, cv.width, cv.height); ctx.globalAlpha = 1; if (d > 0) { backdrop(.2 * d); tagline(d); }
+    ctx.globalAlpha = .17 * (1 - d) * Math.min(1, t / .4); cover(ctx, Math.floor(t / .55 + 3) % N, 0, 0, cv.width, cv.height); ctx.globalAlpha = 1;
     // the card of brand shots, large
-    var cyy = VH * .47, cin = out(t / .45), cw = Math.min(W * (phone ? .92 : .62), 1040) * (.92 + .08 * cin) * (1 + .35 * Math.max(0, Math.min(1, a / .3))), ch = phone ? cw * .82 : cw * 9 / 16, ca = cin * (1 - Math.min(1, Math.max(0, a) / .3));
+    var cin = out(t / .45), cw = Math.min(W * (phone ? .92 : .62), 1040, (H - 250) * (phone ? 1.22 : 1.78)) * (.92 + .08 * cin) * (1 + .35 * Math.max(0, Math.min(1, a / .3))), ch = phone ? cw * .82 : cw * 9 / 16, ca = cin * (1 - Math.min(1, Math.max(0, a) / .3)), cyy = H * .53;
     if (ca > 0) {
       ctx.save(); ctx.globalAlpha = ca; rrect(ctx, dpr * (W - cw) / 2, dpr * (cyy - ch / 2), dpr * cw, dpr * ch, dpr * 16); ctx.clip(); cover(ctx, Math.floor(t / .22) % N, dpr * (W - cw) / 2, dpr * (cyy - ch / 2), dpr * cw, dpr * ch); ctx.restore();
       ctx.globalAlpha = ca; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; var fs = Math.round((phone ? 17 : 20) * dpr);
@@ -85,11 +71,11 @@
     }
     if (a <= 0) return false;
     // camera. First G R Y fills the screen. Then it stays close and follows each new letter. One pull-back at the end.
-    var sG = Math.min((phone ? .9 : .62) * W / (D.wg * k), .42 * VH / (511 * k));
+    var sG = Math.min((phone ? .9 : .62) * W / (D.wg * k), .42 * H / (511 * k)), sC = Math.max(sG * .8, (phone ? .2 : .34) * H / (511 * k));
     var m = ease(u / .7), fx = D.wg / 2, fy = 255, s = sG * (1.45 - .45 * b), q = u / STEP, j = Math.floor(q), fr = ease(q - j), arr = [], lastT;
     for (var i = 0; i < items.length; i++) if (!items[i].logo) arr[items[i].ord] = items[i];
     var ax = W / 2, ay = cyy;
-    if (p > 0) { fx += (wordW / 2 - fx) * p; fy += (wordH / 2 - fy) * p; s += (s0 - s) * p; ax += (BX + wordW * kB / 2 - ax) * p; ay += (BY + wordH * kB / 2 - ay) * p; }
+    if (p > 0) { fx += (wordW / 2 - fx) * p; fy += (wordH / 2 - fy) * p; s += (1 - s) * p; ax += (SX + wordW * k / 2 - ax) * p; ay += (SY + wordH * k / 2 - ay) * p; }
     var z = dpr * s * k, dot = null, la = Math.min(1, a / .3);
     for (i = 0; i < items.length; i++) {
       var it = items[i], x = it.x, y = it.y, al = la, pop = 1;
@@ -110,17 +96,14 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = la * (1 - d); if (dot) { ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(dot[0], dot[1], dot[2], 0, 6.2832); ctx.fill(); }
     if (d > 0) { ctx.globalAlpha = d; ctx.drawImage(layer, 0, 0); } ctx.globalAlpha = 1; return false;
   }
-  function setQ() { var S = hero.offsetHeight - stage.offsetHeight; Q = (reduce || S <= 4) ? 1 : Math.max(0, Math.min(1, window.scrollY / S)); var c = Math.max(0, Math.min(1, (Q - .5) / .4)); hero.style.setProperty('--q', c.toFixed(3)); hero.classList.toggle('open', c > .5); }
-  function rest() { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height); settled(0); }
-  function finish() { done = true; cancelAnimationFrame(raf); setQ(); draw(1e3); hero.classList.add('settled'); try { sessionStorage.setItem('gry-word', '1'); } catch (e) {} }
+  function finish() { done = true; cancelAnimationFrame(raf); draw(1e3); hero.classList.add('settled'); try { sessionStorage.setItem('gry-word', '1'); } catch (e) {} }
   function tick(now) { if (done) return; if (!t0) t0 = now; var fin = draw((now - t0) / 1000); if (cue && !hero.classList.contains('settled')) hero.classList.add('settled'); if (fin) return finish(); raf = requestAnimationFrame(tick); }
   // a second glint when the pointer comes to the name
-  var gl0 = 0; function glint(now) { if (!gl0) gl0 = now; var g = (now - gl0) / (TG * 1000); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height); settled(g); if (g < 1) requestAnimationFrame(glint); else { gl0 = 0; rest(); } }
+  var gl0 = 0; function glint(now) { if (!gl0) gl0 = now; var g = (now - gl0) / (TG * 1000); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height); settled(g); if (g < 1) requestAnimationFrame(glint); else gl0 = 0; }
   hero.querySelector('.word-slot').addEventListener('pointerenter', function () { if (done && !gl0 && !reduce) requestAnimationFrame(glint); });
   var seen = false; try { seen = sessionStorage.getItem('gry-word') === '1'; } catch (e) {}
   function go() { if (started || done) return; started = true; raf = requestAnimationFrame(tick); }
   function boot() {
-    if (reduce) hero.classList.add('flat');
     layout();
     if (reduce || seen) return finish();
     draw(0);
@@ -133,10 +116,7 @@
   img.onload = function () { if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot); else boot(); };
   img.onerror = function () { layout(); P && finish(); };
   img.src = cv.getAttribute('data-src');
-  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (!img.complete) return; layout(); if (done) { setQ(); rest(); } }, 120); });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (!img.complete) return; layout(); if (done) draw(1e3); }, 120); });
   hero.addEventListener('click', function (e) { if (started && !done && !e.target.closest('a,button')) finish(); });
-  var sq = 0; window.addEventListener('scroll', function () { if (started && !done && window.scrollY > 40) finish(); if (done && !sq) sq = requestAnimationFrame(function () { sq = 0; setQ(); if (!gl0) rest(); }); }, { passive: true });
-  // at the top of the page the faint brand shot behind the name changes every few seconds
-  var bf = 0; function bgFade() { if (done && !gl0 && Q < 1) rest(); if (performance.now() - bgT < 650) bf = requestAnimationFrame(bgFade); else bf = 0; }
-  setInterval(function () { if (!done || Q >= 1 || document.hidden || reduce) return; bgB = bgA; bgA = (bgA + 5) % N; bgT = performance.now(); if (!bf) bf = requestAnimationFrame(bgFade); }, 3200);
+  window.addEventListener('scroll', function () { if (started && !done && window.scrollY > 40) finish(); }, { passive: true });
 })();
