@@ -1,50 +1,101 @@
-// Growthryders — opening: the film plays full screen, the camera pulls back to show it inside G R Y,
-// then the missing letters arrive and the mark becomes the full name. Drawn on one canvas above the video.
+// Growthryders — title card. Brand shots flip full screen, the camera pulls back to find them inside G R Y,
+// the missing letters arrive one by one, and the name settles in white. One canvas, one image; static once settled.
 (function () {
   var hero = document.querySelector('.hero-word'), cv = hero && hero.querySelector('.word-veil'); if (!cv) return;
-  var D = {"paths":{"G":["M288 260H518V475H55Q0 475 0 420V95Q0 40 55 40H518"],"R":["M0 475V260H393A110 110 0 0 0 393 40H0","M273 262L506 511"],"R2":["M0 475V40H393A110 110 0 0 1 393 260H0","M273 262L506 511"],"O":["M55 40H463Q518 40 518 95V420Q518 475 463 475H55Q0 475 0 420V95Q0 40 55 40Z"],"W":["M0 40V420Q0 475 55 475H545Q600 475 600 420V40","M300 475V150"],"T":["M0 40H470","M235 40V475"],"H":["M0 40V475","M500 40V475","M0 258H500"],"Y":["M0 118L177 268V475","M327 38V88Q327 128 294 158L177 268"],"D":["M0 40H282A217.5 217.5 0 0 1 282 475H0Z"],"E":["M480 40H55Q0 40 0 95V420Q0 475 55 475H480","M0 258H400"],"S":["M500 40H55Q0 40 0 95V203Q0 258 55 258H445Q500 258 500 313V420Q500 475 445 475H0"]},"l1":[["G",35.0],["R",710.0],["O",1380.0],["W",2055.0],["T",2812.0],["H",3439.0]],"l2":[["R2",35.0],["Y",705.0],["D",1189.0],["E",1846.0],["R2",2483.0],["S",3153.0]],"w1":3974,"w2":3688,"gry":[["G",35.0],["R",710.0],["Y",1380.0]],"wg":1742}, ctx = cv.getContext('2d'), reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var INK = '#170e22', GOLD = '#F5B321', LG = 150, P2 = {}, W = 0, H = 0, dpr = 1, k = 1, X0 = 0, Y0 = 0, t0 = 0, done = false, raf = 0;
-  Object.keys(D.paths).forEach(function (n) { P2[n] = [new Path2D(D.paths[n].join(' '))]; });
-  // each letter: final place (line, x) and, for G R Y, where it sits in the compact logo
-  var items = [];
-  D.l1.forEach(function (l, i) { items.push({ n: l[0], fx: l[1], fy: 0, i: i }); });
-  D.l2.forEach(function (l, i) { items.push({ n: l[0], fx: l[1], fy: 511 + LG, i: 6 + i }); });
-  items[0].logo = [D.gry[0][1], 0]; items[1].logo = [D.gry[1][1], 0]; items[7].logo = [D.gry[2][1], 0]; items[7].n0 = 'Y';
+  var D = {"paths":{"G":"M288 260H518V475H55Q0 475 0 420V95Q0 40 55 40H518","R":"M0 475V260H393A110 110 0 0 0 393 40H0 M273 262L506 511","R2":"M0 475V40H393A110 110 0 0 1 393 260H0 M273 262L506 511","O":"M55 40H463Q518 40 518 95V420Q518 475 463 475H55Q0 475 0 420V95Q0 40 55 40Z","W":"M0 40V420Q0 475 55 475H545Q600 475 600 420V40 M300 475V150","T":"M0 40H470 M235 40V475","H":"M0 40V475 M500 40V475 M0 258H500","Y":"M0 118L177 268V475 M327 38V88Q327 128 294 158L177 268","D":"M0 40H282A217.5 217.5 0 0 1 282 475H0Z","E":"M480 40H55Q0 40 0 95V420Q0 475 55 475H480 M0 258H400","S":"M500 40H55Q0 40 0 95V203Q0 258 55 258H445Q500 258 500 313V420Q500 475 445 475H0"},"full":[["G",35.0,518],["R",710.0,513],["O",1380.0,518],["W",2055.0,600],["T",2812.0,470],["H",3439.0,500],["R2",4096.0,513],["Y",4766.0,327],["D",5250.0,500],["E",5907.0,480],["R2",6544.0,513],["S",7214.0,500]],"wf":7749,"l1":[["G",35.0,518],["R",710.0,513],["O",1380.0,518],["W",2055.0,600],["T",2812.0,470],["H",3439.0,500]],"l2":[["R2",35.0,513],["Y",705.0,327],["D",1189.0,500],["E",1846.0,480],["R2",2483.0,513],["S",3153.0,500]],"w1":3974,"w2":3688,"gry":[["G",35.0,518],["R",710.0,513],["Y",1380.0,327]],"wg":1742}, ctx = cv.getContext('2d'), reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var INK = '#170e22', GOLD = '#F5B321', LG = 150, N = 12, FW = 960, FH = 540, P = {}, img = new Image();
+  var W = 0, H = 0, dpr = 1, k = 1, SX = 0, SY = 0, wordW = 0, wordH = 511, items = [], t0 = 0, raf = 0, done = false, started = false;
+  Object.keys(D.paths).forEach(function (n) { P[n] = new Path2D(D.paths[n]); });
+  var TA = 2.2, TB = 1.3, TM = 0.9, STEP = 0.24, TD = 0.9, TG = 1.5;       // card flips, card becomes G R Y, reframe, per letter, settle, glint
+  var layer = document.createElement('canvas'), tmp = document.createElement('canvas'), lx = layer.getContext('2d'), tx = tmp.getContext('2d');
   function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
-  function fit() {
-    var r = hero.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, 2); W = r.width; H = r.height;
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-    var box = hero.querySelector('.word-slot').getBoundingClientRect();
-    k = box.width / D.w1; X0 = box.left - r.left; Y0 = box.top - r.top;
-    hero.style.setProperty('--word-h', ((511 * 2 + LG) * k) + 'px');
+  function out(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
+  function layout() {
+    var r = hero.getBoundingClientRect(), box = hero.querySelector('.word-slot').getBoundingClientRect(), two = true, order = 0;
+    dpr = Math.min(window.devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = layer.width = tmp.width = Math.round(W * dpr); cv.height = layer.height = tmp.height = Math.round(H * dpr);
+    items = [];
+    if (two) { D.l1.forEach(function (l) { items.push({ n: l[0], x: l[1], y: 0, w: l[2] }); }); D.l2.forEach(function (l) { items.push({ n: l[0], x: l[1], y: 511 + LG, w: l[2] }); }); wordW = D.w1; wordH = 511 * 2 + LG; }
+    else { D.full.forEach(function (l) { items.push({ n: l[0], x: l[1], y: 0, w: l[2] }); }); wordW = D.wf; wordH = 511; }
+    items[0].logo = [D.gry[0][1], 0]; items[1].logo = [D.gry[1][1], 0]; items[7].logo = [D.gry[2][1], 0];
+    items.forEach(function (it, i) { it.i = i; if (!it.logo) it.ord = order++; });
+    k = box.width / wordW; SX = box.left - r.left; SY = box.top - r.top;
+    hero.style.setProperty('--word-h', (wordH * k) + 'px');
+    // the settled name: solid letters with a soft pearl-to-lilac sheen, drawn once and kept
+    var z = dpr * k; lx.setTransform(1, 0, 0, 1, 0, 0); lx.clearRect(0, 0, layer.width, layer.height); lx.lineWidth = 70; lx.lineJoin = 'miter'; lx.miterLimit = 6;
+    items.forEach(function (it) {
+      lx.setTransform(z, 0, 0, z, dpr * SX + z * it.x, dpr * SY + z * it.y); lx.save(); lx.beginPath(); lx.rect(-60, 0, it.w + 120, 511); lx.clip();
+      var g = lx.createLinearGradient(0, 0, 0, 511); g.addColorStop(0, '#ffffff'); g.addColorStop(.46, '#f6f2fb'); g.addColorStop(.54, '#e4dcf0'); g.addColorStop(1, '#c9bfdd');
+      lx.strokeStyle = g; lx.stroke(P[it.n]); lx.restore();
+    });
+    lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalCompositeOperation = 'source-atop';   // faint brushed grain, only on the letters
+    lx.strokeStyle = 'rgba(255,255,255,.16)'; lx.lineWidth = Math.max(1, dpr * .6); lx.beginPath(); var gy0 = dpr * SY, gy1 = dpr * (SY + wordH * k);
+    for (var gx = dpr * SX - (gy1 - gy0); gx < dpr * (SX + wordW * k); gx += 5 * dpr) { lx.moveTo(gx, gy1); lx.lineTo(gx + (gy1 - gy0) * .55, gy0); } lx.stroke();
+    lx.globalCompositeOperation = 'source-over'; var it1 = items[1];
+    lx.fillStyle = GOLD; lx.beginPath(); lx.arc(dpr * SX + z * it1.x, dpr * SY + z * (it1.y + 150), z * 36, 0, 6.2832); lx.fill();
   }
-  function draw(p) { // p: 0 film only -> 1 name complete
-    var a = ease(p / .42), b = ease((p - .42) / .58);
-    var S1 = Math.min(.62 * W / (D.wg * k), .5 * H / (511 * k)), S0 = S1 * 7, s = b > 0 ? S1 + (1 - S1) * b : S0 + (S1 - S0) * a;
-    var fgx = X0 + D.wg * k / 2, fgy = Y0 + 255 * k, px = W / 2, py = H / 2;
-    var Fx = fgx + (px - fgx) * b, Fy = fgy + (py - fgy) * b, Cx = W / 2, Cy = H / 2;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H);
-    ctx.globalAlpha = Math.min(1, p / .16); ctx.fillStyle = INK; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
-    var m = [dpr * s * k, 0, 0, dpr * s * k, dpr * (Cx + s * (X0 - Fx)), dpr * (Cy + s * (Y0 - Fy))], dot = null;
-    ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 70; ctx.lineJoin = 'miter'; ctx.miterLimit = 6;
+  function cover(c, ix, dx, dy, dw, dh) { // draw still number ix to fill a box
+    var sw = FW, sh = FH, ar = dw / dh; if (ar > FW / FH) sh = FW / ar; else sw = FH * ar;
+    c.drawImage(img, (ix % 4) * FW + (FW - sw) / 2, Math.floor(ix / 4) * FH + (FH - sh) / 2, sw, sh, dx, dy, dw, dh);
+  }
+  function rrect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function settled(g) { // the finished name, with the glint sweeping across when g is between 0 and 1
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    if (g <= 0 || g >= 1) { ctx.drawImage(layer, 0, 0); return; }
+    tx.setTransform(1, 0, 0, 1, 0, 0); tx.globalCompositeOperation = 'source-over'; tx.clearRect(0, 0, tmp.width, tmp.height); tx.drawImage(layer, 0, 0);
+    var x0 = dpr * SX, ww = dpr * wordW * k, hh = dpr * wordH * k, bw = Math.max(90 * dpr, ww * .09), xc = x0 - bw * 2 + (ww + bw * 4) * ease(g);
+    var gr = tx.createLinearGradient(xc - bw, 0, xc + bw, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.42, 'rgba(255,240,205,.55)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(.58, 'rgba(255,240,205,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    tx.globalCompositeOperation = 'source-atop'; tx.fillStyle = gr; tx.setTransform(1, 0, -.42, 1, .42 * (dpr * SY + hh / 2), 0); tx.fillRect(xc - bw * 3, dpr * SY - 20, bw * 6, hh + 40);
+    ctx.drawImage(tmp, 0, 0);
+  }
+  function draw(t) {
+    var a = (t - TA) / TB, b = ease(a), m = ease((t - TA - TB) / TM), tl = t - TA - TB - TM * .7, tEnd = TA + TB + TM * .7 + 9 * STEP + .4, d = ease((t - tEnd) / TD), g = (t - tEnd - TD * .7) / TG;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height);
+    if (d >= 1) { settled(g); return g >= 1; }
+    // the card of brand shots
+    var cin = out(t / .5), cw = Math.min(W * (W < 700 ? .88 : .6), 1000) * (.9 + .1 * cin) * (1 - .22 * b), ch = cw * 9 / 16, ca = cin * (1 - Math.min(1, a / .55));
+    if (ca > 0) { ctx.save(); ctx.globalAlpha = ca; rrect(ctx, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch, dpr * 14); ctx.clip(); cover(ctx, Math.floor(t / .22) % N, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch); ctx.restore(); ctx.globalAlpha = 1; }
+    if (a <= 0) return false;
+    // camera: G R Y large in the middle, then the whole name in its place
+    var sG = Math.min(.62 * W / (D.wg * k), .42 * H / (511 * k)), s = (m > 0 ? sG + (1 - sG) * m : sG * (1.9 - .9 * b));
+    var cx = D.wg / 2 + (wordW / 2 - D.wg / 2) * m, cy = 255 + (wordH / 2 - 255) * m;
+    var ax = W / 2 + (SX + wordW * k / 2 - W / 2) * m, ay = H * .47 + (SY + wordH * k / 2 - H * .47) * m, z = dpr * s * k, dot = null, la = Math.min(1, a / .5);
+    ctx.lineWidth = 70; ctx.lineJoin = 'miter'; ctx.miterLimit = 6;
     for (var i = 0; i < items.length; i++) {
-      var it = items[i], x = it.fx, y = it.fy, al = 1;
-      if (it.logo) { x = it.logo[0] + (it.fx - it.logo[0]) * b; y = it.logo[1] + (it.fy - it.logo[1]) * b; }
-      else { al = ease((b - .18 - (it.i % 6) * .045) / .5); if (al <= 0) continue; y += (1 - al) * 60; }
-      ctx.setTransform(m[0], 0, 0, m[3], m[4] + m[0] * x, m[5] + m[3] * y);
-      ctx.save(); ctx.beginPath(); ctx.rect(-60, 0, 800, 511); ctx.clip(); ctx.globalAlpha = al;
-      var ps = P2[it.n]; for (var j = 0; j < ps.length; j++) ctx.stroke(ps[j]);
-      if (b > 0) { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = al * .36 * b; ctx.strokeStyle = '#fff'; for (j = 0; j < ps.length; j++) ctx.stroke(ps[j]); ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = '#000'; }
-      ctx.restore(); if (i === 1) dot = [m[4] + m[0] * x, m[5] + m[3] * (y + 150), m[0] * 36];
+      var it = items[i], x = it.x, y = it.y, al = la, pop = 1;
+      if (it.logo) { x = it.logo[0] + (it.x - it.logo[0]) * m; y = it.logo[1] + (it.y - it.logo[1]) * m; }
+      else { var q = (tl - it.ord * STEP) / .36; if (q <= 0) continue; al = Math.min(1, q * 1.5); pop = .7 + .3 * out(q); }
+      var ox = dpr * ax + z * (x - cx), oy = dpr * ay + z * (y - cy), zz = z * pop, px = ox + z * it.w / 2 * (1 - pop), py = oy + z * 255 * (1 - pop);
+      // each letter is cut from its own brand shot: stamp the shape, then pour the picture into it
+      tx.setTransform(1, 0, 0, 1, 0, 0); tx.globalCompositeOperation = 'source-over'; var bx = Math.floor(px - 60 * zz), by = Math.floor(py - 4), bw2 = Math.ceil((it.w + 120) * zz), bh2 = Math.ceil(519 * zz);
+      tx.clearRect(bx - 2, by - 2, bw2 + 4, bh2 + 4); tx.save(); tx.beginPath(); tx.rect(bx, py, bw2, 511 * zz); tx.clip();
+      tx.setTransform(zz, 0, 0, zz, px, py); tx.lineWidth = 70; tx.lineJoin = 'miter'; tx.miterLimit = 6; tx.strokeStyle = '#fff'; tx.stroke(P[it.n]);
+      tx.globalCompositeOperation = 'source-in'; cover(tx, (Math.floor((t + i * .09) / .26) + i * 5) % N, -45, -8, it.w + 90, 527); tx.restore();
+      ctx.globalAlpha = al * (1 - d); ctx.drawImage(tmp, bx, by, bw2, bh2, bx, by, bw2, bh2);
+      if (i === 1) dot = [px, py + zz * 150, zz * 36];
     }
-    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = Math.min(1, p / .16);
-    if (dot) { ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(dot[0], dot[1], dot[2], 0, 6.2832); ctx.fill(); } ctx.globalAlpha = 1;
+    ctx.globalAlpha = la * (1 - d); if (dot) { ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(dot[0], dot[1], dot[2], 0, 6.2832); ctx.fill(); }
+    if (d > 0) { ctx.globalAlpha = d; ctx.drawImage(layer, 0, 0); } ctx.globalAlpha = 1; return false;
   }
-  function finish() { done = true; draw(1); hero.classList.add('settled'); try { sessionStorage.setItem('gry-word', '1'); } catch (e) {} }
-  function play(t) { if (!t0) t0 = t; var el = (t - t0) / 1000, p = el < 1.5 ? 0 : (el - 1.5) / 3.3; if (p >= 1) return finish(); draw(p); raf = requestAnimationFrame(play); }
+  function finish() { done = true; cancelAnimationFrame(raf); draw(1e3); hero.classList.add('settled'); try { sessionStorage.setItem('gry-word', '1'); } catch (e) {} }
+  function tick(now) { if (done) return; if (!t0) t0 = now; var t = (now - t0) / 1000; if (!hero.classList.contains('settled') && t > TA + TB + TM * .7 + 9 * STEP + .4 + TD * .6) hero.classList.add('settled'); if (draw(t)) return finish(); raf = requestAnimationFrame(tick); }
+  // a second glint when the pointer comes to the name
+  var gl0 = 0; function glint(now) { if (!gl0) gl0 = now; var g = (now - gl0) / (TG * 1000); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height); settled(g); if (g < 1) requestAnimationFrame(glint); else gl0 = 0; }
+  hero.querySelector('.word-slot').addEventListener('pointerenter', function () { if (done && !gl0 && !reduce) requestAnimationFrame(glint); });
   var seen = false; try { seen = sessionStorage.getItem('gry-word') === '1'; } catch (e) {}
-  function start() { fit(); if (reduce || seen) finish(); else { draw(0); raf = requestAnimationFrame(play); } }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
-  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { fit(); if (done) draw(1); }, 120); });
-  hero.addEventListener('click', function (e) { if (!done && !e.target.closest('a,button')) { cancelAnimationFrame(raf); finish(); } });
+  function go() { if (started || done) return; started = true; raf = requestAnimationFrame(tick); }
+  function boot() {
+    layout();
+    if (reduce || seen) return finish();
+    draw(0);
+    // wait for the logo intro (if it is playing) to hand over, then roll
+    var body = document.body, introOn = document.documentElement.classList.contains('intro-on');
+    if (!introOn) return setTimeout(go, 250);
+    var mo = new MutationObserver(function () { if (!document.documentElement.classList.contains('intro-on')) { mo.disconnect(); setTimeout(go, 150); } });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] }); setTimeout(go, 6000);
+  }
+  img.onload = function () { if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot); else boot(); };
+  img.onerror = function () { layout(); P && finish(); };
+  img.src = cv.getAttribute('data-src');
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (!img.complete) return; layout(); if (done) draw(1e3); }, 120); });
+  hero.addEventListener('click', function (e) { if (started && !done && !e.target.closest('a,button')) finish(); });
 })();

@@ -71,7 +71,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=12">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=14">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -164,10 +164,7 @@ def marquee():
 # ---------------------------------------------------------------- HOME
 home = f'''
 <section class="hero hero-word on-dark">
-  <video autoplay muted loop playsinline preload="auto" poster="{{r}}assets/img/hero-poster.jpg" aria-hidden="true">
-    <source src="{{r}}assets/video/hero.mp4?v=3" type="video/mp4">
-  </video>
-  <canvas class="word-veil" aria-hidden="true"></canvas>
+  <canvas class="word-veil" data-src="{{r}}assets/img/flip.jpg?v=1" aria-hidden="true"></canvas>
   <div class="wrap">
     <h1 class="word-slot"><span>Growthryders</span></h1>
     <div class="word-copy">
@@ -182,9 +179,8 @@ home = f'''
     </div>
     <ul class="hero-services">{''.join(f'<li><a href="{{r}}services.html#{k}">{t.split(" and ")[0]}</a></li>' for k, t, d, cs in SERVICES)}</ul>
   </div>
-  <button class="hero-pause" type="button">Pause video</button>
 </section>
-<script src="{{r}}assets/js/word.js?v=3" defer></script>
+<script src="{{r}}assets/js/word.js?v=6" defer></script>
 {marquee()}
 
 <section class="sec white on-light"><div class="wrap split">
@@ -264,7 +260,7 @@ home = f'''
 import re
 if not FILMS_LIVE: home = re.sub(r'<section class="sec white on-light films-sec">.*?</dialog>\n', '', home, flags=re.S)
 page('index.html', 'Growthryders | Brand activations and integrated marketing, Bengaluru',
-     'Growthryders is a Bengaluru brand activation and through-the-line marketing company. Activations, digital, experiential, media and corporate events.', home, 'dark', intro=False)
+     'Growthryders is a Bengaluru brand activation and through-the-line marketing company. Activations, digital, experiential, media and corporate events.', home, 'dark', intro=True)
 
 # ---------------------------------------------------------------- ABOUT
 about = f'''

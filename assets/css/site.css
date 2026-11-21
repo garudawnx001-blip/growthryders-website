@@ -482,3 +482,18 @@ p{margin:0 0 1em;max-width:62ch}
   .site-head{background:transparent}.site-head.scrolled{background:rgba(23,14,34,.96)}
 }
 .hero-word video{filter:brightness(1.12) saturate(1.08)}
+
+/* ============ v13: title card — one line on wide screens, two on phones; the name settles in white ============ */
+.hero-word .word-slot{height:var(--word-h,calc((100vw - 2*var(--gut))*.066))}
+.hero-word .wrap{padding-top:clamp(150px,24vh,230px)}
+.hero-word .word-copy{margin-top:clamp(36px,7vh,76px)}
+@media (max-width:860px){
+  .hero-word .word-slot{height:var(--word-h,calc((100vw - 2*var(--gut))*.295))}
+  .hero-word .wrap{padding-top:118px}
+  .hero-word .word-copy{margin-top:26px}
+}
+.hero.hero-word{min-height:min(100svh,920px);display:flex;align-items:center}
+.hero-word .wrap{width:min(var(--wrap),100% - 2*var(--gut));padding:clamp(96px,13vh,130px) 0 clamp(24px,4vh,40px)}
+.hero-word .word-slot{width:min(100%,1040px);margin-inline:auto;height:var(--word-h,calc(min(100vw - 2*var(--gut),1040px)*.295))}
+.hero-word .word-copy{margin-top:clamp(30px,5.5vh,60px)}
+@media (max-width:860px){.hero.hero-word{min-height:min(100svh,780px)}.hero-word .wrap{padding-top:104px}.hero-word .word-slot{height:var(--word-h,calc((100vw - 2*var(--gut))*.295))}}
