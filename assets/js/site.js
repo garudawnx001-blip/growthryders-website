@@ -11,18 +11,19 @@
   var intro = document.getElementById('intro');
   function ready() { body.classList.add('ready'); }
   if (intro && doc.classList.contains('intro-on')) {
-    var done = false;
+    var done = false, logo = intro.querySelector('.intro-logo'), brand = document.querySelector('.site-head .brand');
+    // hand-off: the mark travels from the centre of the screen to its place in the header while the page fades up behind it
     var finish = function (fast) {
       if (done) return; done = true;
       try { sessionStorage.setItem('gry-intro', '1'); } catch (e) {}
-      if (fast) { intro.style.animation = 'introReveal .6s cubic-bezier(.65,0,.2,1) forwards'; }
+      var to = brand.querySelector('svg').getBoundingClientRect(), from = logo.getBoundingClientRect();
+      intro.classList.add('leaving'); if (fast) intro.classList.add('fast');
+      void logo.offsetWidth;
+      logo.style.transform = 'translate(' + (to.left - from.left) + 'px,' + (to.top - from.top) + 'px) scale(' + (to.width / from.width) + ')';
       ready();
-      setTimeout(function () { doc.classList.remove('intro-on'); intro.remove(); }, fast ? 650 : 1000);
+      setTimeout(function () { doc.classList.remove('intro-on'); brand.classList.add('landed'); intro.remove(); }, fast ? 620 : 1080);
     };
-    var dot = intro.querySelector('.rider');
-    var aim = function () { if (!dot) return; var b = dot.getBoundingClientRect(); intro.style.setProperty('--cx', (b.left + b.width / 2) + 'px'); intro.style.setProperty('--cy', (b.top + b.height / 2) + 'px'); };
-    aim(); window.addEventListener('resize', aim); setTimeout(aim, 1200); setTimeout(aim, 3100);
-    setTimeout(function () { finish(false); }, 3350);
+    setTimeout(function () { finish(false); }, 3300);
     intro.querySelector('.intro-skip').addEventListener('click', function () { finish(true); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') finish(true); });
   } else {

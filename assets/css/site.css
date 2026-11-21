@@ -327,3 +327,16 @@ p{margin:0 0 1em;max-width:62ch}
 @keyframes dotIn{to{transform:scale(1)}}
 @keyframes ringOut{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(4.2)}}
 @keyframes rayIn{0%{stroke-dashoffset:.3}85%{opacity:.9}100%{stroke-dashoffset:-1;opacity:0}}
+
+/* ============ intro v3 hand-off: the mark travels to the header, the page fades up behind it ============ */
+.intro-on .intro{animation:none;-webkit-mask:none;mask:none;transition:background-color 1s cubic-bezier(.5,0,.2,1)}
+.intro-on .site-head .brand svg{opacity:0}
+.intro-logo{transform-origin:0 0}
+.intro.leaving{background-color:rgba(23,14,34,0);pointer-events:none}
+.intro.leaving .intro-logo{transition:transform 1.02s cubic-bezier(.72,0,.14,1);will-change:transform}
+.intro.leaving .intro-word,.intro.leaving .intro-tag,.intro.leaving .intro-skip{opacity:0;transition:opacity .28s ease}
+.intro.leaving .rays,.intro.leaving .ring{display:none}
+.intro.leaving.fast{transition-duration:.55s}.intro.leaving.fast .intro-logo{transition-duration:.58s}
+.brand.landed svg circle{transform-box:fill-box;transform-origin:center;animation:dotLand .9s cubic-bezier(.2,.8,.2,1)}
+@keyframes dotLand{0%{transform:scale(1)}35%{transform:scale(1.9)}100%{transform:scale(1)}}
+.js .hero .lede,.js .hero .btn-row{transition-delay:.55s}
