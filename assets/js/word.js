@@ -3,10 +3,11 @@
 (function () {
   var hero = document.querySelector('.hero-word'), cv = hero && hero.querySelector('.word-veil'); if (!cv) return;
   var D = {"paths":{"G":"M288 260H518V475H55Q0 475 0 420V95Q0 40 55 40H518","R":"M0 475V260H393A110 110 0 0 0 393 40H0 M273 262L506 511","R2":"M0 475V40H393A110 110 0 0 1 393 260H0 M273 262L506 511","O":"M55 40H463Q518 40 518 95V420Q518 475 463 475H55Q0 475 0 420V95Q0 40 55 40Z","W":"M0 40V420Q0 475 55 475H545Q600 475 600 420V40 M300 475V150","T":"M0 40H470 M235 40V475","H":"M0 40V475 M500 40V475 M0 258H500","Y":"M0 118L177 268V475 M327 38V88Q327 128 294 158L177 268","D":"M0 40H282A217.5 217.5 0 0 1 282 475H0Z","E":"M480 40H55Q0 40 0 95V420Q0 475 55 475H480 M0 258H400","S":"M500 40H55Q0 40 0 95V203Q0 258 55 258H445Q500 258 500 313V420Q500 475 445 475H0"},"full":[["G",35.0,518],["R",710.0,513],["O",1380.0,518],["W",2055.0,600],["T",2812.0,470],["H",3439.0,500],["R2",4096.0,513],["Y",4766.0,327],["D",5250.0,500],["E",5907.0,480],["R2",6544.0,513],["S",7214.0,500]],"wf":7749,"l1":[["G",35.0,518],["R",710.0,513],["O",1380.0,518],["W",2055.0,600],["T",2812.0,470],["H",3439.0,500]],"l2":[["R2",35.0,513],["Y",705.0,327],["D",1189.0,500],["E",1846.0,480],["R2",2483.0,513],["S",3153.0,500]],"w1":3974,"w2":3688,"gry":[["G",35.0,518],["R",710.0,513],["Y",1380.0,327]],"wg":1742}, ctx = cv.getContext('2d'), reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NAMES = ["TVS Apache", "Royal Enfield", "TVS Apache", "Royal Enfield Guerrilla 450", "Bagmane Tech Park", "TVS Apache", "Royal Enfield", "Axis Bank", "Royal Enfield Continental GT", "Royal Enfield", "Bagmane REIT, Milky Mist, GRY", "Royal Enfield Classic 350"];
   var INK = '#170e22', GOLD = '#F5B321', LG = 150, N = 12, FW = 960, FH = 540, P = {}, img = new Image();
   var W = 0, H = 0, dpr = 1, k = 1, SX = 0, SY = 0, wordW = 0, wordH = 511, items = [], t0 = 0, raf = 0, done = false, started = false;
   Object.keys(D.paths).forEach(function (n) { P[n] = new Path2D(D.paths[n]); });
-  var TA = 2.2, TB = 1.3, TM = 0.9, STEP = 0.24, TD = 0.9, TG = 1.5;       // card flips, card becomes G R Y, reframe, per letter, settle, glint
+  var TA = 2.64, TB = 2.5, TM = 0.9, STEP = 0.24, TD = 0.9, TG = 1.5;       // card flips, card becomes G R Y, reframe, per letter, settle, glint
   var layer = document.createElement('canvas'), tmp = document.createElement('canvas'), lx = layer.getContext('2d'), tx = tmp.getContext('2d');
   function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
   function out(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
@@ -22,15 +23,20 @@
     hero.style.setProperty('--word-h', (wordH * k) + 'px');
     // the settled name: solid letters with a soft pearl-to-lilac sheen, drawn once and kept
     var z = dpr * k; lx.setTransform(1, 0, 0, 1, 0, 0); lx.clearRect(0, 0, layer.width, layer.height); lx.lineWidth = 70; lx.lineJoin = 'miter'; lx.miterLimit = 6;
-    items.forEach(function (it) {
-      lx.setTransform(z, 0, 0, z, dpr * SX + z * it.x, dpr * SY + z * it.y); lx.save(); lx.beginPath(); lx.rect(-60, 0, it.w + 120, 511); lx.clip();
-      var g = lx.createLinearGradient(0, 0, 0, 511); g.addColorStop(0, '#ffffff'); g.addColorStop(.46, '#f6f2fb'); g.addColorStop(.54, '#e4dcf0'); g.addColorStop(1, '#c9bfdd');
-      lx.strokeStyle = g; lx.stroke(P[it.n]); lx.restore();
+    var depth = Math.max(3, Math.round(wordH * k * dpr * .028));
+    for (var pass = 0; pass < 3; pass++) items.forEach(function (it) {
+      var bx0 = dpr * SX + z * it.x, by0 = dpr * SY + z * it.y, g;
+      if (pass === 0) { // the block behind the face: a short extrusion down and to the right
+        for (var e = depth; e >= 1; e--) { lx.setTransform(z, 0, 0, z, bx0 + e * .55, by0 + e); lx.strokeStyle = e > depth * .6 ? '#241536' : '#3a2459'; lx.stroke(P[it.n]); }
+        return;
+      }
+      lx.setTransform(z, 0, 0, z, bx0, by0); lx.save(); lx.beginPath(); lx.rect(-60, -40, it.w + 120, 560); lx.clip();
+      if (pass === 1) { g = lx.createLinearGradient(0, 0, it.w, 511); g.addColorStop(0, '#ffffff'); g.addColorStop(.5, '#b9adcf'); g.addColorStop(1, '#7f7399'); lx.lineWidth = 70; lx.strokeStyle = g; lx.stroke(P[it.n]); }
+      else { g = lx.createLinearGradient(0, 0, 0, 511); g.addColorStop(0, '#ffffff'); g.addColorStop(.42, '#f7f4fb'); g.addColorStop(.58, '#e6dff1'); g.addColorStop(1, '#d2c8e4'); lx.lineWidth = 52; lx.strokeStyle = g; lx.stroke(P[it.n]); }
+      lx.restore();
     });
-    lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalCompositeOperation = 'source-atop';   // faint brushed grain, only on the letters
-    lx.strokeStyle = 'rgba(255,255,255,.16)'; lx.lineWidth = Math.max(1, dpr * .6); lx.beginPath(); var gy0 = dpr * SY, gy1 = dpr * (SY + wordH * k);
-    for (var gx = dpr * SX - (gy1 - gy0); gx < dpr * (SX + wordW * k); gx += 5 * dpr) { lx.moveTo(gx, gy1); lx.lineTo(gx + (gy1 - gy0) * .55, gy0); } lx.stroke();
-    lx.globalCompositeOperation = 'source-over'; var it1 = items[1];
+    lx.lineWidth = 70;
+    lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalCompositeOperation = 'source-over'; var it1 = items[1];
     lx.fillStyle = GOLD; lx.beginPath(); lx.arc(dpr * SX + z * it1.x, dpr * SY + z * (it1.y + 150), z * 36, 0, 6.2832); lx.fill();
   }
   function cover(c, ix, dx, dy, dw, dh) { // draw still number ix to fill a box
@@ -52,13 +58,20 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = INK; ctx.fillRect(0, 0, cv.width, cv.height);
     if (d >= 1) { settled(g); return g >= 1; }
     // the card of brand shots
-    var cin = out(t / .5), cw = Math.min(W * (W < 700 ? .88 : .6), 1000) * (.9 + .1 * cin) * (1 - .22 * b), ch = cw * 9 / 16, ca = cin * (1 - Math.min(1, a / .55));
-    if (ca > 0) { ctx.save(); ctx.globalAlpha = ca; rrect(ctx, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch, dpr * 14); ctx.clip(); cover(ctx, Math.floor(t / .22) % N, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch); ctx.restore(); ctx.globalAlpha = 1; }
+    var cin = out(t / .5), cw = Math.min(W * (W < 700 ? .88 : .6), 1000) * (.9 + .1 * cin) * (1 + .5 * Math.max(0, Math.min(1, a / .2))), ch = cw * 9 / 16, ca = cin * (1 - Math.min(1, Math.max(0, a) / .2));
+    if (ca > 0) { ctx.save(); ctx.globalAlpha = ca; rrect(ctx, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch, dpr * 14); ctx.clip(); cover(ctx, Math.floor(t / .22) % N, dpr * (W - cw) / 2, dpr * (H * .47 - ch / 2), dpr * cw, dpr * ch); ctx.restore();
+      // say whose brand is on screen
+      ctx.globalAlpha = ca; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; var fs = Math.round((W < 700 ? 15 : 18) * dpr);
+      ctx.font = '600 ' + Math.round(fs * .78) + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = GOLD; ctx.fillText('Brands we have activated', dpr * W / 2, dpr * (H * .47 - ch / 2) - fs * 1.5);
+      ctx.font = '700 ' + fs + 'px Archivo, system-ui, sans-serif'; ctx.fillStyle = '#fff'; ctx.fillText(NAMES[Math.floor(t / .22) % N], dpr * W / 2, dpr * (H * .47 + ch / 2) + fs * 1.7);
+      ctx.globalAlpha = 1; }
     if (a <= 0) return false;
     // camera: G R Y large in the middle, then the whole name in its place
-    var sG = Math.min(.62 * W / (D.wg * k), .42 * H / (511 * k)), s = (m > 0 ? sG + (1 - sG) * m : sG * (1.9 - .9 * b));
-    var cx = D.wg / 2 + (wordW / 2 - D.wg / 2) * m, cy = 255 + (wordH / 2 - 255) * m;
-    var ax = W / 2 + (SX + wordW * k / 2 - W / 2) * m, ay = H * .47 + (SY + wordH * k / 2 - H * .47) * m, z = dpr * s * k, dot = null, la = Math.min(1, a / .5);
+    var sG = Math.min(.62 * W / (D.wg * k), .42 * H / (511 * k)), gl = ease(Math.min(1, a / .62)), pb = ease((a - .62) / .38), near = sG * (W < 700 ? 2.6 : 3.4);
+    var s = m > 0 ? sG + (1 - sG) * m : near + (sG - near) * pb;
+    var gx0 = D.gry[0][1] + 200, gx1 = D.gry[2][1] + 170, glx = gx0 + (gx1 - gx0) * gl;      // glide from the G across to the Y
+    var cx = m > 0 ? D.wg / 2 + (wordW / 2 - D.wg / 2) * m : glx + (D.wg / 2 - glx) * pb, cy = 255 + (wordH / 2 - 255) * m;
+    var ax = W / 2 + (SX + wordW * k / 2 - W / 2) * m, ay = H * .47 + (SY + wordH * k / 2 - H * .47) * m, z = dpr * s * k, dot = null, la = Math.min(1, a / .22);
     ctx.lineWidth = 70; ctx.lineJoin = 'miter'; ctx.miterLimit = 6;
     for (var i = 0; i < items.length; i++) {
       var it = items[i], x = it.x, y = it.y, al = la, pop = 1;
@@ -70,7 +83,10 @@
       tx.clearRect(bx - 2, by - 2, bw2 + 4, bh2 + 4); tx.save(); tx.beginPath(); tx.rect(bx, py, bw2, 511 * zz); tx.clip();
       tx.setTransform(zz, 0, 0, zz, px, py); tx.lineWidth = 70; tx.lineJoin = 'miter'; tx.miterLimit = 6; tx.strokeStyle = '#fff'; tx.stroke(P[it.n]);
       tx.globalCompositeOperation = 'source-in'; cover(tx, (Math.floor((t + i * .09) / .26) + i * 5) % N, -45, -8, it.w + 90, 527); tx.restore();
-      ctx.globalAlpha = al * (1 - d); ctx.drawImage(tmp, bx, by, bw2, bh2, bx, by, bw2, bh2);
+      var vx = (dpr * W / 2 - (px + zz * it.w / 2)) * .012, vy = Math.max(2, zz * 9), dn = zz * 511 > 220 * dpr ? 7 : 4;
+      ctx.globalAlpha = al * (1 - d); ctx.lineWidth = 70; ctx.lineJoin = 'miter'; ctx.miterLimit = 6;
+      for (var e = dn; e >= 1; e--) { ctx.setTransform(zz, 0, 0, zz, px + vx * e, py + vy * e / dn * 1.6); ctx.strokeStyle = e > dn * .5 ? '#22132f' : '#3b2559'; ctx.stroke(P[it.n]); }
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(tmp, bx, by, bw2, bh2, bx, by, bw2, bh2);
       if (i === 1) dot = [px, py + zz * 150, zz * 36];
     }
     ctx.globalAlpha = la * (1 - d); if (dot) { ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(dot[0], dot[1], dot[2], 0, 6.2832); ctx.fill(); }
