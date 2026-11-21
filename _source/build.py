@@ -69,7 +69,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=5">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=6">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -96,7 +96,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js?v=4" defer></script>
+<script src="{r}assets/js/site.js?v=6" defer></script>
 </body>
 </html>
 '''
@@ -118,12 +118,18 @@ CTA = '''<section class="cta"><div class="wrap">
 </div></section>'''
 
 SERVICES = [
- ('activations', 'Brand activations and TTL marketing', 'Consumer engagement on the ground, amplified across every channel that reaches the same people.'),
- ('digital', 'Digital marketing', 'Search, social, content, websites and performance campaigns that keep the conversation going.'),
- ('experiential', 'Experiential marketing', 'Launches, installations and interactive formats that turn communication into something people remember.'),
- ('media', 'Media solutions', 'Planning and buying across outdoor, transit, print, radio, corporate parks, malls and retail.'),
- ('events', 'Corporate events and engagement', 'Conferences, dealer meets, summits, awards and employee programmes, concept to close.'),
- ('experiential', 'Technology-led experiences', 'Installations, AR and VR, gamification and interactive digital formats built into the activation.'),
+ ('activations', 'Brand activations and TTL marketing', 'Consumer engagement on the ground, amplified across every channel that reaches the same people.',
+  ['Corporate park activations', 'Mall and public space promotions', 'Product sampling', 'Roadshows', 'Campus and residential activations', 'Brand launches']),
+ ('digital', 'Digital marketing', 'Search, social, content, websites and performance campaigns that keep the conversation going.',
+  ['SEO and GEO', 'Performance marketing', 'Social media management', 'Content creation', 'Website design and development', 'Lead generation']),
+ ('experiential', 'Experiential marketing', 'Launches, installations and interactive formats that turn communication into something people remember.',
+  ['Product launches', 'Trade shows and exhibitions', 'Immersive brand storytelling', 'Employee and partner engagement']),
+ ('media', 'Media solutions', 'Planning and buying across outdoor, transit, print, radio, corporate parks, malls and retail.',
+  ['Outdoor and digital outdoor', 'Transit and airport media', 'Print and radio', 'Corporate park media', 'Mall and retail media']),
+ ('events', 'Corporate events and engagement', 'Conferences, dealer meets, summits, awards and employee programmes, concept to close.',
+  ['Conferences and annual meets', 'Dealer meets', 'Leadership summits', 'Awards', 'Employee engagement programmes']),
+ ('experiential', 'Technology-led experiences', 'Installations, AR and VR, gamification and interactive digital formats built into the activation.',
+  ['Technology-led installations', 'Augmented and virtual reality', 'Gamification', 'Interactive digital experiences']),
 ]
 
 TRL_BIBS = [('Tu Race Laga', '1,600', 'participants and guests on event day, approximately'), ('Bagmane', '5', 'business park locations'),
@@ -156,8 +162,8 @@ def marquee():
 # ---------------------------------------------------------------- HOME
 home = f'''
 <section class="hero on-dark">
-  <video autoplay muted loop playsinline preload="metadata" poster="{{r}}assets/img/flagoff.jpg" aria-label="Runners crossing the start line at Tu Race Laga, Bagmane Tech Park">
-    <source src="{{r}}assets/video/hero.mp4" type="video/mp4">
+  <video autoplay muted loop playsinline preload="auto" poster="{{r}}assets/img/hero-poster.jpg" aria-label="Highlights from Growthryders activations: the Tu Race Laga flag-off, TVS Apache and Royal Enfield displays, partner stalls and the finish line">
+    <source src="{{r}}assets/video/hero.mp4?v=2" type="video/mp4">
   </video>
   <div class="wrap">
     <h1><span><i>We activate brands.</i></span><span><i>We create experiences.</i></span><span><i>We drive growth.</i></span></h1>
@@ -179,9 +185,9 @@ home = f'''
 </div></section>
 
 <section class="sec on-light"><div class="wrap">
-  <div class="sec-head"><h2>One partner. Multiple marketing capabilities.</h2></div>
+  <div class="sec-head"><h2>One partner. Multiple marketing capabilities.</h2><p class="lede">Six practices under one roof, so a campaign is planned, built, promoted and run by the same team.</p></div>
   <ul class="svc">
-    {''.join(f'<li><a href="{{r}}services.html#{k}"><h3>{t}</h3><p>{d}</p><span class="go" aria-hidden="true">View</span></a></li>' for k, t, d in SERVICES)}
+    {''.join(f'<li><a href="{{r}}services.html#{k}"><h3>{t}</h3><div><p>{d}</p><ul class="chips">{"".join(f"<li>{c}</li>" for c in cs)}</ul></div><span class="go" aria-hidden="true">View</span></a></li>' for k, t, d, cs in SERVICES)}
   </ul>
 </div></section>
 

@@ -89,15 +89,44 @@
     });
   }
 
+  // ---- hero video: start as soon as it can, never sit frozen
+  if (video && !reduce) {
+    var kick = function () { var p = video.play(); if (p && p.catch) p.catch(function () {}); };
+    video.muted = true; video.addEventListener('canplay', kick, { once: true }); kick();
+    document.addEventListener('visibilitychange', function () { if (!document.hidden && video.paused && pause && pause.textContent === 'Pause video') kick(); });
+  }
+
+  // ---- film strip: glides on its own, loops, and waits while you touch, hover or watch a film
+  var strip = document.querySelector('.strip');
+  if (strip && !reduce) {
+    var kids = [].slice.call(strip.children), held = false, seen = false, x = 0, last = 0;
+    kids.forEach(function (k) { var c = k.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; strip.appendChild(c); });
+    var half = function () { return strip.children[kids.length].offsetLeft - strip.children[0].offsetLeft; };
+    var hold = function (v) { return function () { held = v; if (!v) x = strip.scrollLeft; }; };
+    strip.addEventListener('pointerenter', hold(true)); strip.addEventListener('pointerleave', hold(false));
+    strip.addEventListener('touchstart', hold(true), { passive: true });
+    strip.addEventListener('touchend', function () { setTimeout(hold(false), 2500); }, { passive: true });
+    strip.addEventListener('focusin', hold(true)); strip.addEventListener('focusout', hold(false));
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { seen = e[0].isIntersecting; }, { threshold: 0.15 }).observe(strip); else seen = true;
+    (function glide(t) {
+      var dt = Math.min(48, t - last || 16); last = t;
+      var open = document.getElementById('player'); open = open && open.open;
+      if (seen && !held && !open && !document.hidden) {
+        x += dt * 0.045; var h = half(); if (h > 0 && x >= h) x -= h;
+        strip.scrollLeft = x;
+      } else if (held) { var h2 = half(); if (h2 > 0 && strip.scrollLeft >= h2) strip.scrollLeft -= h2; }
+      requestAnimationFrame(glide);
+    })(0);
+  }
+
   // ---- film player
   var player = document.getElementById('player');
   if (player && player.showModal) {
     var pv = player.querySelector('video'), pt = player.querySelector('.player-title');
-    document.querySelectorAll('.film').forEach(function (b) {
-      b.addEventListener('click', function () {
-        pv.src = b.dataset.film; pt.textContent = b.dataset.title;
-        player.showModal(); pv.play().catch(function () {});
-      });
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.film') : null; if (!b) return;
+      pv.src = b.dataset.film; pt.textContent = b.dataset.title;
+      player.showModal(); pv.play().catch(function () {});
     });
     var close = function () { pv.pause(); pv.removeAttribute('src'); pv.load(); if (player.open) player.close(); };
     player.querySelector('.player-close').addEventListener('click', close);

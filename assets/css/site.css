@@ -344,3 +344,17 @@ p{margin:0 0 1em;max-width:62ch}
 .brand.landed svg circle{transform-box:fill-box;transform-origin:center;animation:dotLand .9s cubic-bezier(.2,.8,.2,1)}
 @keyframes dotLand{0%{transform:scale(1)}35%{transform:scale(1.9)}100%{transform:scale(1)}}
 .js .hero .lede,.js .hero .btn-row{transition-delay:.55s}
+
+/* ============ v6: services detail, auto-moving film carousel, lighter rendering ============ */
+.svc a{align-items:start}
+.chips{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.chips li{border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;color:var(--ink);background:#fff;border-bottom:1px solid var(--line)}
+.svc a:hover .chips li{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35);color:#fff}
+.strip{scroll-snap-type:none;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.strip::-webkit-scrollbar{display:none}
+.strip .film{scroll-snap-align:none}
+.frame img{will-change:auto}
+.hero video{will-change:auto;backface-visibility:hidden}
+@media (max-width:860px){.site-head.scrolled{background:rgba(23,14,34,.96);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-reduced-motion:reduce){.strip{scrollbar-width:thin}}
+.hero::after{background:linear-gradient(180deg,rgba(23,14,34,.6) 0%,rgba(23,14,34,.3) 30%,rgba(23,14,34,.72) 62%,rgba(23,14,34,.94) 100%)}
