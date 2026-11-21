@@ -53,6 +53,8 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     doc = f'''<!doctype html>
 <html lang="en-IN">
 <head>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PNP5VGNQ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
@@ -107,7 +109,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js?v=12" defer></script>
+<script src="{r}assets/js/site.js?v=13" defer></script>
 </body>
 </html>
 '''
@@ -662,16 +664,17 @@ contact = f'''
   <p class="lede">Planning a product launch, a consumer activation, a corporate engagement programme or an integrated campaign? Tell us what you have in mind.</p>
 </div></section>
 <section class="sec white on-light"><div class="wrap split top">
-  <form class="form" id="enquiry" data-wa="{PHONE_E164}" data-mail="{EMAIL}" novalidate>
+  <form class="form" id="enquiry" data-wa="{PHONE_E164}" data-mail="{EMAIL}" data-sheet="https://docs.google.com/forms/d/e/1FAIpQLSctMNhN-DjsVpEqyde7s4aB9yuoeaeNzmaksEA9UIUXBEtMMQ/formResponse" novalidate>
     <h2>Send an enquiry</h2>
     <label>Your name<input name="name" autocomplete="name" required></label>
     <label>Company<input name="company" autocomplete="organization"></label>
+    <label>Phone or email<input name="contact" autocomplete="tel" inputmode="email" required></label>
     <label>What are you looking for?
       <select name="need"><option>Brand activation</option><option>Integrated TTL campaign</option><option>Digital marketing</option><option>Experiential marketing</option><option>Media solutions</option><option>Corporate event</option><option>Partnering on Runcle or Bikers Bay</option><option>Something else</option></select></label>
     <label>Tell us about it<textarea name="note" required></textarea></label>
     <p class="err" role="alert"></p>
     <div class="btn-row" style="margin-top:0"><button class="btn" type="button" data-send="whatsapp">Send on WhatsApp</button><button class="btn ghost" type="button" data-send="email">Send by email</button></div>
-    <p class="note">Your message opens in WhatsApp or your email app, ready to send. Nothing is stored on this site.</p>
+    <p class="note">Your message opens in WhatsApp or your email app, ready to send. Your enquiry is also sent to the Growthryders team so they can follow up.</p>
   </form>
   <div>
     <h2>Reach us directly</h2>
@@ -696,8 +699,11 @@ open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding=
 INDEXNOW = '78d348323012cbff111fa228a2ef64b3'
 open(os.path.join(OUT, INDEXNOW + '.txt'), 'w').write(INDEXNOW)
 open(os.path.join(OUT, 'google3cea24fe400a22ae.html'), 'w').write('google-site-verification: google3cea24fe400a22ae.html')   # Search Console ownership file: keep
+os.makedirs(os.path.join(OUT, 'admin'), exist_ok=True)
+SHEET_URL = 'https://docs.google.com/spreadsheets/d/1eUrwam9PI1eJyy_vO7axUy5-FXNHhSiZd6oVzFnqqLA/edit'
+open(os.path.join(OUT, 'admin', 'index.html'), 'w').write(f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Growthryders admin</title><meta http-equiv="refresh" content="0; url={SHEET_URL}"><style>body{{margin:0;min-height:100vh;display:grid;place-items:center;background:#170e22;color:#fff;font:600 16px/1.5 system-ui,sans-serif;text-align:center;padding:24px}}a{{color:#f5b321}}</style></head><body><p>Opening the Growthryders enquiries sheet. Sign in with your Google account.<br><a href="{SHEET_URL}">Continue</a></p><script>location.replace("{SHEET_URL}")</script></body></html>''')
 BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot']
-open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\n' + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in BOTS) + f'Sitemap: {DOMAIN}/sitemap.xml\n')
+open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nDisallow: /admin/\n\n' + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in BOTS) + f'Sitemap: {DOMAIN}/sitemap.xml\n')
 open(os.path.join(OUT, 'llms.txt'), 'w').write(f'''# Growthryders
 
 > Growthryders (GRY) is a brand activation and through-the-line marketing company based in Bengaluru, Karnataka, India. One team plans and runs activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences.

@@ -172,26 +172,42 @@
     player.addEventListener('close', function () { pv.pause(); });
   }
 
-  // ---- enquiry form: opens WhatsApp or the email app with the message ready
+  // ---- enquiry form: opens WhatsApp or the email app with the message ready, and files the enquiry in the team's sheet
+  function track(name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} }
   var form = document.getElementById('enquiry');
   if (form) {
-    var err = form.querySelector('.err');
-    var message = function () {
-      var d = new FormData(form);
-      var name = (d.get('name') || '').trim(), company = (d.get('company') || '').trim();
-      var need = d.get('need') || '', note = (d.get('note') || '').trim();
-      if (!name || !note) { err.textContent = 'Add your name and a line about what you are planning.'; return null; }
-      err.textContent = '';
-      return 'Hello Growthryders,\n\nName: ' + name + (company ? '\nCompany: ' + company : '') + '\nLooking for: ' + need + '\n\n' + note;
+    var err = form.querySelector('.err'), ENTRY = { name: 'entry.1457202910', company: 'entry.765574579', contact: 'entry.1436458381', need: 'entry.259839848', note: 'entry.1185777336', via: 'entry.1418327185', page: 'entry.885099739', source: 'entry.1439589845' };
+    var read = function () {
+      var d = new FormData(form), v = { name: (d.get('name') || '').trim(), company: (d.get('company') || '').trim(), contact: (d.get('contact') || '').trim(), need: d.get('need') || '', note: (d.get('note') || '').trim() };
+      if (!v.name || !v.note) { err.textContent = 'Add your name and a line about what you are planning.'; return null; }
+      if (!/^\+?[0-9][0-9 ()-]{6,}$/.test(v.contact) && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.contact)) { err.textContent = 'Add a phone number or an email address so we can reply.'; return null; }
+      err.textContent = ''; return v;
+    };
+    var text = function (v) { return 'Hello Growthryders,\n\nName: ' + v.name + (v.company ? '\nCompany: ' + v.company : '') + '\nContact: ' + v.contact + '\nLooking for: ' + v.need + '\n\n' + v.note; };
+    var file = function (v, via) {
+      try {
+        var b = new URLSearchParams(); v.via = via; v.page = location.pathname; v.source = document.referrer ? new URL(document.referrer).hostname : 'Direct';
+        Object.keys(ENTRY).forEach(function (k) { b.append(ENTRY[k], v[k] || ''); });
+        fetch(form.dataset.sheet, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: b.toString() }).catch(function () {});
+      } catch (e) {}
+      track('generate_lead', { method: via, service: v.need });
     };
     form.querySelector('[data-send="whatsapp"]').addEventListener('click', function () {
-      var m = message(); if (!m) return;
-      window.open('https://wa.me/' + form.dataset.wa + '?text=' + encodeURIComponent(m), '_blank', 'noopener');
+      var v = read(); if (!v) return; file(v, 'WhatsApp');
+      window.open('https://wa.me/' + form.dataset.wa + '?text=' + encodeURIComponent(text(v)), '_blank', 'noopener');
     });
     form.querySelector('[data-send="email"]').addEventListener('click', function () {
-      var m = message(); if (!m) return;
-      window.location.href = 'mailto:' + form.dataset.mail + '?subject=' + encodeURIComponent('Enquiry from the Growthryders website') + '&body=' + encodeURIComponent(m);
+      var v = read(); if (!v) return; file(v, 'Email');
+      window.location.href = 'mailto:' + form.dataset.mail + '?subject=' + encodeURIComponent('Enquiry from the Growthryders website') + '&body=' + encodeURIComponent(text(v));
     });
     form.addEventListener('submit', function (e) { e.preventDefault(); form.querySelector('[data-send="whatsapp"]').click(); });
   }
+  // ---- count taps on WhatsApp, phone and email links
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a) return; var h = a.getAttribute('href');
+    if (h.indexOf('wa.me/') > -1) track('contact_click', { method: 'WhatsApp' });
+    else if (h.indexOf('tel:') === 0) track('contact_click', { method: 'Phone' });
+    else if (h.indexOf('mailto:') === 0) track('contact_click', { method: 'Email' });
+  });
+
 })();
