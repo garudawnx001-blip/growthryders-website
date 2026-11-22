@@ -87,7 +87,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=30">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=31">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -687,7 +687,7 @@ SP_CAPS = [
 SP_INDUSTRIES = ['Sports and Fitness IPs', 'Lifestyle and Entertainment Events', 'B2B Conferences and Conclaves', 'Industry Summits and Trade Shows', 'Corporate Events and Business Platforms', 'Education and Institutional Events', 'Exhibitions and Trade Fairs', 'Consumer and Community IPs', 'Festivals and Destination Events']
 sponsorship = f'''
 <section class="page-head on-dark"><div class="wrap">
-  <h1>SPONSORSHIP SALES &amp; REVENUE MANAGEMENT</h1>
+  <h1 class="caps-h">SPONSORSHIP SALES &amp; REVENUE MANAGEMENT</h1>
   <p class="lede">Turning Intellectual Properties Into Revenue Opportunities.</p>
   <p class="sp-tag"><strong>A Sponsorship Sales KPO powered by AI intelligence and human expertise.</strong></p>
   <div class="btn-row"><a class="btn" href="{{r}}contact.html">Start a conversation</a><a class="btn ghost wi" href="https://wa.me/{PHONE_E164}">{IC_CHAT}WhatsApp us</a><a class="btn ghost wi" href="tel:+{PHONE_E164}">{IC_CALL}Call us</a></div>
@@ -702,21 +702,21 @@ sponsorship = f'''
   </div>
 </div></section>
 <section class="sec on-light"><div class="wrap">
-  <div class="sec-head"><h2>OUR SPONSORSHIP SALES CAPABILITIES</h2></div>
+  <div class="sec-head"><h2 class="caps-h">OUR SPONSORSHIP SALES CAPABILITIES</h2></div>
   <ol class="sp-caps">{"".join(f'<li><h3>{t}</h3><ul>{"".join(f"<li>{i}</li>" for i in items)}</ul></li>' for t, items in SP_CAPS)}</ol>
 </div></section>
 <section class="sec dark on-dark"><div class="wrap">
-  <div class="sec-head"><h2>OUR SALES MECHANISM</h2><p class="lede">AI Intelligence + Human Expertise = Continuous Sales Pipeline</p></div>
+  <div class="sec-head"><h2 class="caps-h">OUR SALES MECHANISM</h2><p class="lede">AI Intelligence + Human Expertise = Continuous Sales Pipeline</p></div>
   <p class="sp-wide">Our operating mechanism combines AI-powered research and prospecting with human-led engagement, relationship building and commercial closure.</p>
   <ol class="flow on-dark-flow" aria-label="Sales mechanism"><li>Discover</li><li>Identify</li><li>Qualify</li><li>Engage</li><li>Propose</li><li>Negotiate</li><li>Close</li></ol>
   <div class="sp-two"><p>Technology improves the speed and scale of prospecting, while human expertise drives conversations, trust, negotiation and business relationships.</p><p>The result is a structured sales engine designed to generate opportunities continuously rather than depending on sporadic sponsor enquiries.</p></div>
 </div></section>
 <section class="sec white on-light"><div class="wrap">
-  <div class="sec-head"><h2>INDUSTRIES &amp; PROPERTIES WE SERVE</h2></div>
+  <div class="sec-head"><h2 class="caps-h">INDUSTRIES &amp; PROPERTIES WE SERVE</h2></div>
   <ul class="chips sp-chips">{"".join(f"<li>{i}</li>" for i in SP_INDUSTRIES)}</ul>
 </div></section>
 <section class="sec on-light"><div class="wrap split top">
-  <div><h2>WHY GROWTHRYDERS?</h2></div>
+  <div><h2 class="caps-h">WHY GROWTHRYDERS?</h2></div>
   <div>
     <p class="lede">We bring together sponsorship strategy, AI-enabled prospecting, industry intelligence, sales execution and relationship management under one integrated KPO model.</p>
     <p>We can operate as an outsourced sponsorship sales partner, an extended business development team or a dedicated revenue management function.</p>

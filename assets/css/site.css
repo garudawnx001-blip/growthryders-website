@@ -679,3 +679,18 @@ p{margin:0 0 1em;max-width:62ch}
 @media (max-width:860px){.pillars{grid-template-columns:1fr 1fr}.pillars > div{border-right:0;border-bottom:1px solid var(--line-dark);padding:16px 12px 16px 0}.pillars > div + div{padding-left:0}.sp-intro,.sp-two{grid-template-columns:1fr}.sp-caps{grid-template-columns:1fr}.sp-caps > li,.sp-caps > li:nth-child(n+4){grid-column:auto}}
 
 .founder-photo{border:1px solid var(--line);background:#fff}
+
+/* v31: nothing can push the page sideways on any screen */
+html,body{max-width:100%;overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+h1,h2,h3,h4,p,li,a,figcaption{overflow-wrap:break-word}
+img,video,svg,canvas,iframe{max-width:100%}
+.page-head h1{font-size:clamp(1.9rem,7.6vw,4.2rem)}
+.caps-h{letter-spacing:-.01em}
+h1.caps-h{font-size:clamp(1.6rem,6.6vw,4rem);max-width:none}
+h2.caps-h{font-size:clamp(1.4rem,5.4vw,2.6rem)}
+@media (max-width:860px){.service-block h2{font-size:clamp(1.45rem,6.6vw,2.2rem)}.flow{font-size:.74rem}.flow li + li::before{width:12px;margin:0 6px}}
+
+.service-block > *,.split > *,.founder > *,.sp-intro > *,.faq > *,.fold-head > *{min-width:0}
+.service-block{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+@media (max-width:860px){.service-block{grid-template-columns:minmax(0,1fr)}.pillars{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
