@@ -87,7 +87,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=33">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=34">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -114,7 +114,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     <div class="legal"><span>© {YEAR} Growthryders</span><span>Bengaluru, India</span></div>
   </div>
 </footer>
-<script src="{r}assets/js/site.js?v=13" defer></script>
+<script src="{r}assets/js/site.js?v=14" defer></script>
 </body>
 </html>
 '''
@@ -740,7 +740,7 @@ ips = f'''
     {ul(['Running and cycling events', 'Corporate wellness programmes', 'Fitness challenges', 'Health awareness initiatives', 'Community engagement', 'Brand partnerships'])}</div>
   {img('runcle-duo', 'A Runcle team on the course: one partner cycling, the other running')}
 </div>
-<div class="wrap ip-strip">{img('runcle-start', 'Cyclists and runners leaving the Runcle 24 start arch')}{img('runcle-stage', 'Warm-up session on the Runcle 24 stage')}{img('runcle-amazon', 'Amazon.in brand boards along the Runcle 24 venue')}</div>
+<div class="wrap ip-strip">{img('runcle-start', 'Cyclists and runners leaving the Runcle ’24 start arch')}{img('runcle-stage', 'Warm-up session on the Runcle ’24 stage')}{img('runcle-amazon', 'Amazon.in brand boards along the Runcle ’24 venue')}</div>
 <p class="wrap ip-note">Runcle '24 was a team duathlon for World Health Day on 6 April 2024: one partner runs while the other cycles, and they finish together.</p>
 </section>
 <section class="sec on-light"><div class="wrap split top" id="bikers-bay" style="scroll-margin-top:24px">

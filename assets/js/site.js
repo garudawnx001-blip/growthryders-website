@@ -211,3 +211,31 @@
   });
 
 })();
+
+/* v14 photo viewer: tap any photo to open it full screen */
+(function(){
+  var imgs=[].slice.call(document.querySelectorAll('main .frame:not(.rotor) img')).filter(function(i){return !i.closest('a,button,[data-film]')});
+  if(!imgs.length) return;
+  var box=document.createElement('div');box.className='lb';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','Photo viewer');box.hidden=true;
+  box.innerHTML='<figure class="lb-fig"><img class="lb-img" alt=""><figcaption class="lb-cap"></figcaption></figure>'+
+    '<button class="lb-btn lb-x" type="button" aria-label="Close">&times;</button>'+
+    '<button class="lb-btn lb-prev" type="button" aria-label="Previous photo">&#8249;</button>'+
+    '<button class="lb-btn lb-next" type="button" aria-label="Next photo">&#8250;</button>'+
+    '<span class="lb-count" aria-live="polite"></span>';
+  document.body.appendChild(box);
+  var big=box.querySelector('.lb-img'),cap=box.querySelector('.lb-cap'),cnt=box.querySelector('.lb-count'),cur=0,last=null;
+  function show(n){cur=(n+imgs.length)%imgs.length;var s=imgs[cur];big.src=s.currentSrc||s.src;big.alt=s.alt;cap.textContent=s.alt;cnt.textContent=(cur+1)+' / '+imgs.length;
+    box.querySelector('.lb-prev').hidden=box.querySelector('.lb-next').hidden=imgs.length<2;}
+  function open(n){last=document.activeElement;show(n);box.hidden=false;document.documentElement.classList.add('lb-open');box.querySelector('.lb-x').focus();}
+  function close(){box.hidden=true;document.documentElement.classList.remove('lb-open');if(last&&last.focus)last.focus();}
+  imgs.forEach(function(im,i){var f=im.parentNode;f.classList.add('zoomable');f.tabIndex=0;f.setAttribute('role','button');f.setAttribute('aria-label','Open photo: '+im.alt);
+    f.addEventListener('click',function(){open(i)});
+    f.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(i)}});});
+  box.querySelector('.lb-x').onclick=close;
+  box.querySelector('.lb-prev').onclick=function(e){e.stopPropagation();show(cur-1)};
+  box.querySelector('.lb-next').onclick=function(e){e.stopPropagation();show(cur+1)};
+  box.addEventListener('click',function(e){if(e.target===box||e.target.classList.contains('lb-fig'))close()});
+  document.addEventListener('keydown',function(e){if(box.hidden)return;if(e.key==='Escape')close();else if(e.key==='ArrowLeft')show(cur-1);else if(e.key==='ArrowRight')show(cur+1);});
+  var x0=null;box.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  box.addEventListener('touchend',function(e){if(x0===null)return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)show(cur+(d<0?1:-1));x0=null},{passive:true});
+})();
