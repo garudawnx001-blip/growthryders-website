@@ -87,7 +87,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=35">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=36">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -503,7 +503,7 @@ case('work/tu-race-laga.html', 'TVS Apache presents Tu Race Laga | Case study | 
      ['Campaign visibility across five Bagmane business parks.', 'Apache motorcycle displays and brand engagement zones.', 'Standees and digital registration touchpoints.', 'Apache-themed photo and video experiences.', 'On-ground registration and participant acquisition.', 'A flagship run with 3K, 5K and 10K categories.', 'Brand integration through event branding, stage presence, participant engagement and sampling.'],
      'Campaign conceptualisation, brand integration, activation planning, on-ground execution and event management.',
      g('flagoff', 'Runners leaving the start arch at the flag-off', True) + g('runners2', 'Runners on the course inside the tech park') + g('axis', 'Participants at a partner activity stall') + g('finish', 'Finishers celebrating after the run', True) + g('group', 'Participants and organisers under the finish arch at Tu Race Laga', True) + g('medals', 'Finisher medals laid out for the runners'),
-     bibs(TRL_BIBS, True), film_keys=('tu-race-laga-event-film', 'tvs-apache-tu-race-laga', 'axis-bank-tu-race-laga', 'milky-mist-tu-race-laga'))
+     bibs(TRL_BIBS, True) + '<p style="margin-top:26px"><a class="more" href="{r}work/tu-race-laga-sponsorship-case-study.html">Read the sponsorship case study</a></p>', film_keys=('tu-race-laga-event-film', 'tvs-apache-tu-race-laga', 'axis-bank-tu-race-laga', 'milky-mist-tu-race-laga'))
 
 case('work/tvs-apache-bagmane.html', 'TVS Apache activations at Bagmane | Case study | Growthryders',
      'Growthryders created motorcycle display and engagement zones for TVS Apache inside Bagmane business parks.',
@@ -678,6 +678,25 @@ def service_page(sp):
 for _sp in SVC_PAGES: service_page(_sp)
 
 # ---------------------------------------------------------------- SPONSORSHIP SALES (its own vertical; the client's text, unchanged)
+
+# ---- Sponsorship methodology case study (client text) ----
+SC_STAGES = [
+ ('Client Requirement', 'Bagmane REIT identified the requirement for a corporate running event.'),
+ ('Event Conceptualisation', 'Growthryders developed the event concept around the theme of challenging yourself, with 10K, 5K and 3K running categories.'),
+ ('Property Development', 'The event was structured as a corporate running property with opportunities for brand association and sponsorship.'),
+ ('Brand Outreach', 'Growthryders approached potential sponsors and explored relevant brand partnerships.'),
+ ('Strategic Campaign Identification', "TVS Apache's Tu Race Laga campaign was identified as an appropriate fit for the running event."),
+ ('Title Brand Integration', 'The proposed association was accepted, and the event was positioned as TVS Apache Presents &ndash; Tu Race Laga.'),
+ ('Multi-Brand Sponsorship Development', 'Additional partners were associated with the event across banking, ticketing, nutrition and protein categories.'),
+ ('Event Coordination &amp; Execution', 'Growthryders coordinated the event ecosystem, working with Bagmane REIT and the participating sponsors.'),
+]
+SC_PARTNERS = [('TVS Apache', 'Presenting / Title Brand'), ('Bagmane REIT', 'Event Association / Venue Ecosystem'), ('Axis Bank', 'Banking Partner'), ('Races', 'Ticketing Partner'), ('Milky Mist', 'Nutrition Partner'), ('Protein Chef', 'Protein Partner')]
+SC_URL = 'work/tu-race-laga-sponsorship-case-study.html'
+def sc_table(head, rows, cls=''):
+    return f'<div class="cs-table-wrap"><table class="cs-table {cls}"><thead><tr><th scope="col">{head[0]}</th><th scope="col">{head[1]}</th></tr></thead><tbody>' + ''.join(f'<tr><th scope="row">{a}</th><td>{b}</td></tr>' for a, b in rows) + '</tbody></table></div>'
+def ul(items): return '<ul class="cs-list">' + ''.join(f'<li>{i}</li>' for i in items) + '</ul>'
+
+
 SP_CAPS = [
  ('IP &amp; Sponsorship Monetisation Strategy', ['Understanding the IP, event or conference proposition.', 'Developing sponsorship inventory and partnership opportunities.', 'Structuring sponsorship categories and commercial packages.', 'Identifying monetisation opportunities.', 'Developing industry-specific sponsorship propositions.']),
  ('AI-Enabled Sponsor Identification &amp; Prospecting', ['Identifying relevant brands across industry verticals.', 'Building targeted sponsor databases.', 'Mapping marketing heads, brand managers, corporate decision-makers and business leaders.', 'AI-assisted lead research and qualification.', 'Identifying potential category sponsors and strategic partners.', 'Continuous database enrichment.']),
@@ -713,6 +732,20 @@ sponsorship = f'''
   <div class="sp-two"><p>Technology improves the speed and scale of prospecting, while human expertise drives conversations, trust, negotiation and business relationships.</p><p>The result is a structured sales engine designed to generate opportunities continuously rather than depending on sporadic sponsor enquiries.</p></div>
 </div></section>
 <section class="sec white on-light"><div class="wrap">
+  <div class="sec-head"><h2 class="caps-h">OUR METHODOLOGY IN PRACTICE</h2><p class="lede">Case study: TVS Apache Presents &ndash; Tu Race Laga, a Bagmane Tech Parks corporate running initiative.</p></div>
+  <div class="sp-case">
+    <div>
+      <p>What began as a corporate running event requirement evolved into a multi-brand sponsorship property through strategic brand integration and sponsorship development by Growthryders.</p>
+      <ol class="sp-stages">{"".join(f'<li>{t}</li>' for t, d in SC_STAGES)}</ol>
+    </div>
+    <div>
+      <h3 class="cs-h3" style="margin-top:0">Sponsorship Partner Structure</h3>
+      {sc_table(('Partner', 'Sponsorship Category'), SC_PARTNERS)}
+      <p style="margin-top:22px"><a class="btn" href="{{r}}work/tu-race-laga-sponsorship-case-study.html">Read the full case study</a></p>
+    </div>
+  </div>
+</div></section>
+<section class="sec on-light"><div class="wrap">
   <div class="sec-head"><h2 class="caps-h">INDUSTRIES &amp; PROPERTIES WE SERVE</h2></div>
   <ul class="chips sp-chips">{"".join(f"<li>{i}</li>" for i in SP_INDUSTRIES)}</ul>
 </div></section>
@@ -729,6 +762,121 @@ EXTRA_LD['sponsorship-sales.html'] = [{"@type": "Service", "@id": DOMAIN + "/spo
     "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Sponsorship sales capabilities", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": html.unescape(t)}} for t, i in SP_CAPS]}}]
 page('sponsorship-sales.html', 'Sponsorship Sales & Revenue Management | Growthryders',
      'Sponsorship sales and revenue management for IP owners, event organisers and B2B conferences: AI-enabled sponsor prospecting with human-led engagement, negotiation and closure.', sponsorship, 'dark')
+
+spcase = f'''
+<section class="page-head on-dark"><div class="wrap">
+  <p class="kicker"><a href="{{r}}sponsorship-sales.html" style="text-decoration:none">Sponsorship Development &amp; Event Execution Case Study</a></p>
+  <h1 class="caps-h">TVS APACHE PRESENTS &ndash; TU RACE LAGA</h1>
+  <p class="lede">A Bagmane Tech Parks Corporate Running Initiative</p>
+  <p class="sp-tag"><strong>Conceptualisation, Sponsorship Development &amp; Event Execution by Growthryders</strong></p>
+</div></section>
+<section class="sec white on-light"><div class="wrap split top">
+  <div><h2>1. Project Overview</h2></div>
+  <div>
+    <p class="lede">The Tu Race Laga initiative was conceptualised as a corporate running event for employees and the wider community across Bagmane Tech Parks.</p>
+    <p>The objective was to create an engaging fitness-oriented event that encouraged participation, promoted a healthy lifestyle and provided brands with an opportunity to connect with a corporate audience.</p>
+    <p>The event featured three running categories:</p>
+    {ul(['10K Run', '5K Run', '3K Run'])}
+    <p>The central theme of the event was &ldquo;Challenging Yourself.&rdquo;</p>
+    <p class="cs-pull">What began as a corporate running event requirement evolved into a multi-brand sponsorship property through strategic brand integration and sponsorship development by Growthryders.</p>
+  </div>
+</div></section>
+<section class="sec on-light"><div class="wrap split top">
+  <div><h2>2. Project Initiation &ndash; Bagmane REIT</h2></div>
+  <div>
+    <p>The initiative originated from Bagmane REIT&rsquo;s requirement to organise a corporate running event across its technology parks.</p>
+    <p>The requirement was to create an event that would:</p>
+    {ul(['Encourage fitness and physical well-being among employees.', 'Bring together the corporate community through a common activity.', 'Create an engaging and professionally organised running experience.', 'Provide opportunities for brands to associate with the event.'])}
+    <p>Growthryders took forward the event conceptualisation, sponsorship development and organisational responsibilities.</p>
+  </div>
+</div></section>
+<section class="sec white on-light"><div class="wrap split top">
+  <div><h2>3. Event Conceptualisation &amp; Property Development</h2></div>
+  <div>
+    <p>Growthryders developed the event around the concept of challenging oneself through running.</p>
+    <p>The event was structured into three categories to encourage participation from individuals with different fitness levels.</p>
+    <h3 class="cs-h3">Event Categories</h3>
+    {sc_table(('Category', 'Purpose'), [('10K Run', 'For experienced and competitive runners'), ('5K Run', 'For regular fitness enthusiasts'), ('3K Run', 'For beginners and recreational participants')])}
+    <p>The objective was to position the event as more than just a running activity. It was developed as a corporate community engagement property with potential for brand partnerships and sponsorship opportunities.</p>
+  </div>
+</div></section>
+<section class="sec on-light"><div class="wrap split top">
+  <div><h2>4. Sponsorship Strategy &amp; Brand Outreach</h2></div>
+  <div>
+    <p>Once the event concept and property were established, Growthryders initiated the sponsorship outreach process.</p>
+    <p>The strategy was to identify brands that aligned with the event&rsquo;s fitness, lifestyle, performance and corporate audience.</p>
+    <p>Rather than approaching brands with generic sponsorship opportunities, the focus was on identifying relevant brand campaigns and integrating them into the event identity.</p>
+    <p>This approach created an opportunity to develop a sponsorship structure where different brands could participate through clearly defined partnership categories.</p>
+  </div>
+</div></section>
+<section class="sec dark on-dark"><div class="wrap split top">
+  <div><h2>5. Strategic Brand Integration &ndash; TVS Apache</h2></div>
+  <div>
+    <p>One of the key developments in the sponsorship journey was the integration of TVS Apache&rsquo;s latest campaign, &ldquo;TU RACE LAGA.&rdquo;</p>
+    <p>Growthryders identified an opportunity to connect TVS Apache&rsquo;s campaign positioning with the running event.</p>
+    <p>The campaign&rsquo;s racing and performance-oriented identity aligned naturally with the event&rsquo;s running concept and its central theme of challenging oneself.</p>
+    <p>The proposed integration was accepted by TVS Apache, enabling the event to be presented as:</p>
+    <p class="cs-title">TVS APACHE PRESENTS &ndash; TU RACE LAGA</p>
+    <p>This integration brought a strong brand identity to the event and created a distinctive association between the automotive brand&rsquo;s campaign and the corporate running property.</p>
+    <p>The initiative demonstrated how an existing brand campaign could be strategically integrated into an independently developed event property.</p>
+  </div>
+</div></section>
+<section class="sec white on-light"><div class="wrap split top">
+  <div><h2>6. Sponsorship Architecture &amp; Brand Partnerships</h2></div>
+  <div>
+    <p>Following the title integration, the event was developed into a multi-brand sponsorship ecosystem.</p>
+    <p>The participating brands were associated with different sponsorship categories based on their respective roles.</p>
+    <h3 class="cs-h3">Sponsorship Partner Structure</h3>
+    {sc_table(('Partner', 'Sponsorship Category'), SC_PARTNERS)}
+    <p>The sponsorship structure provided multiple brands with opportunities to associate with the event while maintaining a unified event identity.</p>
+    <p>Each partner contributed to a different aspect of the overall event ecosystem.</p>
+  </div>
+</div></section>
+<section class="sec on-light"><div class="wrap">
+  <div class="sec-head"><h2>7. Sponsorship Flow &ndash; From Requirement to Execution</h2><p class="lede">The overall sponsorship development process followed this sequence:</p></div>
+  <ol class="steps cs-stages">{"".join(f'<li><span><strong>Stage {i} &ndash; {t}</strong>{d}</span></li>' for i, (t, d) in enumerate(SC_STAGES, 1))}</ol>
+</div></section>
+<section class="sec white on-light"><div class="wrap">
+  <div class="sec-head"><h2>8. Roles &amp; Responsibilities</h2></div>
+  <div class="cs-roles">
+    <div><h3>Bagmane REIT</h3>{ul(['Initiated the requirement for the corporate running event.', 'Provided the corporate park ecosystem for the initiative.', "Supported the event&rsquo;s association with the Bagmane community."])}</div>
+    <div class="cs-gr"><h3>Growthryders</h3>{ul(['Conceptualised the event property.', 'Developed the event format and positioning.', 'Identified sponsorship opportunities.', 'Approached potential brand partners.', 'Proposed the TVS Apache campaign integration.', 'Developed the multi-brand sponsorship structure.', 'Coordinated event planning and execution with the associated stakeholders.'])}</div>
+    <div><h3>TVS Apache</h3>{ul(['Associated with the event through the Tu Race Laga campaign.', 'Became the presenting brand for the running initiative.'])}</div>
+    <div><h3>Other Sponsorship Partners</h3>{ul(['Axis Bank &ndash; Banking Partner.', 'Races &ndash; Ticketing Partner.', 'Milky Mist &ndash; Nutrition Partner.', 'Protein Chef &ndash; Protein Partner.'])}</div>
+  </div>
+</div></section>
+<section class="sec dark on-dark"><div class="wrap">
+  <div class="sec-head"><h2>9. Growthryders&rsquo; Strategic Contribution</h2><p class="lede">The key contribution of Growthryders was the transformation of a corporate event requirement into a structured sponsorship-led event property.</p></div>
+  <p class="sp-wide">The approach involved three important dimensions:</p>
+  <div class="cs-dims">
+    <div><h3>A. Event Property Development</h3><p>Instead of treating the initiative as only an event-management requirement, Growthryders developed a property that could attract relevant brands and sponsorship opportunities.</p></div>
+    <div><h3>B. Campaign-Led Brand Integration</h3><p>The integration of TVS Apache&rsquo;s Tu Race Laga campaign demonstrated the value of connecting an existing brand campaign with a relevant event concept.</p></div>
+    <div><h3>C. Multi-Brand Sponsorship Ecosystem</h3><p>The addition of partners across different categories helped establish a broader sponsorship structure around the event.</p></div>
+  </div>
+</div></section>
+<section class="sec white on-light"><div class="wrap split top">
+  <div><h2>10. Key Takeaways</h2></div>
+  <div>
+    <p>The Tu Race Laga initiative demonstrates the importance of strategic event conceptualisation and sponsorship development.</p>
+    <p>Key learnings from the initiative include:</p>
+    <ol class="steps">{"".join(f'<li><span>{t}</span></li>' for t in ['An event can be transformed into a sponsorship property through the right positioning and conceptualisation.', 'Existing brand campaigns can create meaningful integration opportunities with relevant events.', 'Sponsorship outreach becomes more effective when brands are approached with a clear association opportunity.', 'Multiple brands can participate in one event through distinct sponsorship categories.', 'Strong coordination between the event organiser, client and sponsors is essential for successful execution.'])}</ol>
+  </div>
+</div></section>
+<section class="sec on-light"><div class="wrap split top">
+  <div><h2>11. Conclusion</h2></div>
+  <div>
+    <p class="lede">The TVS Apache Presents &ndash; Tu Race Laga initiative represents a strategic approach to developing a corporate running event into a multi-brand sponsorship property.</p>
+    <p>Beginning with Bagmane REIT&rsquo;s requirement for a corporate running initiative, Growthryders developed the event concept, identified relevant sponsorship opportunities and proposed the integration of TVS Apache&rsquo;s Tu Race Laga campaign.</p>
+    <p>The successful brand association, along with the participation of Axis Bank, Races, Milky Mist and Protein Chef, helped establish a structured sponsorship ecosystem.</p>
+    <p>The initiative reflects Growthryders&rsquo; approach of combining event conceptualisation, brand alignment, sponsorship development and event execution to create meaningful brand and community engagement opportunities.</p>
+    <p class="cs-sign"><strong>GROWTHRYDERS</strong><br>From Event Conceptualisation to Strategic Brand Partnerships &amp; Execution.</p>
+    <p style="margin-top:26px"><a class="more" href="{{r}}work/tu-race-laga.html">See the event photos and films</a></p>
+  </div>
+</div></section>
+{CTA}'''
+EXTRA_LD[SC_URL] = [{"@type": "Article", "@id": DOMAIN + "/" + SC_URL + "#article", "headline": "TVS Apache Presents Tu Race Laga: Sponsorship Development & Event Execution Case Study", "about": "Sponsorship development for a corporate running event at Bagmane Tech Parks, Bengaluru", "author": {"@id": DOMAIN + "/#org"}, "publisher": {"@id": DOMAIN + "/#org"}, "url": DOMAIN + "/" + SC_URL, "inLanguage": "en-IN"}]
+page(SC_URL, 'Tu Race Laga sponsorship case study | Sponsorship development | Growthryders',
+     'How Growthryders turned a Bagmane REIT corporate run into TVS Apache Presents Tu Race Laga, a multi-brand sponsorship property with Axis Bank, Races, Milky Mist and Protein Chef.', spcase, 'dark', 1)
 
 ips = f'''
 <section class="page-head on-dark"><div class="wrap">
@@ -795,7 +943,7 @@ page('404.html', 'Page not found | Growthryders', 'This page does not exist.',
      '<section class="page-head on-dark"><div class="wrap"><h1>This page is not here.</h1><p class="lede">The link may be old or mistyped.</p><div class="btn-row"><a class="btn" href="/">Go to the home page</a><a class="btn ghost" href="/work.html">See our work</a></div></div></section>', 'dark')
 
 # ---------------------------------------------------------------- static files
-pages = ['', 'about.html', 'services.html'] + [f'services/{x["slug"]}.html' for x in SVC_PAGES] + ['sponsorship-sales.html', 'work.html'] + (['films.html'] if FILMS_LIVE else []) + [ 'work/tu-race-laga.html', 'work/tvs-apache-bagmane.html', 'work/royal-enfield-bikers-bay.html', 'ips.html', 'contact.html']
+pages = ['', 'about.html', 'services.html'] + [f'services/{x["slug"]}.html' for x in SVC_PAGES] + ['sponsorship-sales.html', 'work.html'] + (['films.html'] if FILMS_LIVE else []) + [ 'work/tu-race-laga.html', 'work/tu-race-laga-sponsorship-case-study.html', 'work/tvs-apache-bagmane.html', 'work/royal-enfield-bikers-bay.html', 'ips.html', 'contact.html']
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{DOMAIN}/{p}</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n' for p in pages) + '</urlset>\n')
 INDEXNOW = '78d348323012cbff111fa228a2ef64b3'
 open(os.path.join(OUT, INDEXNOW + '.txt'), 'w').write(INDEXNOW)
