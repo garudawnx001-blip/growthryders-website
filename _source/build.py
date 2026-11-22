@@ -690,7 +690,7 @@ SC_STAGES = [
  ('Multi-Brand Sponsorship Development', 'Additional partners were associated with the event across banking, ticketing, nutrition and protein categories.'),
  ('Event Coordination &amp; Execution', 'Growthryders coordinated the event ecosystem, working with Bagmane REIT and the participating sponsors.'),
 ]
-SC_PARTNERS = [('TVS Apache', 'Presenting / Title Brand'), ('Bagmane REIT', 'Event Association / Venue Ecosystem'), ('Axis Bank', 'Banking Partner'), ('Races', 'Ticketing Partner'), ('Milky Mist', 'Nutrition Partner'), ('Protein Chef', 'Protein Partner')]
+SC_PARTNERS = [('TVS Apache', 'Presenting / Title Brand'), ('Bagmane REIT', 'Event Association / Venue Ecosystem'), ('Axis Bank', 'Banking Partner'), ('iRaces', 'Ticketing Partner'), ('Milky Mist', 'Nutrition Partner'), ('Protein Chef', 'Protein Partner')]
 SC_URL = 'work/tu-race-laga-sponsorship-case-study.html'
 def sc_table(head, rows, cls=''):
     return f'<div class="cs-table-wrap"><table class="cs-table {cls}"><thead><tr><th scope="col">{head[0]}</th><th scope="col">{head[1]}</th></tr></thead><tbody>' + ''.join(f'<tr><th scope="row">{a}</th><td>{b}</td></tr>' for a, b in rows) + '</tbody></table></div>'
@@ -842,7 +842,7 @@ spcase = f'''
     <div><h3>Bagmane REIT</h3>{ul(['Initiated the requirement for the corporate running event.', 'Provided the corporate park ecosystem for the initiative.', "Supported the event&rsquo;s association with the Bagmane community."])}</div>
     <div class="cs-gr"><h3>Growthryders</h3>{ul(['Conceptualised the event property.', 'Developed the event format and positioning.', 'Identified sponsorship opportunities.', 'Approached potential brand partners.', 'Proposed the TVS Apache campaign integration.', 'Developed the multi-brand sponsorship structure.', 'Coordinated event planning and execution with the associated stakeholders.'])}</div>
     <div><h3>TVS Apache</h3>{ul(['Associated with the event through the Tu Race Laga campaign.', 'Became the presenting brand for the running initiative.'])}</div>
-    <div><h3>Other Sponsorship Partners</h3>{ul(['Axis Bank &ndash; Banking Partner.', 'Races &ndash; Ticketing Partner.', 'Milky Mist &ndash; Nutrition Partner.', 'Protein Chef &ndash; Protein Partner.'])}</div>
+    <div><h3>Other Sponsorship Partners</h3>{ul(['Axis Bank &ndash; Banking Partner.', 'iRaces &ndash; Ticketing Partner.', 'Milky Mist &ndash; Nutrition Partner.', 'Protein Chef &ndash; Protein Partner.'])}</div>
   </div>
 </div></section>
 <section class="sec dark on-dark"><div class="wrap">
@@ -867,7 +867,7 @@ spcase = f'''
   <div>
     <p class="lede">The TVS Apache Presents &ndash; Tu Race Laga initiative represents a strategic approach to developing a corporate running event into a multi-brand sponsorship property.</p>
     <p>Beginning with Bagmane REIT&rsquo;s requirement for a corporate running initiative, Growthryders developed the event concept, identified relevant sponsorship opportunities and proposed the integration of TVS Apache&rsquo;s Tu Race Laga campaign.</p>
-    <p>The successful brand association, along with the participation of Axis Bank, Races, Milky Mist and Protein Chef, helped establish a structured sponsorship ecosystem.</p>
+    <p>The successful brand association, along with the participation of Axis Bank, iRaces, Milky Mist and Protein Chef, helped establish a structured sponsorship ecosystem.</p>
     <p>The initiative reflects Growthryders&rsquo; approach of combining event conceptualisation, brand alignment, sponsorship development and event execution to create meaningful brand and community engagement opportunities.</p>
     <p class="cs-sign"><strong>GROWTHRYDERS</strong><br>From Event Conceptualisation to Strategic Brand Partnerships &amp; Execution.</p>
     <p style="margin-top:26px"><a class="more" href="{{r}}work/tu-race-laga.html">See the event photos and films</a></p>
@@ -876,7 +876,7 @@ spcase = f'''
 {CTA}'''
 EXTRA_LD[SC_URL] = [{"@type": "Article", "@id": DOMAIN + "/" + SC_URL + "#article", "headline": "TVS Apache Presents Tu Race Laga: Sponsorship Development & Event Execution Case Study", "about": "Sponsorship development for a corporate running event at Bagmane Tech Parks, Bengaluru", "author": {"@id": DOMAIN + "/#org"}, "publisher": {"@id": DOMAIN + "/#org"}, "url": DOMAIN + "/" + SC_URL, "inLanguage": "en-IN"}]
 page(SC_URL, 'Tu Race Laga sponsorship case study | Sponsorship development | Growthryders',
-     'How Growthryders turned a Bagmane REIT corporate run into TVS Apache Presents Tu Race Laga, a multi-brand sponsorship property with Axis Bank, Races, Milky Mist and Protein Chef.', spcase, 'dark', 1)
+     'How Growthryders turned a Bagmane REIT corporate run into TVS Apache Presents Tu Race Laga, a multi-brand sponsorship property with Axis Bank, iRaces, Milky Mist and Protein Chef.', spcase, 'dark', 1)
 
 ips = f'''
 <section class="page-head on-dark"><div class="wrap">
