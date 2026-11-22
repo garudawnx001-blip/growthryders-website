@@ -828,4 +828,38 @@ open(os.path.join(OUT, '.nojekyll'), 'w').write('')
 open(os.path.join(OUT, 'assets/img/gry-logo.svg'), 'w').write(LOGO.replace(' class="ink"', ''))
 open(os.path.join(OUT, 'assets/img/gry-logo-white.svg'), 'w').write(LOGO.replace(' class="ink"', '').replace('#4B2C73', '#FFFFFF'))
 open(os.path.join(OUT, 'assets/img/favicon.svg'), 'w').write('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#4B2C73"/><g transform="translate(66 118) scale(.5)"><path d="M345 260H575V475H112Q57 475 57 420V95Q57 40 112 40H610" fill="none" stroke="#fff" stroke-width="84" stroke-linejoin="miter"/><circle cx="716" cy="150" r="50" fill="#F5B321"/></g></svg>''')
-print('built', len(pages) + 1, 'pages into', OUT)
+
+# ---------------------------------------------------------------- CLEAN ADDRESSES
+# Every page moves to a folder (about.html -> /about/), every link and file path becomes absolute from the site root,
+# and the old .html address stays only as a tiny forwarder, so ".html" never shows in the address bar.
+import posixpath, glob as _glob
+def clean(path):
+    if path in ('index.html', ''): return ''
+    if path.endswith('/index.html'): return path[:-len('index.html')]
+    return path[:-5] + '/' if path.endswith('.html') else path
+def _abs(url, base):
+    if not url or url[0] in '#/' or re.match(r'^[a-z][a-z0-9+.-]*:', url): return url
+    m = re.match(r'^([^?#]*)(.*)$', url); pth, tail = m.group(1), m.group(2)
+    full = posixpath.normpath(posixpath.join(posixpath.dirname(base), pth)) if pth else base
+    if full == '.': full = ''
+    if full.endswith('.html') and full != '404.html': full = clean(full)
+    return '/' + full + tail
+_moved = []
+for f in sorted(_glob.glob(os.path.join(OUT, '**', '*.html'), recursive=True)):
+    rel = os.path.relpath(f, OUT).replace(os.sep, '/')
+    if rel.startswith('admin/') or rel.startswith('google') or rel.endswith('/index.html'): continue
+    h = open(f).read()
+    if 'data-forward' in h[:400]: continue                       # already a forwarder from an earlier build
+    h = re.sub(r'\b(href|src|poster|data-film|data-src)="([^"]*)"', lambda m: f'{m.group(1)}="{_abs(m.group(2), rel)}"', h)
+    h = re.sub(re.escape(DOMAIN) + r'/([A-Za-z0-9/_-]+)\.html', lambda m: DOMAIN + '/' + clean(m.group(1) + '.html'), h).replace(DOMAIN + '/index.html', DOMAIN + '/')
+    if rel in ('index.html', '404.html'):
+        open(f, 'w').write(h); continue
+    new = clean(rel); os.makedirs(os.path.join(OUT, new), exist_ok=True)
+    open(os.path.join(OUT, new, 'index.html'), 'w').write(h)
+    open(f, 'w').write(f'<!doctype html><html lang="en" data-forward><head><meta charset="utf-8"><title>Growthryders</title><link rel="canonical" href="{DOMAIN}/{new}"><meta name="robots" content="noindex"><script>location.replace("/{new}" + location.search + location.hash)</script><meta http-equiv="refresh" content="0; url=/{new}"></head><body><a href="/{new}">Continue</a></body></html>')
+    _moved.append(rel)
+for name in ('sitemap.xml', 'llms.txt'):
+    t = open(os.path.join(OUT, name)).read()
+    t = re.sub(re.escape(DOMAIN) + r'/([A-Za-z0-9/_-]+)\.html', lambda m: DOMAIN + '/' + clean(m.group(1) + '.html'), t)
+    open(os.path.join(OUT, name), 'w').write(t)
+print('built', len(pages) + 1, 'pages into', OUT, '| clean addresses:', len(_moved))

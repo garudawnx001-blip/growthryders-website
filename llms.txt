@@ -3,24 +3,24 @@
 > Growthryders (GRY) is a brand activation and through-the-line marketing company based in Bengaluru, Karnataka, India. One team plans and runs activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences.
 
 ## Services
-- [Brand activations and TTL marketing](https://growthryders.in/services/brand-activations.html): Consumer engagement on the ground, amplified across every channel that reaches the same people. Includes: Corporate park activations, Mall and public space promotions, Product sampling, Roadshows, Campus and residential activations, Retail and trade marketing, Dealer and channel partner engagement, Guerrilla marketing, Brand launches.
-- [Digital marketing](https://growthryders.in/services/digital-marketing.html): Search, social, content, websites and performance campaigns that keep the conversation going. Includes: SEO and GEO, Performance marketing, Social media management, Content strategy and creation, Website design and development, Lead generation, Digital campaign management, Marketing analytics and automation.
-- [Experiential marketing](https://growthryders.in/services/experiential-marketing.html): Launches, installations and interactive formats that turn communication into something people remember. Includes: Product launches, Trade shows and exhibitions, Immersive brand storytelling, Employee and partner engagement.
-- [Media solutions](https://growthryders.in/services/media-solutions.html): Planning and buying across outdoor, transit, print, radio, corporate parks, malls and retail. Includes: Outdoor and digital outdoor, Transit and airport media, Print and radio, Corporate park media, Mall and retail media, Retail and point-of-sale branding, Innovative and ambient media.
-- [Corporate events and engagement](https://growthryders.in/services/corporate-events.html): Conferences, dealer meets, summits, awards and employee programmes, concept to close. Includes: Conferences and annual meets, Dealer meets, Leadership summits, Awards, Employee engagement programmes, Product launches.
-- [Sponsorship Sales & Revenue Management](https://growthryders.in/sponsorship-sales.html): Turning IPs, Events & B2B Platforms into Revenue Opportunities. Includes: Sponsorship Strategy & Revenue Planning, IP and Event Monetisation, AI-enabled Brand Identification & Prospecting, Industry-wise Sponsor Database Development, Decision-maker Mapping & Lead Qualification, Personalised Outreach & Sales Engagement, Sponsorship Proposal Development, Negotiations & Commercial Closure, CRM-based Pipeline & Follow-up Management, Sponsorship Revenue Tracking & Reporting.
-- [Technology-led experiences](https://growthryders.in/services/technology-experiences.html): Installations, AR and VR, gamification and interactive digital formats built into the activation. Includes: Technology-led installations, Augmented and virtual reality, Gamification, Interactive digital experiences.
-- [Film and content production](https://growthryders.in/services/film-production.html): We shoot and edit the films of the activations and events we run: event films, brand and partner films and vertical cuts for social media. Includes: Event films, Brand and partner films, Reels and vertical cuts, On-ground shooting, Editing.
-- [Tech park and corporate park activations](https://growthryders.in/services/tech-park-activations.html): brand activations inside business parks in Bengaluru, such as the Bagmane parks.
+- [Brand activations and TTL marketing](https://growthryders.in/services/brand-activations/): Consumer engagement on the ground, amplified across every channel that reaches the same people. Includes: Corporate park activations, Mall and public space promotions, Product sampling, Roadshows, Campus and residential activations, Retail and trade marketing, Dealer and channel partner engagement, Guerrilla marketing, Brand launches.
+- [Digital marketing](https://growthryders.in/services/digital-marketing/): Search, social, content, websites and performance campaigns that keep the conversation going. Includes: SEO and GEO, Performance marketing, Social media management, Content strategy and creation, Website design and development, Lead generation, Digital campaign management, Marketing analytics and automation.
+- [Experiential marketing](https://growthryders.in/services/experiential-marketing/): Launches, installations and interactive formats that turn communication into something people remember. Includes: Product launches, Trade shows and exhibitions, Immersive brand storytelling, Employee and partner engagement.
+- [Media solutions](https://growthryders.in/services/media-solutions/): Planning and buying across outdoor, transit, print, radio, corporate parks, malls and retail. Includes: Outdoor and digital outdoor, Transit and airport media, Print and radio, Corporate park media, Mall and retail media, Retail and point-of-sale branding, Innovative and ambient media.
+- [Corporate events and engagement](https://growthryders.in/services/corporate-events/): Conferences, dealer meets, summits, awards and employee programmes, concept to close. Includes: Conferences and annual meets, Dealer meets, Leadership summits, Awards, Employee engagement programmes, Product launches.
+- [Sponsorship Sales & Revenue Management](https://growthryders.in/sponsorship-sales/): Turning IPs, Events & B2B Platforms into Revenue Opportunities. Includes: Sponsorship Strategy & Revenue Planning, IP and Event Monetisation, AI-enabled Brand Identification & Prospecting, Industry-wise Sponsor Database Development, Decision-maker Mapping & Lead Qualification, Personalised Outreach & Sales Engagement, Sponsorship Proposal Development, Negotiations & Commercial Closure, CRM-based Pipeline & Follow-up Management, Sponsorship Revenue Tracking & Reporting.
+- [Technology-led experiences](https://growthryders.in/services/technology-experiences/): Installations, AR and VR, gamification and interactive digital formats built into the activation. Includes: Technology-led installations, Augmented and virtual reality, Gamification, Interactive digital experiences.
+- [Film and content production](https://growthryders.in/services/film-production/): We shoot and edit the films of the activations and events we run: event films, brand and partner films and vertical cuts for social media. Includes: Event films, Brand and partner films, Reels and vertical cuts, On-ground shooting, Editing.
+- [Tech park and corporate park activations](https://growthryders.in/services/tech-park-activations/): brand activations inside business parks in Bengaluru, such as the Bagmane parks.
 
 ## Pages
 - [Home](https://growthryders.in/): overview, services, work, films and platforms
-- [About](https://growthryders.in/about.html): the company
-- [Services](https://growthryders.in/services.html): every service in detail
-- [Work](https://growthryders.in/work.html): campaign case studies
-- [Films](https://growthryders.in/films.html): campaign and event films
-- [Our IPs](https://growthryders.in/ips.html): Runcle and Bikers Bay, platforms Growthryders owns
-- [Contact](https://growthryders.in/contact.html): start a conversation
+- [About](https://growthryders.in/about/): the company
+- [Services](https://growthryders.in/services/): every service in detail
+- [Work](https://growthryders.in/work/): campaign case studies
+- [Films](https://growthryders.in/films/): campaign and event films
+- [Our IPs](https://growthryders.in/ips/): Runcle and Bikers Bay, platforms Growthryders owns
+- [Contact](https://growthryders.in/contact/): start a conversation
 
 ## Brands on the ground with Growthryders
 TVS Apache, Royal Enfield, Bagmane REIT, Axis Bank, Milky Mist, Kauvery Hospital, Protein Chef, iRaces
