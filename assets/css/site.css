@@ -677,3 +677,5 @@ p{margin:0 0 1em;max-width:62ch}
 .sp-chips li{font-size:1rem;padding:10px 16px}
 .sp-commit{margin-top:22px;padding:18px 20px;border-left:4px solid var(--gold);background:#fff;border-radius:0 8px 8px 0}
 @media (max-width:860px){.pillars{grid-template-columns:1fr 1fr}.pillars > div{border-right:0;border-bottom:1px solid var(--line-dark);padding:16px 12px 16px 0}.pillars > div + div{padding-left:0}.sp-intro,.sp-two{grid-template-columns:1fr}.sp-caps{grid-template-columns:1fr}.sp-caps > li,.sp-caps > li:nth-child(n+4){grid-column:auto}}
+
+.founder-photo{border:1px solid var(--line);background:#fff}

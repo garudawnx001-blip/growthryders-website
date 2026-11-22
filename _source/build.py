@@ -87,7 +87,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=29">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=30">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -326,7 +326,7 @@ about = f'''
   {img('group', 'Participants and organisers under the finish arch at Tu Race Laga')}
 </div></section>
 <section class="sec on-light founder-sec" id="founder"><div class="wrap founder">
-  <div class="frame founder-photo"><img src="{{r}}assets/img/founder.jpg" alt="Surender Loganathan, founder of Growthryders" width="856" height="1067" loading="lazy"></div>
+  <div class="frame founder-photo"><img src="{{r}}assets/img/founder.jpg?v=2" alt="Surender Loganathan, founder of Growthryders" width="880" height="1100" loading="lazy"></div>
   <div>
     <p class="kicker">Founder</p>
     <h2>Surender Loganathan</h2>
