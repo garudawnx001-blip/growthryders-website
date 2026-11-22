@@ -723,3 +723,4 @@ html.lb-open,html.lb-open body{overflow:hidden}
 .lb-btn[hidden]{display:none}
 .lb-count{position:absolute;top:26px;left:20px;color:#bdb6c9;font-size:.85rem}
 @media (max-width:600px){.lb{padding:64px 8px 24px}.lb-prev,.lb-next{top:auto;bottom:14px;transform:none}.lb-prev{left:calc(50% - 60px)}.lb-next{right:calc(50% - 60px)}.lb-img{max-height:calc(100% - 110px)}}
+.site-foot .aka{margin-top:8px;font-size:.85rem;opacity:.75;max-width:34ch}

@@ -28,7 +28,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
     cur = path.split('/')[0]
     links = ''.join(f'<a href="{r}{h}"{" aria-current=\"page\"" if h == cur or (cur == "work" and h == "work.html") or (cur == "services" and h == "services.html") else ""}>{t}</a>' for h, t in NAV)
     canonical = DOMAIN + '/' + ('' if path == 'index.html' else path)
-    org = {"@type": ["Organization", "ProfessionalService"], "@id": DOMAIN + "/#org", "name": "Growthryders", "alternateName": ["GRY", "Growth Ryders"], "url": DOMAIN,
+    org = {"@type": ["Organization", "ProfessionalService"], "@id": DOMAIN + "/#org", "name": "Growthryders", "alternateName": ["Growth Ryders", "GRY", "Growth Riders", "Growthriders", "GrowthRyders", "Growth Ryders Bengaluru"], "url": DOMAIN,
            "logo": DOMAIN + "/assets/img/gry-logo.svg", "image": DOMAIN + "/assets/img/og.jpg", "email": EMAIL,
            "telephone": "+" + PHONE_E164,
            "contactPoint": [{"@type": "ContactPoint", "telephone": "+" + PHONE_E164, "contactType": "sales", "areaServed": "IN", "availableLanguage": ["en", "hi", "kn"]}],
@@ -37,7 +37,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
            "areaServed": [{"@type": "City", "name": "Bengaluru"}, {"@type": "Country", "name": "India"}],
            "knowsAbout": ["Brand activation", "BTL activation", "Experiential marketing", "Through-the-line marketing", "Corporate park activations", "Tech park activations", "Mall activations", "Roadshows", "Product sampling", "Event management", "Corporate events", "Digital marketing", "Media planning and buying", "Outdoor advertising", "Event film production", "Video production"],
            "description": "Brand activation agency and through-the-line marketing company in Bengaluru (Bangalore), India."}
-    site = {"@type": "WebSite", "@id": DOMAIN + "/#site", "url": DOMAIN, "name": "Growthryders", "publisher": {"@id": DOMAIN + "/#org"}, "inLanguage": "en-IN"}
+    site = {"@type": "WebSite", "@id": DOMAIN + "/#site", "url": DOMAIN, "name": "Growthryders", "alternateName": ["Growth Ryders", "GRY"], "publisher": {"@id": DOMAIN + "/#org"}, "inLanguage": "en-IN"}
     graph = [org, site, {"@type": "WebPage", "@id": canonical, "url": canonical, "name": title, "description": desc, "isPartOf": {"@id": DOMAIN + "/#site"}, "about": {"@id": DOMAIN + "/#org"}}]
     if path != 'index.html':
         crumbs = [("Home", DOMAIN + "/")] + ([("Services", DOMAIN + "/services.html")] if path.startswith("services/") else [("Work", DOMAIN + "/work.html")] if depth else []) + [(title.split(' | ')[0], canonical)]
@@ -87,7 +87,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=34">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=35">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -106,7 +106,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <footer class="site-foot">
   <div class="wrap">
     <div class="cols4">
-      <div>{LOGO}<p style="margin-top:16px;max-width:34ch">Brand activations at the core. Integrated marketing for growth.</p></div>
+      <div>{LOGO}<p style="margin-top:16px;max-width:34ch">Brand activations at the core. Integrated marketing for growth.</p><p class="aka">Growthryders, also written Growth Ryders (GRY), Bengaluru.</p></div>
       <div><h2>Company</h2><ul><li><a href="{r}about.html">About</a></li><li><a href="{r}services.html">Services</a></li><li><a href="{r}work.html">Work</a></li>{"<li><a href=" + chr(34) + r + "films.html" + chr(34) + ">Films</a></li>" if FILMS_LIVE else ""}<li><a href="{r}ips.html">Our IPs</a></li></ul></div>
       <div><h2>Work</h2><ul><li><a href="{r}work/tu-race-laga.html">TVS Apache: Tu Race Laga</a></li><li><a href="{r}work/tvs-apache-bagmane.html">TVS Apache at Bagmane</a></li><li><a href="{r}work/royal-enfield-bikers-bay.html">Royal Enfield: Bikers Bay</a></li></ul></div>
       <div><h2>Contact</h2><ul><li><a class="wi" href="tel:+{PHONE_E164}">{IC_CALL}{PHONE_DISPLAY}</a></li><li><a class="wi" href="https://wa.me/{PHONE_E164}">{IC_CHAT}WhatsApp us</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Bengaluru, India</li></ul></div>
@@ -191,6 +191,7 @@ def rotor():
     return f'<div class="frame ratio-43 rotor" data-rotor>{slides}</div>'
 
 FAQS = [
+ ("Is it Growthryders or Growth Ryders?", "Both refer to the same company. Growthryders is the brand name; it is also written Growth Ryders or GRY. Growthryders (Growth Ryders) is a brand activation agency in Bengaluru (Bangalore), Karnataka. The website is growthryders.in."),
  ("What does Growthryders do?", "Growthryders is a brand activation agency and through-the-line marketing company based in Bengaluru (Bangalore). One team plans and runs brand activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences."),
  ("Where is Growthryders based?", "Growthryders is based in Bengaluru (Bangalore), Karnataka, India."),
  ("What kinds of brand activations does Growthryders run?", "Corporate park activations, mall and public space promotions, product sampling, roadshows, campus and residential activations, and brand launches."),
@@ -305,8 +306,8 @@ home = f'''
 '''
 import re
 if not FILMS_LIVE: home = re.sub(r'<section class="sec white on-light films-sec">.*?</dialog>\n', '', home, flags=re.S)
-page('index.html', 'Growthryders | Brand activation agency in Bengaluru (Bangalore)',
-     'Growthryders is a brand activation agency in Bengaluru (Bangalore): tech park and mall activations, experiential marketing, media, corporate events and digital.', home, 'dark', intro=True)
+page('index.html', 'Growthryders (Growth Ryders) | Brand activation agency in Bengaluru',
+     'Growthryders, also written Growth Ryders, is a brand activation agency in Bengaluru (Bangalore): tech park and mall activations, experiential marketing, media, corporate events and digital.', home, 'dark', intro=True)
 
 # ---------------------------------------------------------------- ABOUT
 about = f'''
@@ -351,8 +352,8 @@ about = f'''
 </div></section>
 {CTA}
 '''
-page('about.html', 'About Growthryders | Brand activation company in Bengaluru (Bangalore)',
-     'Growthryders builds through-the-line marketing around brand activations: consumer engagement, media, digital, experiential work and community platforms.', about, 'dark')
+page('about.html', 'About Growthryders (Growth Ryders) | Brand activation company, Bengaluru',
+     'Growthryders (Growth Ryders) builds through-the-line marketing around brand activations: consumer engagement, media, digital, experiential work and community platforms.', about, 'dark')
 
 # ---------------------------------------------------------------- SERVICES
 def ul(items): return '<ul class="cols">' + ''.join(f'<li>{i}</li>' for i in items) + '</ul>'
@@ -787,7 +788,7 @@ contact = f'''
   </div>
 </div></section>
 '''
-page('contact.html', 'Contact Growthryders | Brand activation agency, Bengaluru (Bangalore)',
+page('contact.html', 'Contact Growthryders (Growth Ryders) | Brand activation agency, Bengaluru',
      'Talk to Growthryders about a brand activation, an integrated campaign or a corporate event. Phone, WhatsApp and email.', contact, 'dark')
 
 page('404.html', 'Page not found | Growthryders', 'This page does not exist.',
@@ -806,7 +807,7 @@ BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBo
 open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nDisallow: /admin/\n\n' + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in BOTS) + f'Sitemap: {DOMAIN}/sitemap.xml\n')
 open(os.path.join(OUT, 'llms.txt'), 'w').write(f'''# Growthryders
 
-> Growthryders (GRY) is a brand activation and through-the-line marketing company based in Bengaluru, Karnataka, India. One team plans and runs activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences.
+> Growthryders (also written Growth Ryders, or GRY) is a brand activation and through-the-line marketing company based in Bengaluru, Karnataka, India. One team plans and runs activations, experiential marketing, media, corporate events, digital marketing and technology-led experiences.
 
 ## Services
 ''' + ''.join(f'- [{t}]({DOMAIN}/{svc_href(k)}): {d} Includes: {", ".join(cs)}.\n' for k, t, d, cs in SERVICES) + f'- [Tech park and corporate park activations]({DOMAIN}/services/tech-park-activations.html): brand activations inside business parks in Bengaluru, such as the Bagmane parks.\n' + f'''
