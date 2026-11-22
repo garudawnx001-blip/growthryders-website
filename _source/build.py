@@ -76,9 +76,13 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <meta name="geo.region" content="IN-KA">
 <meta name="geo.placename" content="Bengaluru">
 <meta name="theme-color" content="#170e22">
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="{r}assets/img/favicon.svg?v=2" type="image/svg+xml">
-<link rel="apple-touch-icon" href="{r}assets/img/icon-180.png?v=2">
+<link rel="icon" href="/favicon.ico?v=3" sizes="any">
+<link rel="shortcut icon" href="/favicon.ico?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png?v=3">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/img/icon-96.png?v=3">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/icon-192.png?v=3">
+<link rel="icon" href="{r}assets/img/favicon.svg?v=3" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{r}assets/img/icon-180.png?v=3">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
