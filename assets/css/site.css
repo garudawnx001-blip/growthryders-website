@@ -694,3 +694,9 @@ h2.caps-h{font-size:clamp(1.4rem,5.4vw,2.6rem)}
 .service-block > *,.split > *,.founder > *,.sp-intro > *,.faq > *,.fold-head > *{min-width:0}
 .service-block{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
 @media (max-width:860px){.service-block{grid-template-columns:minmax(0,1fr)}.pillars{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+
+/* v32: phone menu fills the whole screen, nothing shows beneath it */
+@media (max-width:860px){
+  .nav{inset:0;height:100vh;height:100dvh;overflow-y:auto;justify-content:flex-start}
+  .site-head.menu-open ~ main,.site-head.menu-open ~ footer{visibility:visible}
+}
