@@ -700,3 +700,11 @@ h2.caps-h{font-size:clamp(1.4rem,5.4vw,2.6rem)}
   .nav{inset:0;height:100vh;height:100dvh;overflow-y:auto;justify-content:flex-start}
   .site-head.menu-open ~ main,.site-head.menu-open ~ footer{visibility:visible}
 }
+/* v33 IP photo strips */
+.ip-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.ip-strip .frame{aspect-ratio:3/2}
+.ip-note{margin-top:14px;font-size:.95rem;color:var(--muted,#555);max-width:none}
+@media (max-width:600px){.ip-strip{gap:8px;margin-top:18px}}
+/* v33 gallery rows flush: small tiles fill the height of the wide tile beside them */
+@media (min-width:761px){.gallery .frame:not(.wide){aspect-ratio:auto;align-self:stretch;min-height:100%}.gallery .frame:not(.wide) img{height:100%}}
+.bibs.on-light{grid-template-columns:repeat(2,minmax(0,1fr))}

@@ -87,7 +87,7 @@ def page(path, title, desc, body, head='light', depth=0, intro=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/site.css?v=32">
+<link rel="stylesheet" href="{r}assets/css/site.css?v=33">
 <script>document.documentElement.classList.add("js");try{{if({str(intro).lower()}&&!sessionStorage.getItem("gry-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-on")}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 </head>
@@ -184,7 +184,7 @@ def marquee():
     return f'<section class="marquee" aria-label="Brands on the ground with us"><div class="track"><div class="row">{row}</div><div class="row" aria-hidden="true">{row}</div></div></section>'
 
 # ---------------------------------------------------------------- HOME
-ROTOR = [('apache1', 'TVS Apache', 'TVS Apache motorcycles on display at Bagmane Tech Park, Bengaluru'), ('re1', 'Royal Enfield', 'Royal Enfield motorcycle with a painted tank at a Bagmane business park activation'),
+ROTOR = [('bb-tents', 'Bikers Bay', 'Bikers Bay motorcycle expo tents at Bagmane Constellation Business Park, Bengaluru'), ('runcle-duo', 'Runcle', 'A Runcle team pair, one cycling and one running, on the course'), ('apache1', 'TVS Apache', 'TVS Apache motorcycles on display at Bagmane Tech Park, Bengaluru'), ('re1', 'Royal Enfield', 'Royal Enfield motorcycle with a painted tank at a Bagmane business park activation'),
          ('axis-wall', 'Axis Bank', 'Axis Bank banking partner stall at the Tu Race Laga corporate run'), ('sign', 'Bagmane Tech Park', 'Bagmane Tech Park entrance sign, Bengaluru'), ('partners', 'Bagmane REIT and Milky Mist', 'Partner pillar showing Bagmane REIT, Milky Mist and GRY branding')]
 def rotor():
     slides = ''.join(f'<figure class="rot-s{" on" if i == 0 else ""}"><img src="{{r}}assets/img/{n}.jpg" alt="{html.escape(a)}" width="1280" height="720" loading="lazy"><figcaption>{b}</figcaption></figure>' for i, (n, b, a) in enumerate(ROTOR))
@@ -501,7 +501,7 @@ case('work/tu-race-laga.html', 'TVS Apache presents Tu Race Laga | Case study | 
      'What the campaign included',
      ['Campaign visibility across five Bagmane business parks.', 'Apache motorcycle displays and brand engagement zones.', 'Standees and digital registration touchpoints.', 'Apache-themed photo and video experiences.', 'On-ground registration and participant acquisition.', 'A flagship run with 3K, 5K and 10K categories.', 'Brand integration through event branding, stage presence, participant engagement and sampling.'],
      'Campaign conceptualisation, brand integration, activation planning, on-ground execution and event management.',
-     g('flagoff', 'Runners leaving the start arch at the flag-off', True) + g('runners2', 'Runners on the course inside the tech park') + g('axis', 'Participants at a partner activity stall') + g('medals', 'Finisher medals laid out for the runners') + g('finish', 'Finishers celebrating after the run', True),
+     g('flagoff', 'Runners leaving the start arch at the flag-off', True) + g('runners2', 'Runners on the course inside the tech park') + g('axis', 'Participants at a partner activity stall') + g('finish', 'Finishers celebrating after the run', True) + g('group', 'Participants and organisers under the finish arch at Tu Race Laga', True) + g('medals', 'Finisher medals laid out for the runners'),
      bibs(TRL_BIBS, True), film_keys=('tu-race-laga-event-film', 'tvs-apache-tu-race-laga', 'axis-bank-tu-race-laga', 'milky-mist-tu-race-laga'))
 
 case('work/tvs-apache-bagmane.html', 'TVS Apache activations at Bagmane | Case study | Growthryders',
@@ -526,7 +526,7 @@ case('work/royal-enfield-bikers-bay.html', 'Royal Enfield with Bikers Bay | Case
      'What the engagement included',
      ['A dedicated branded activation space.', 'Association with the Bikers Bay community.', 'Visibility with the corporate audience.', 'Motorcycle lifestyle and community-led engagement.', 'Brand presence inside an established rider platform.'],
      'Community platform integration, activation space coordination and brand engagement.',
-     g('re1', 'A Royal Enfield motorcycle on display at a Bagmane business park', True) + g('re2', 'Royal Enfield motorcycles lined up at a display') + g('re3', 'Visitors looking at a Royal Enfield motorcycle', True) + g('re4', 'Detail of a Royal Enfield motorcycle'), film_keys=('royal-enfield-bagmane-film', 'royal-enfield-tech-park', 'royal-enfield-capital'))
+     g('re1', 'A Royal Enfield motorcycle on display at a Bagmane business park', True) + g('re2', 'Royal Enfield motorcycles lined up at a display') + g('re3', 'Visitors looking at a Royal Enfield motorcycle', True) + g('re4', 'Detail of a Royal Enfield motorcycle') + g('bb-re', 'Visitors trying a Royal Enfield Guerrilla in the Bikers Bay space, January 2025', True) + g('bb-re2', 'Royal Enfield Guerrilla display at Bikers Bay'), film_keys=('royal-enfield-bagmane-film', 'royal-enfield-tech-park', 'royal-enfield-capital'))
 
 
 # ---------------------------------------------------------------- FILMS
@@ -738,14 +738,20 @@ ips = f'''
   <div><h2>Runcle</h2><p class="lede" style="margin-top:18px">Running meets cycling.</p>
     <p>A fitness and wellness platform that brings runners, cyclists and fitness enthusiasts together, and gives brands a way to reach an active-lifestyle audience.</p>
     {ul(['Running and cycling events', 'Corporate wellness programmes', 'Fitness challenges', 'Health awareness initiatives', 'Community engagement', 'Brand partnerships'])}</div>
-  {img('runners2', 'Runners on the course inside a Bagmane tech park')}
-</div></section>
+  {img('runcle-duo', 'A Runcle team on the course: one partner cycling, the other running')}
+</div>
+<div class="wrap ip-strip">{img('runcle-start', 'Cyclists and runners leaving the Runcle 24 start arch')}{img('runcle-stage', 'Warm-up session on the Runcle 24 stage')}{img('runcle-amazon', 'Amazon.in brand boards along the Runcle 24 venue')}</div>
+<p class="wrap ip-note">Runcle '24 was a team duathlon for World Health Day on 6 April 2024: one partner runs while the other cycles, and they finish together.</p>
+</section>
 <section class="sec on-light"><div class="wrap split top" id="bikers-bay" style="scroll-margin-top:24px">
-  {img('re3', 'Visitors looking at a Royal Enfield motorcycle')}
+  {img('bb-tents', 'Bikers Bay brand tents at Bagmane Constellation Business Park')}
   <div><h2>Bikers Bay</h2><p class="lede" style="margin-top:18px">The motorcycle community.</p>
     <p>A community platform that connects motorcycle enthusiasts through rides, experiences, networking and brand associations.</p>
     {ul(['Rider meets and networking', 'Motorcycle experiences', 'Weekend rides and adventures', 'Brand collaborations', 'Lifestyle engagement', 'Digital community initiatives'])}</div>
-</div></section>
+</div>
+<div class="wrap ip-strip">{img('bb-crowd', 'Visitors walking through the Bikers Bay brand tents')}{img('bb-re', 'Visitors trying a Royal Enfield Guerrilla at Bikers Bay')}{img('bb-ktm', 'A rider trying a KTM motorcycle at Bikers Bay')}</div>
+<p class="wrap ip-note">Bikers Bay brought motorcycle brands and riders together at Bagmane Constellation Business Park on 22 and 23 January 2025.</p>
+</section>
 {CTA}
 '''
 page('ips.html', 'Our IPs | Runcle and Bikers Bay | Growthryders',
